@@ -1,0 +1,4 @@
+# REACT_APP_BACKEND=https://tometracker.ue.r.appspot.com
+
+# REACT_APP_BACKEND_AUTH=http://localhost:8080/api/auth
+REACT_APP_BACKEND=http://localhost:8080/api

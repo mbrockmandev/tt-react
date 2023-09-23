@@ -1,0 +1,102 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+
+@layer utilities {
+  .text-shadow {
+    text-shadow: theme("textShadow.default");
+  }
+  .text-shadow-lg {
+    text-shadow: theme("textShadow.lg");
+  }
+}
+
+@import "tailwindcss/utilities";
+
+@keyframes rotateFade {
+  0% {
+    opacity: 0;
+    transform: rotate(0deg);
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(90deg);
+  }
+}
+
+@keyframes rotateFadeIn {
+  0% {
+    opacity: 0;
+    transform: rotate(90deg);
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes shineLtr {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes shineLtr {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.15s forwards ease-in;
+}
+
+.rotate-fade {
+  animation: rotateFade 0.3s forwards;
+}
+
+.rotate-fade-in {
+  animation: rotateFadeIn 0.3s forwards;
+}
+
+.background-root {
+  background-color: rgb(255, 255, 255);
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
