@@ -89,11 +89,12 @@ const BookDetails: React.FC = () => {
       method: "GET",
       credentials: "include",
     };
-    if (!libraryData.id) {
-      return;
-    }
     try {
-      const url = `${process.env.REACT_APP_BACKEND}/books/${bookId}?library_id=${libraryData.id}`;
+      if (userData.homeLibraryId === 0) {
+        // fetch homelibrary id
+        return;
+      }
+      const url = `${process.env.REACT_APP_BACKEND}/books/${bookId}?library_id=${userData.homeLibraryId}`;
       const res = await fetch(url, reqOptions);
       const data = await res.json();
       if (data && data.book.id !== 0) {
@@ -132,9 +133,7 @@ const BookDetails: React.FC = () => {
       bookData,
     );
     // slight delay if no data on initial load
-    if (!libraryData.id || userData.id === 0) {
-      return;
-    } else {
+    if (!bookData) {
       fetchBookData();
     }
 
@@ -159,7 +158,8 @@ const BookDetails: React.FC = () => {
       }
     };
     handleBorrowButtonTextChecker();
-  }, [libraryData, userData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (!bookData) {
     return (

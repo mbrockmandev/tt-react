@@ -35,11 +35,13 @@ import UpdateBookModal from "../Modals/Books/UpdateBookModal";
 import DeleteBookModal from "../Modals/Books/DeleteBookModal";
 import BooksByLibraryFetcher from "../Staff/BooksByLibraryFetcher";
 import BooksReport from "../Staff/BooksReport";
+import { alertAtom } from "../../../recoil/atoms/alertAtom";
 
 const AdminDashboard = () => {
   // recoil
   const [, setActiveModal] = useRecoilState(modalAtom);
-  const user = useRecoilValue(userAtom);
+  const [, setAlert] = useRecoilState(alertAtom);
+  const [user, setUser] = useRecoilState(userAtom);
   const [userToModify, setUserToModify] = useRecoilState(selectedUserAtom);
   const [libraryToModify, setLibraryToModify] =
     useRecoilState(selectedLibraryAtom);
@@ -56,6 +58,7 @@ const AdminDashboard = () => {
     setActiveModal(null);
     UpdateCurrentUrl();
     if (user && user.id !== 0) {
+      fetchHomeLibraryInfo();
       localStorage.setItem("user", JSON.stringify(user));
     }
 
@@ -64,6 +67,30 @@ const AdminDashboard = () => {
       return;
     }
   }, []);
+
+  const fetchHomeLibraryInfo = async () => {
+    const reqOptions: RequestInit = {
+      method: "GET",
+      credentials: "include",
+    };
+    let url = `${process.env.REACT_APP_BACKEND}/users/${user.id}/homeLibrary`;
+    try {
+      let res = await fetch(url, reqOptions);
+      let data = await res.json();
+      // console.log(data);
+
+      url = `${process.env.REACT_APP_BACKEND}/libraries/${data}`;
+      res = await fetch(url, reqOptions);
+      data = await res.json();
+      const updatedUser = { ...user, homeLibraryId: data.id };
+      setUser(updatedUser);
+    } catch (error) {
+      setAlert({
+        message: error.message,
+        type: "error",
+      });
+    }
+  };
 
   const handleResetLibraryToModify = (e: any) => {
     e.preventDefault();
