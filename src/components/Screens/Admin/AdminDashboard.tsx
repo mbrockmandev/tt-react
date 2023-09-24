@@ -36,22 +36,25 @@ import DeleteBookModal from "../Modals/Books/DeleteBookModal";
 import BooksByLibraryFetcher from "../Staff/BooksByLibraryFetcher";
 import BooksReport from "../Staff/BooksReport";
 import { alertAtom } from "../../../recoil/atoms/alertAtom";
+import { libraryAtom } from "../../../recoil/atoms/libraryAtom";
 
 const AdminDashboard = () => {
-  // recoil
+  // recoil atoms
   const [, setActiveModal] = useRecoilState(modalAtom);
   const [, setAlert] = useRecoilState(alertAtom);
   const [user, setUser] = useRecoilState(userAtom);
+  const [, setLibraryData] = useRecoilState(libraryAtom);
   const [userToModify, setUserToModify] = useRecoilState(selectedUserAtom);
   const [libraryToModify, setLibraryToModify] =
     useRecoilState(selectedLibraryAtom);
   const [bookToModify, setBookToModify] = useRecoilState(selectedBookAtom);
 
-  // react
+  // react state
   const [showBookByLibraryReport, setShowBookByLibraryReport] =
     React.useState(false);
   const [showAllBooksReport, setShowAllBooksReport] = React.useState(false);
 
+  // react hooks
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -60,6 +63,8 @@ const AdminDashboard = () => {
     if (user && user.id !== 0) {
       fetchHomeLibraryInfo();
       localStorage.setItem("user", JSON.stringify(user));
+    } else {
+      fetchUserData();
     }
 
     if (!user.isLoggedIn) {
@@ -82,7 +87,30 @@ const AdminDashboard = () => {
       url = `${process.env.REACT_APP_BACKEND}/libraries/${data}`;
       res = await fetch(url, reqOptions);
       data = await res.json();
+
       const updatedUser = { ...user, homeLibraryId: data.id };
+      setUser(updatedUser);
+
+      const updatedLibrary = { ...data };
+      setLibraryData(updatedLibrary);
+    } catch (error) {
+      setAlert({
+        message: error.message,
+        type: "error",
+      });
+    }
+  };
+
+  const fetchUserData = async () => {
+    const reqOptions: RequestInit = {
+      method: "GET",
+      credentials: "include",
+    };
+    const url = `${process.env.REACT_APP_BACKEND}/users/${user.id}`;
+    try {
+      const res = await fetch(url, reqOptions);
+      const data = await res.json();
+      const updatedUser = { ...data };
       setUser(updatedUser);
     } catch (error) {
       setAlert({

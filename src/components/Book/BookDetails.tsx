@@ -91,7 +91,11 @@ const BookDetails: React.FC = () => {
     };
     try {
       if (userData.homeLibraryId === 0) {
-        // fetch homelibrary id
+        setAlert({
+          message:
+            "Home library has not been set!\nPlease navigate to the Libraries page!",
+          type: "error",
+        });
         return;
       }
       const url = `${process.env.REACT_APP_BACKEND}/books/${bookId}?library_id=${userData.homeLibraryId}`;

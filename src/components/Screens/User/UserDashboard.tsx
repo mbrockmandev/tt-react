@@ -32,7 +32,9 @@ const UserDashboard = () => {
     try {
       const res = await fetch(url, reqOptions);
       const data = await res.json();
-      // console.log("data from fetchUserData: ", data);
+
+      // const updatedUser = {...data};
+      // setUserData(updatedUser);
     } catch (error) {
       setAlert({
         message: error.message,
