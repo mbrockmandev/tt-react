@@ -56,7 +56,6 @@ const AdminDashboard = () => {
     setActiveModal(null);
     UpdateCurrentUrl();
     if (user && user.id !== 0) {
-      console.log("UPDATING USER2")
       localStorage.setItem("user", JSON.stringify(user));
     }
 
@@ -136,10 +135,10 @@ const AdminDashboard = () => {
             <div className="flex items-baseline justify-between">
               <h2 className="text-lg font-semibold">User</h2>
               <button
-                className={`hover:underline hover:text-blue-400 ${userToModify.id === 0 ? "hidden" : ""
-                  }`}
-                onClick={handleResetUserToModify}
-              >
+                className={`hover:underline hover:text-blue-400 ${
+                  userToModify.id === 0 ? "hidden" : ""
+                }`}
+                onClick={handleResetUserToModify}>
                 Reset User
               </button>
             </div>
@@ -160,10 +159,10 @@ const AdminDashboard = () => {
             <div className="flex items-baseline justify-between">
               <h2 className="text-lg font-semibold">Library</h2>
               <button
-                className={`hover:underline hover:text-blue-400 ${libraryToModify.id === 0 ? "hidden" : ""
-                  }`}
-                onClick={handleResetLibraryToModify}
-              >
+                className={`hover:underline hover:text-blue-400 ${
+                  libraryToModify.id === 0 ? "hidden" : ""
+                }`}
+                onClick={handleResetLibraryToModify}>
                 Reset Library
               </button>
             </div>
@@ -186,10 +185,10 @@ const AdminDashboard = () => {
             <div className="flex items-baseline justify-between">
               <h2 className="text-lg font-semibold">Book</h2>
               <button
-                className={`hover:underline hover:text-blue-400 ${bookToModify.id === 0 ? "hidden" : ""
-                  }`}
-                onClick={handleResetBookToModify}
-              >
+                className={`hover:underline hover:text-blue-400 ${
+                  bookToModify.id === 0 ? "hidden" : ""
+                }`}
+                onClick={handleResetBookToModify}>
                 Reset Book
               </button>
             </div>
@@ -210,8 +209,7 @@ const AdminDashboard = () => {
                 <div className="">
                   <div
                     className="ml-auto hover:underline hover:text-blue-400 cursor-pointer"
-                    onClick={toggleShowBookByLibraryFetcher}
-                  >
+                    onClick={toggleShowBookByLibraryFetcher}>
                     Books By Library
                   </div>
                   {showBookByLibraryReport && <BooksByLibraryFetcher />}
@@ -219,8 +217,7 @@ const AdminDashboard = () => {
                 <div className="">
                   <div
                     className="ml-auto hover:underline hover:text-blue-400 cursor-pointer"
-                    onClick={toggleShowAllBooksReport}
-                  >
+                    onClick={toggleShowAllBooksReport}>
                     All Books
                   </div>
                 </div>

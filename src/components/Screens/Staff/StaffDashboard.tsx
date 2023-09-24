@@ -61,7 +61,7 @@ const AdminDashboard = () => {
   }, []);
 
   useEffect(() => {
-    console.log("bookToModify: ", bookToModify);
+    // console.log("bookToModify: ", bookToModify);
   }, [bookToModify]);
 
   const handleResetLibraryToModify = (e: any) => {

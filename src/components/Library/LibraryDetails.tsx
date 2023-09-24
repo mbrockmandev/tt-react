@@ -116,7 +116,6 @@ const LibraryDetails: React.FC = () => {
     if (homeLibraryId === 0) return;
     const updatedUser = { ...user, homeLibraryId: homeLibraryId };
     setUser(updatedUser);
-    console.log("UPDATING USER1")
     localStorage.setItem("user", JSON.stringify(updatedUser));
   }, [homeLibraryId]);
 

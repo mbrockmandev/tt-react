@@ -74,7 +74,7 @@ const App = () => {
       }
 
       const data = await res.json();
-      console.log("data from refresh token (jwtInfo)", data);
+      // console.log("data from refresh token (jwtInfo)", data);
 
       if (data && data.user_info.id !== 0) {
         fetchUserInfo(data.user_info.id);

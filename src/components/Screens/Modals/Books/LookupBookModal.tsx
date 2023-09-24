@@ -42,7 +42,7 @@ const LookupBookModal = () => {
   };
 
   const handleOutsideClick = (e: any) => {
-    console.log("e:", e);
+    // console.log("e:", e);
     if (e && e.target.classList.contains("submit-button")) {
       return;
     }
@@ -96,7 +96,7 @@ const LookupBookModal = () => {
       }
 
       const data = await res.json();
-      console.log(data);
+      // console.log(data);
 
       setBookToModify({
         id: data.book.id,
