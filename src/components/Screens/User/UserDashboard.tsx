@@ -76,7 +76,7 @@ const UserDashboard = () => {
       const res = await fetch(url, reqOptions);
       if (res.status !== 204) {
         const data = await res.json();
-        if (res.ok) {
+        if (data) {
           setReturnedBooks(data);
           return;
         }
@@ -98,10 +98,11 @@ const UserDashboard = () => {
 
     try {
       const res = await fetch(url, reqOptions);
-      const data = await res.json();
-
-      if (data) {
-        setBorrowedBooks(data);
+      if (res.status !== 204) {
+        const data = await res.json();
+        if (data) {
+          setBorrowedBooks(data);
+        }
       }
     } catch (error) {
       setAlert({
