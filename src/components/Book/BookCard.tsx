@@ -30,9 +30,7 @@ const BookCard: React.FC<BookCardProps> = ({ book, metadata }) => {
       className="w-fit z-10 relative py-8">
       <Link
         to={`/books/${id}`}
-        className={`group relative block transition hover:scale-105 ${
-          metadata ? "h-96 w-60" : "h-48 w-28"
-        }`}>
+        className="group relative block transition hover:scale-105 h-48 w-28">
         <span className="absolute inset-0 drop-shadow"></span>
 
         <div
