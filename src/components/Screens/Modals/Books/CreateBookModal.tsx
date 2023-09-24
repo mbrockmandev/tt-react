@@ -208,10 +208,8 @@ const CreateBookModal = () => {
         }),
       };
 
-      const res = await fetch(
-        `${process.env.REACT_APP_BACKEND}/register`,
-        reqOptions,
-      );
+      const url = `${process.env.REACT_APP_BACKEND}/register`;
+      const res = await fetch(url, reqOptions);
 
       if (!res.ok && res.status === 409) {
         setAlert({

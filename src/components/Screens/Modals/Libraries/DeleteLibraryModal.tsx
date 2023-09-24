@@ -52,10 +52,8 @@ const DeleteLibraryModal = () => {
         },
       };
 
-      const res = await fetch(
-        `${process.env.REACT_APP_BACKEND}/admin/libraries/${id}`,
-        reqOptions,
-      );
+      const url = `${process.env.REACT_APP_BACKEND}/admin/libraries/${id}`;
+      const res = await fetch(url, reqOptions);
 
       if (res.ok) {
         setActiveModal(null);

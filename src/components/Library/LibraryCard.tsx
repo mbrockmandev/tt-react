@@ -16,9 +16,12 @@ const LibraryCard: React.FC<LibraryCardProps> = ({ library }) => {
       if (libraryData && libraryData.id === id) {
         return;
       }
-      const res = await fetch(
-        `${process.env.REACT_APP_BACKEND}/libraries/${id}`,
-      );
+      const reqOptions: RequestInit = {
+        method: "GET",
+        credentials: "include",
+      };
+      const url = `${process.env.REACT_APP_BACKEND}/libraries/${id}`;
+      const res = await fetch(url, reqOptions);
       if (!res.ok) {
         throw new Error("something went wrong with the request");
       }

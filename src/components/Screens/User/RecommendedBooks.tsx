@@ -25,10 +25,8 @@ const BookRecommendations = () => {
 
       const page = Math.floor(Math.random() * 30);
       const limit = 5;
-      const res = await fetch(
-        `${process.env.REACT_APP_BACKEND}/books/popular?page=${page}&limit=${limit}`,
-        reqOptions,
-      );
+      const url = `${process.env.REACT_APP_BACKEND}/books/popular?page=${page}&limit=${limit}`;
+      const res = await fetch(url, reqOptions);
       const data = await res.json();
       if (res.ok && data) {
         setRecommendedBooks(data.books);
@@ -50,10 +48,8 @@ const BookRecommendations = () => {
           method: "GET",
           credentials: "include",
         };
-        const res = await fetch(
-          `${process.env.REACT_APP_BACKEND}/books/${b.id}?library_id=${user.homeLibraryId}`,
-          reqOptions,
-        );
+        const url = `${process.env.REACT_APP_BACKEND}/books/${b.id}?library_id=${user.homeLibraryId}`;
+        const res = await fetch(url, reqOptions);
         const data = await res.json();
 
         setBookData({

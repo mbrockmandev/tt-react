@@ -20,16 +20,14 @@ const BrowseLibraries = () => {
           "Content-Type": "application/json",
         },
       };
-      const res = await fetch(
-        `${process.env.REACT_APP_BACKEND}/libraries?page=${page}&limit=${limit}`,
-        reqOptions,
-      );
+      const url = `${process.env.REACT_APP_BACKEND}/libraries?page=${page}&limit=${limit}`;
+      const res = await fetch(url, reqOptions);
       if (!res.ok) {
         throw new Error(`HTTP error! Status: ${res.status}`);
       }
 
       if (res.ok && res.status === 204) {
-        setLibraries([])
+        setLibraries([]);
       }
       const data = await res.json();
 

@@ -47,10 +47,8 @@ const DeleteUserModal = () => {
         },
       };
 
-      const res = await fetch(
-        `${process.env.REACT_APP_BACKEND}/admin/users/${id}`,
-        reqOptions,
-      );
+      const url = `${process.env.REACT_APP_BACKEND}/admin/users/${id}`;
+      const res = await fetch(url, reqOptions);
 
       if (res.ok) {
         setActiveModal(null);

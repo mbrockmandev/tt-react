@@ -99,10 +99,8 @@ const BookDetails: React.FC = () => {
           return;
         }
         try {
-          const res = await fetch(
-            `${process.env.REACT_APP_BACKEND}/books/${bookId}?library_id=${libraryData.id}`,
-            reqOptions,
-          );
+          const url = `${process.env.REACT_APP_BACKEND}/books/${bookId}?library_id=${libraryData.id}`;
+          const res = await fetch(url, reqOptions);
           const data = await res.json();
           if (data && data.book.id !== 0) {
             const updatedBook: Book = {

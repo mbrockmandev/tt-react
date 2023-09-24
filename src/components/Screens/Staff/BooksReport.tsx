@@ -4,21 +4,38 @@ import { keysToCamelCase } from "../../../utils/jsonConverter";
 import { BooksWithMetadata } from "../../../recoil/atoms/booksByLibraryAtom";
 import Book from "../../../utils/models/Book";
 import { formatUTCDate } from "../../../utils/formatDate";
+import { alertAtom } from "../../../recoil/atoms/alertAtom";
+import { useRecoilState } from "recoil";
 
 const PopularBooksReport: React.FC = () => {
+  const [, setAlert] = useRecoilState(alertAtom);
   const [books, setBooks] = useState<Book[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-    fetch(`/books/popular?page=${currentPage}&limit=10`)
-      .then((res) => res.json())
-      .then((data: BooksWithMetadata) => {
-        const camelCaseData = keysToCamelCase(data);
-        setBooks(camelCaseData.books);
-        setTotalPages(camelCaseData.metadata.totalPages);
-      })
-      .catch((error) => console.error("Failed to fetch all books:", error));
+    const fetchBooks = async () => {
+      const url = `${process.env.REACT_APP_BACKEND}/books/popular?page=${currentPage}&limit=10`;
+      const reqOptions: RequestInit = {
+        method: "GET",
+        credentials: "include",
+      };
+      try {
+        const res = await fetch(url, reqOptions);
+        const data = await res.json();
+        if (data as BooksWithMetadata) {
+          const camelCaseData = keysToCamelCase(data);
+          setBooks(camelCaseData.books);
+          setTotalPages(camelCaseData.metadata.totalPages);
+        }
+      } catch (error) {
+        setAlert({
+          message: error.message,
+          type: "error",
+        });
+      }
+    };
+    fetchBooks();
   }, [currentPage]);
 
   return (

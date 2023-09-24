@@ -280,10 +280,8 @@ const UpdateBookModal = () => {
         body: JSON.stringify(bookToModify),
       };
 
-      const res = await fetch(
-        `${process.env.REACT_APP_BACKEND}/${user.role}/books/${bookToModify.id}`,
-        reqOptions,
-      );
+      const url = `${process.env.REACT_APP_BACKEND}/${user.role}/books/${bookToModify.id}`;
+      const res = await fetch(url, reqOptions);
 
       if (res.ok) {
         setAlert({

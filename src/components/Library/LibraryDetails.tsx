@@ -33,10 +33,8 @@ const LibraryDetails: React.FC = () => {
         return;
       }
 
-      const res = await fetch(
-        `${process.env.REACT_APP_BACKEND}/libraries/${libraryId}`,
-        reqOptions,
-      );
+      const url = `${process.env.REACT_APP_BACKEND}/libraries/${libraryId}`;
+      const res = await fetch(url, reqOptions);
 
       const data = await res.json();
       setLibrary({
@@ -78,10 +76,8 @@ const LibraryDetails: React.FC = () => {
         };
 
         const { id } = JSON.parse(localStorage.getItem("user"));
-        const res = await fetch(
-          `${process.env.REACT_APP_BACKEND}/users/libraries/${library.id}/setHomeLocation?userId=${id}`,
-          reqOptions,
-        );
+        const url = `${process.env.REACT_APP_BACKEND}/users/libraries/${library.id}/setHomeLocation?userId=${id}`;
+        const res = await fetch(url, reqOptions);
         if (!res.ok && res.status === 409) {
           setAlert({
             message: "Home Library already set",

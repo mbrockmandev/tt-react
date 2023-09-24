@@ -54,10 +54,8 @@ const DeleteBookModal = () => {
         },
       };
 
-      const res = await fetch(
-        `${process.env.REACT_APP_BACKEND}/admin/books/${id}`,
-        reqOptions,
-      );
+      const url = `${process.env.REACT_APP_BACKEND}/admin/books/${id}`;
+      const res = await fetch(url, reqOptions);
 
       if (!res.ok) {
         throw new Error("HTTP status code: " + res.status);

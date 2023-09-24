@@ -56,10 +56,8 @@ const App = () => {
         },
       };
 
-      const res = await fetch(
-        `${process.env.REACT_APP_BACKEND}/jwtInfo`,
-        reqOptions,
-      );
+      const url = `${process.env.REACT_APP_BACKEND}/jwtInfo`;
+      const res = await fetch(url, reqOptions);
 
       if (!res.ok && res.status === 429) {
         return;
