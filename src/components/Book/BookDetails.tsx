@@ -88,72 +88,74 @@ const BookDetails: React.FC = () => {
   useEffect(() => {
     UpdateCurrentUrl();
 
-    // slight delay to help with data loading
-    setTimeout(() => {
-      const fetchBookData = async () => {
-        const reqOptions: RequestInit = {
-          method: "GET",
-          credentials: "include",
-        };
-        if (!libraryData.id) {
-          return;
-        }
-        try {
-          const url = `${process.env.REACT_APP_BACKEND}/books/${bookId}?library_id=${libraryData.id}`;
-          const res = await fetch(url, reqOptions);
-          const data = await res.json();
-          if (data && data.book.id !== 0) {
-            const updatedBook: Book = {
-              id: data.book.id,
-              title: data.book.title,
-              author: data.book.author,
-              publishedAt: formatUTCDate(data.book.published_at),
-              thumbnail: data.book.thumbnail,
-              summary: data.book.summary,
-              isbn: data.book.isbn,
-              metadata: {
-                availableCopies: data.metadata.available_copies,
-                totalCopies: data.metadata.total_copies,
-                borrowedCopies: data.metadata.borrowed_copies,
-              },
-            };
-            setBookData(updatedBook);
-          }
-        } catch (err) {
-          setAlert({
-            message: err.message,
-            type: "error",
-          });
-        }
+    const fetchBookData = async () => {
+      const reqOptions: RequestInit = {
+        method: "GET",
+        credentials: "include",
       };
+      if (!libraryData.id) {
+        return;
+      }
+      try {
+        const url = `${process.env.REACT_APP_BACKEND}/books/${bookId}?library_id=${libraryData.id}`;
+        const res = await fetch(url, reqOptions);
+        const data = await res.json();
+        if (data && data.book.id !== 0) {
+          const updatedBook: Book = {
+            id: data.book.id,
+            title: data.book.title,
+            author: data.book.author,
+            publishedAt: formatUTCDate(data.book.published_at),
+            thumbnail: data.book.thumbnail,
+            summary: data.book.summary,
+            isbn: data.book.isbn,
+            metadata: {
+              availableCopies: data.metadata.available_copies,
+              totalCopies: data.metadata.total_copies,
+              borrowedCopies: data.metadata.borrowed_copies,
+            },
+          };
+          setBookData(updatedBook);
+        }
+      } catch (err) {
+        setAlert({
+          message: err.message,
+          type: "error",
+        });
+      }
+    };
 
+    // slight delay if no data on initial load
+    if (!libraryData.id || userData.id === 0) {
+      setTimeout(() => {
+        fetchBookData();
+      }, 500);
+    } else {
       fetchBookData();
-
-      const handleBorrowButtonTextChecker = async () => {
-        const borrowedBookIds: number[] = [];
-        if (!userData || !bookData) {
-          return;
-        }
-        for (let book of userData.borrowedBooks) {
-          borrowedBookIds.push(book.id);
-        }
-
-        if (borrowedBookIds.includes(bookData.id)) {
-          setBorrowButtonText("return");
-        } else if (
-          !borrowedBookIds.includes(bookData.id) &&
-          bookData.metadata?.availableCopies <= 0
-        ) {
-          setBorrowButtonText("n/a");
-        } else {
-          setBorrowButtonText("borrow");
-        }
-      };
-      handleBorrowButtonTextChecker();
-    }, 100);
-    if (userData.id === 0) {
-      return;
     }
+
+    const handleBorrowButtonTextChecker = async () => {
+      const borrowedBookIds: number[] = [];
+      if (!userData || !bookData) {
+        return;
+      }
+      for (let book of userData.borrowedBooks) {
+        borrowedBookIds.push(book.id);
+      }
+
+      if (borrowedBookIds.includes(bookData.id)) {
+        setBorrowButtonText("return");
+      } else if (
+        !borrowedBookIds.includes(bookData.id) &&
+        bookData.metadata?.availableCopies <= 0
+      ) {
+        setBorrowButtonText("n/a");
+      } else {
+        setBorrowButtonText("borrow");
+      }
+    };
+    handleBorrowButtonTextChecker();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
