@@ -84,46 +84,46 @@ const BookDetails: React.FC = () => {
     navigate("/libraries");
   };
 
+  const fetchBookData = async () => {
+    const reqOptions: RequestInit = {
+      method: "GET",
+      credentials: "include",
+    };
+    if (!libraryData.id) {
+      return;
+    }
+    try {
+      const url = `${process.env.REACT_APP_BACKEND}/books/${bookId}?library_id=${libraryData.id}`;
+      const res = await fetch(url, reqOptions);
+      const data = await res.json();
+      if (data && data.book.id !== 0) {
+        const updatedBook: Book = {
+          id: data.book.id,
+          title: data.book.title,
+          author: data.book.author,
+          publishedAt: formatUTCDate(data.book.published_at),
+          thumbnail: data.book.thumbnail,
+          summary: data.book.summary,
+          isbn: data.book.isbn,
+          metadata: {
+            availableCopies: data.metadata.available_copies,
+            totalCopies: data.metadata.total_copies,
+            borrowedCopies: data.metadata.borrowed_copies,
+          },
+        };
+        setBookData(updatedBook);
+      }
+    } catch (err) {
+      setAlert({
+        message: err.message,
+        type: "error",
+      });
+    }
+  };
+
   // initial load, update current URL and get book, library data
   useEffect(() => {
     UpdateCurrentUrl();
-
-    const fetchBookData = async () => {
-      const reqOptions: RequestInit = {
-        method: "GET",
-        credentials: "include",
-      };
-      if (!libraryData.id) {
-        return;
-      }
-      try {
-        const url = `${process.env.REACT_APP_BACKEND}/books/${bookId}?library_id=${libraryData.id}`;
-        const res = await fetch(url, reqOptions);
-        const data = await res.json();
-        if (data && data.book.id !== 0) {
-          const updatedBook: Book = {
-            id: data.book.id,
-            title: data.book.title,
-            author: data.book.author,
-            publishedAt: formatUTCDate(data.book.published_at),
-            thumbnail: data.book.thumbnail,
-            summary: data.book.summary,
-            isbn: data.book.isbn,
-            metadata: {
-              availableCopies: data.metadata.available_copies,
-              totalCopies: data.metadata.total_copies,
-              borrowedCopies: data.metadata.borrowed_copies,
-            },
-          };
-          setBookData(updatedBook);
-        }
-      } catch (err) {
-        setAlert({
-          message: err.message,
-          type: "error",
-        });
-      }
-    };
 
     // slight delay if no data on initial load
     if (!libraryData.id || userData.id === 0) {
@@ -159,7 +159,8 @@ const BookDetails: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (!bookData)
+  if (!bookData) {
+    fetchBookData();
     return (
       <>
         <div className="flex w-screen items-center justify-center">
@@ -180,6 +181,7 @@ const BookDetails: React.FC = () => {
         </div>
       </>
     );
+  }
 
   return (
     <>
