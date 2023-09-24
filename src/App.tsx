@@ -103,8 +103,8 @@ const App = () => {
 
   // load from local storage, then backend on initial load
   useEffect(() => {
-    fetchLocalStorageData();
-    if (user) {
+    if (!user || !user.isLoggedIn) {
+      fetchLocalStorageData();
       fetchRefreshToken();
       setTimeout(() => {
         if (user && user.isLoggedIn) {
@@ -117,7 +117,10 @@ const App = () => {
   // log in with jwt if available
   useEffect(() => {
     setUser({ ...localUser });
-    if (localUser.isLoggedIn) {
+    if (
+      localUser.isLoggedIn &&
+      window.location.pathname !== `/${user.role}/dashboard`
+    ) {
       navigate(`/${user.role}/dashboard`);
     } else {
       navigate("login");
