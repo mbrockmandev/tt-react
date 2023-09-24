@@ -127,9 +127,7 @@ const BookDetails: React.FC = () => {
 
     // slight delay if no data on initial load
     if (!libraryData.id || userData.id === 0) {
-      setTimeout(() => {
-        fetchBookData();
-      }, 500);
+      return;
     } else {
       fetchBookData();
     }
@@ -155,12 +153,9 @@ const BookDetails: React.FC = () => {
       }
     };
     handleBorrowButtonTextChecker();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [libraryData, userData]);
 
   if (!bookData) {
-    fetchBookData();
     return (
       <>
         <div className="flex w-screen items-center justify-center">
