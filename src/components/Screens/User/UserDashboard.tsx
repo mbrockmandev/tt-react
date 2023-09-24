@@ -136,7 +136,7 @@ const UserDashboard = () => {
       borrowedBooks,
       homeLibraryId: library.id,
     };
-    console.log("updatedUser: ", updatedUser);
+    // console.log("updatedUser: ", updatedUser);
     setUserData(updatedUser);
     // console.log("UPDATING USER4", updatedUser);
     localStorage.setItem("user", JSON.stringify(updatedUser));
