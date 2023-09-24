@@ -63,6 +63,11 @@ const App = () => {
 
       if (!res.ok && res.status === 429) {
         return;
+      } else if (!res.ok && res.status === 401) {
+        setAlert({
+          message: "Please log in!",
+          type: "success",
+        });
       } else if (!res.ok) {
         setAlert({
           message: "Error fetching user info",
