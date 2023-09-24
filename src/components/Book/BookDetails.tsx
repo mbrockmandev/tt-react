@@ -125,6 +125,12 @@ const BookDetails: React.FC = () => {
   useEffect(() => {
     UpdateCurrentUrl();
 
+    console.log(
+      "loading data: (librarydata, userdata, bookdata): ",
+      libraryData,
+      userData,
+      bookData,
+    );
     // slight delay if no data on initial load
     if (!libraryData.id || userData.id === 0) {
       return;
