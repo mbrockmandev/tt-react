@@ -137,9 +137,8 @@ const BookDetails: React.FC = () => {
       bookData,
     );
     // slight delay if no data on initial load
-    if (!bookData) {
-      fetchBookData();
-    }
+
+    fetchBookData();
 
     const handleBorrowButtonTextChecker = async () => {
       const borrowedBookIds: number[] = [];
