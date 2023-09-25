@@ -109,10 +109,6 @@ const UpdateUserModal = () => {
   const handleUpdate = async (e: any) => {
     e.preventDefault();
 
-    if (!userToModify.id) {
-      return;
-    }
-
     try {
       const reqOptions: RequestInit = {
         method: "PUT",
@@ -202,7 +198,7 @@ const UpdateUserModal = () => {
                   <div className="relative">
                     <input
                       id="password"
-                      type={"text"}
+                      type="password"
                       disabled={isBypassChecked}
                       onChange={handlePasswordChange}
                       className={`w-full rounded-lg p-4 pe-12 text-sm shadow-sm shadow-gray-300 focus:ring-gray-200 focus:border-gray-400 active:border-gray-200 ${
@@ -225,7 +221,7 @@ const UpdateUserModal = () => {
                   <div className="relative">
                     <input
                       id="confirmPassword"
-                      type={"text"}
+                      type="password"
                       disabled={isBypassChecked}
                       onChange={handleConfirmPasswordChange}
                       className={`w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm shadow-gray-300 focus:ring-gray-200 focus:border-gray-400 active:border-gray-200 ${

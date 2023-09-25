@@ -208,9 +208,6 @@ const UpdateBookModal = () => {
 
   const handleUpdate = async (e: any) => {
     e.preventDefault();
-    if (!bookToModify.id) {
-      return;
-    }
 
     try {
       const reqOptions: RequestInit = {

@@ -92,7 +92,7 @@ const UpdateLibraryModal = () => {
     });
   };
 
-  const handleSubmit = async (e: any) => {
+  const handleUpdate = async (e: any) => {
     e.preventDefault();
 
     try {
@@ -297,7 +297,7 @@ const UpdateLibraryModal = () => {
                 <button
                   type="submit"
                   className="block w-[35%] bg-green-300 rounded-lg bg-secondary px-5 py-3 text-sm font-medium text-black mx-auto"
-                  onClick={handleSubmit}>
+                  onClick={handleUpdate}>
                   Update
                 </button>
               </div>
