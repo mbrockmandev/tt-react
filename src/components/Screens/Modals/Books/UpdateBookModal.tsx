@@ -25,7 +25,7 @@ const UpdateBookModal = () => {
 
   const handleModalChange = () => {
     console.log(selectedBook);
-    if (selectedBook) setActiveModal("UpdateBookModal");
+    if (selectedBook.id !== 0) setActiveModal("UpdateBookModal");
   };
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

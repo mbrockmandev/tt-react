@@ -29,7 +29,7 @@ const UpdateUserModal = () => {
 
   const handleModalChange = () => {
     console.log(selectedUser);
-    if (selectedUser) setActiveModal("UpdateUserModal");
+    if (selectedUser.id !== 0) setActiveModal("UpdateUserModal");
   };
 
   const handleCancel = (e: any) => {
