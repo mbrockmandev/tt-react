@@ -265,6 +265,7 @@ const UpdateBookModal = () => {
         metadata: data.metadata,
       };
 
+      setSelectedBook(updatedBook);
       setBookToModify(updatedBook);
     } catch (err) {
       setAlert({ message: err.message, type: "error" });
