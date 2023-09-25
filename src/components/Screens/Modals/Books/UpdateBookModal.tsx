@@ -214,7 +214,7 @@ const UpdateBookModal = () => {
 
   const handleLookup = async (e: any) => {
     e.preventDefault();
-    if (!selectedBook.id && !selectedBook.isbn) {
+    if (!bookToModify.id && !bookToModify.isbn) {
       return;
     }
 
@@ -306,9 +306,7 @@ const UpdateBookModal = () => {
 
       const data = await res.json();
 
-      setSelectedBook({
-        ...data,
-      });
+      setAlert({ message: data.message, type: "success" });
     } catch (err) {
       setAlert({ message: err.message, type: "error" });
       console.error(err);
@@ -513,9 +511,9 @@ const UpdateBookModal = () => {
 
                 <button
                   type="submit"
-                  className="block w-[35%] bg-green-300 rounded-lg bg-secondary px-5 py-3 text-sm font-medium text-black mx-auto"
+                  className="block w-[35%] bg-green-300 rounded-lg bg-secondary px-5 py-3 mx-2 text-sm font-medium text-black mx-auto"
                   onClick={handleUpdate}>
-                  Register
+                  Update
                 </button>
               </div>
             </>
