@@ -127,16 +127,13 @@ const UpdateUserModal = () => {
       const reqOptions: RequestInit = {
         method: "GET",
         credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
       };
 
       var url = "";
       if (searchById) {
-        url = `${process.env.REACT_APP_BACKEND}/${user.role}/users/${userToModify.id}`;
+        url = `${process.env.REACT_APP_BACKEND}/staff/users/${userToModify.id}`;
       } else if (searchByEmail) {
-        url = `${process.env.REACT_APP_BACKEND}/${user.role}/users?email=${userToModify.email}`;
+        url = `${process.env.REACT_APP_BACKEND}/staff/users?email=${userToModify.email}`;
       }
 
       // go get user

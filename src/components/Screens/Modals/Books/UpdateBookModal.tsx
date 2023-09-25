@@ -223,7 +223,7 @@ const UpdateBookModal = () => {
 
     if (searchById && searchByIsbn) {
       setAlert({
-        message: "Please use either ID or ISBN and leave the other blank",
+        message: "Choose either ID or Email and leave the other blank",
         type: "error",
       });
     }
@@ -238,29 +238,40 @@ const UpdateBookModal = () => {
       if (searchById) {
         url = `${process.env.REACT_APP_BACKEND}/books/${selectedBook.id}`;
       } else if (searchByIsbn) {
-        url = `${process.env.REACT_APP_BACKEND}/users/isbn/{isbn}${selectedBook.isbn}`;
+        url = `${process.env.REACT_APP_BACKEND}/books/${selectedBook.isbn}`;
       }
       const res = await fetch(url, reqOptions);
 
       if (res.ok) {
         setAlert({
-          message: "Found user!",
+          message: "Found book!",
           type: "success",
         });
       } else if (!res.ok) {
-        throw new Error(
-          `${selectedBook.id} -- HTTP status code: ` + res.status,
-        );
+        throw new Error(`HTTP status code: ` + res.status);
       }
 
       const data = await res.json();
+      const updatedBook = {
+        id: data.book.id,
+        title: data.book.title,
+        isbn: data.book.isbn,
+        author: data.book.author,
+        summary: data.book.summary,
+        thumbnail: data.book.thumbnail,
+        publishedAt: formatUTCDate(data.book.published_at),
+        createdAt: formatUTCDate(data.book.created_at),
+        updatedAt: formatUTCDate(data.book.updated_at),
+        metadata: data.metadata,
+      };
 
-      setSelectedBook({
-        ...data,
-        publishedAt: formatUTCDate(data.published_at),
-      });
+      setBookToModify(updatedBook);
     } catch (err) {
       setAlert({ message: err.message, type: "error" });
+      console.error(err);
+      if (err !== "") {
+        return;
+      }
     }
   };
 
@@ -313,7 +324,7 @@ const UpdateBookModal = () => {
           {selectedBook.id === 0 && (
             <>
               <p className="text-center text-lg font-medium">
-                Lookup User By ID
+                Lookup Book By ID
               </p>
               <div className="flex items-center gap-x-2">
                 <label
