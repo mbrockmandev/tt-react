@@ -14,7 +14,7 @@ import LookupBookModal from "../Modals/Books/LookupBookModal";
 import UpdateBookModal from "../Modals/Books/UpdateBookModal";
 
 // recoil funcs
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { userAtom } from "./../../../recoil/atoms/userAtom";
 import { modalAtom } from "./../../../recoil/atoms/modalAtom";
 
@@ -29,11 +29,15 @@ import { emptyBook } from "./../../../utils/models/Book";
 import { emptyLoginUser } from "../../Public/RegisterForm";
 import BooksReport from "./BooksReport";
 import BooksByLibraryFetcher from "./BooksByLibraryFetcher";
+import { alertAtom } from "../../../recoil/atoms/alertAtom";
+import { libraryAtom } from "../../../recoil/atoms/libraryAtom";
 
 const AdminDashboard = () => {
   const [, setActiveModal] = useRecoilState(modalAtom);
+  const [, setAlert] = useRecoilState(alertAtom);
+  const [user, setUser] = useRecoilState(userAtom);
+  const [, setLibraryData] = useRecoilState(libraryAtom);
 
-  const user = useRecoilValue(userAtom);
   const [userToModify, setUserToModify] = useRecoilState(selectedUserAtom);
   const [libraryToModify, setLibraryToModify] =
     useRecoilState(selectedLibraryAtom);
@@ -49,7 +53,11 @@ const AdminDashboard = () => {
     setActiveModal(null);
     UpdateCurrentUrl();
     if (user && user.id !== 0) {
+      fetchHomeLibraryInfo();
       localStorage.setItem("user", JSON.stringify(user));
+    } else {
+      fetchUserData();
+      fetchHomeLibraryInfo();
     }
 
     if (!user.isLoggedIn) {
@@ -60,9 +68,52 @@ const AdminDashboard = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    // console.log("bookToModify: ", bookToModify);
-  }, [bookToModify]);
+  const fetchHomeLibraryInfo = async () => {
+    const reqOptions: RequestInit = {
+      method: "GET",
+      credentials: "include",
+    };
+    let url = `${process.env.REACT_APP_BACKEND}/users/${user.id}/homeLibrary`;
+    try {
+      let res = await fetch(url, reqOptions);
+      let data = await res.json();
+      // console.log(data);
+
+      url = `${process.env.REACT_APP_BACKEND}/libraries/${data}`;
+      res = await fetch(url, reqOptions);
+      data = await res.json();
+
+      const updatedUser = { ...user, homeLibraryId: data.id };
+      setUser(updatedUser);
+
+      const updatedLibrary = { ...data };
+      setLibraryData(updatedLibrary);
+    } catch (error) {
+      setAlert({
+        message: error.message,
+        type: "error",
+      });
+    }
+  };
+
+  const fetchUserData = async () => {
+    const reqOptions: RequestInit = {
+      method: "GET",
+      credentials: "include",
+    };
+    const url = `${process.env.REACT_APP_BACKEND}/users/${user.id}`;
+    try {
+      const res = await fetch(url, reqOptions);
+      const data = await res.json();
+      const updatedUser = { ...data };
+      setUser(updatedUser);
+    } catch (error) {
+      setAlert({
+        message: error.message,
+        type: "error",
+      });
+    }
+  };
 
   const handleResetLibraryToModify = (e: any) => {
     e.preventDefault();
