@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 
@@ -7,18 +7,21 @@ import { alertAtom } from "../../../../recoil/atoms/alertAtom";
 import { selectedBookAtom } from "../../../../recoil/atoms/selectedBookAtom";
 import { userAtom } from "../../../../recoil/atoms/userAtom";
 
-import Book from "../../../../utils/models/Book";
+import Book, { emptyBook } from "../../../../utils/models/Book";
 import { formatUTCDate } from "../../../../utils/formatDate";
 
 const UpdateBookModal = () => {
   const user = useRecoilValue(userAtom);
+  const selectedBook = useRecoilValue(selectedBookAtom);
+
   const [, setAlert] = useRecoilState(alertAtom);
   const [activeModal, setActiveModal] = useRecoilState(modalAtom);
-  const [selectedBook, setSelectedBook] = useRecoilState(selectedBookAtom);
 
-  const [bookToModify, setBookToModify] = useState<Book>({
-    ...selectedBook,
-  });
+  const [bookToModify, setBookToModify] = useState<Book>(emptyBook);
+
+  useEffect(() => {
+    setBookToModify(selectedBook);
+  }, []);
 
   const handleModalChange = () => {
     setActiveModal("UpdateBookModal");
@@ -265,7 +268,6 @@ const UpdateBookModal = () => {
         metadata: data.metadata,
       };
 
-      setSelectedBook(updatedBook);
       setBookToModify(updatedBook);
     } catch (err) {
       setAlert({ message: err.message, type: "error" });
@@ -394,7 +396,7 @@ const UpdateBookModal = () => {
                     id="title"
                     type="text"
                     onChange={handleTitleChange}
-                    value={selectedBook.title}
+                    value={bookToModify.title}
                     className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
                     placeholder="Title"
                     autoComplete="title"
@@ -414,7 +416,7 @@ const UpdateBookModal = () => {
                     id="isbn"
                     type="text"
                     onChange={handleIsbnChange}
-                    value={selectedBook.isbn}
+                    value={bookToModify.isbn}
                     className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
                     placeholder="ISBN"
                     autoComplete="isbn"
@@ -434,7 +436,7 @@ const UpdateBookModal = () => {
                     id="author"
                     type="text"
                     onChange={handleAuthorChange}
-                    value={selectedBook.author}
+                    value={bookToModify.author}
                     className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
                     placeholder="Author"
                     autoComplete="author"
@@ -454,7 +456,7 @@ const UpdateBookModal = () => {
                     id="thumbnail"
                     type="text"
                     onChange={handleThumbnailChange}
-                    value={selectedBook.thumbnail}
+                    value={bookToModify.thumbnail}
                     className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
                     placeholder="Thumbnail URL"
                     autoComplete="thumbnail"
@@ -474,7 +476,7 @@ const UpdateBookModal = () => {
                     id="published"
                     type="datetime-local"
                     onChange={handlePublishedChange}
-                    value={selectedBook.publishedAt}
+                    value={bookToModify.publishedAt}
                     className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
                     placeholder="Published"
                     autoComplete="published"
@@ -493,7 +495,7 @@ const UpdateBookModal = () => {
                   <textarea
                     id="summary"
                     onChange={handleSummaryChange}
-                    value={selectedBook.summary}
+                    value={bookToModify.summary}
                     className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
                     placeholder="Summary"
                     autoComplete="summary"

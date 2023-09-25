@@ -1,18 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import ReactDOM from "react-dom";
-
 import { useRecoilState, useRecoilValue } from "recoil";
-
 import { modalAtom } from "../../../../recoil/atoms/modalAtom";
 import { alertAtom } from "../../../../recoil/atoms/alertAtom";
 import { selectedUserAtom } from "../../../../recoil/atoms/selectedUserAtom";
 import { userAtom } from "../../../../recoil/atoms/userAtom";
-import {
-  UserResponse,
-  emptyUserResponse,
-} from "../../../../utils/models/UserResponse";
+import { UserResponse } from "../../../../utils/models/UserResponse";
 
-const UpdateUserModal = () => {
+export const UpdateUserModal = () => {
   const user = useRecoilValue(userAtom);
   const selectedUser = useRecoilValue(selectedUserAtom);
 
@@ -20,12 +15,11 @@ const UpdateUserModal = () => {
   const [activeModal, setActiveModal] = useRecoilState(modalAtom);
 
   const [isBypassChecked, setIsBypassChecked] = useState(false);
-  const [userToModify, setUserToModify] =
-    useState<UserResponse>(emptyUserResponse);
+  const [userToModify, setUserToModify] = useState<UserResponse>({
+    ...selectedUser,
+  });
 
-  useEffect(() => {
-    setUserToModify(selectedUser);
-  }, []);
+  useEffect(() => {}, []);
 
   const handleModalChange = () => {
     setActiveModal("UpdateUserModal");
@@ -301,7 +295,7 @@ const UpdateUserModal = () => {
                       id="email"
                       type="email"
                       onChange={handleEmailChange}
-                      value={userToModify.email}
+                      value={selectedUser.email}
                       className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
                       placeholder="Email"
                       autoComplete="email"
@@ -381,7 +375,7 @@ const UpdateUserModal = () => {
                         id="firstName"
                         type="text"
                         onChange={handleFirstNameChange}
-                        value={userToModify.firstName}
+                        value={selectedUser.firstName}
                         className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm shadow-gray-300 focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
                         placeholder="First Name"
                         pattern="[a-zA-Z]*"
@@ -397,7 +391,7 @@ const UpdateUserModal = () => {
                         id="lastName"
                         type="text"
                         onChange={handleLastNameChange}
-                        value={userToModify.lastName}
+                        value={selectedUser.lastName}
                         className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm shadow-gray-300 focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
                         placeholder="Last Name"
                         pattern="[a-zA-Z]*"
@@ -433,7 +427,7 @@ const UpdateUserModal = () => {
                         className="rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm shadow-gray-300 focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
                         onChange={handleRoleChange}>
                         <option
-                          value={userToModify.role}
+                          value={selectedUser.role}
                           placeholder="Role"
                           defaultChecked>
                           User
@@ -479,5 +473,3 @@ const UpdateUserModal = () => {
     </div>
   );
 };
-
-export default UpdateUserModal;

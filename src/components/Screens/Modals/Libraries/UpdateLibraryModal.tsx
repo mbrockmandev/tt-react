@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 
@@ -7,20 +7,22 @@ import { selectedLibraryAtom } from "../../../../recoil/atoms/selectedLibraryAto
 import { modalAtom } from "../../../../recoil/atoms/modalAtom";
 import { userAtom } from "../../../../recoil/atoms/userAtom";
 
-import Library from "../../../../utils/models/Library";
+import Library, { emptyLibrary } from "../../../../utils/models/Library";
 
 import { isValidName } from "../../../../utils/validators";
 
 const UpdateLibraryModal = () => {
   const user = useRecoilValue(userAtom);
+  const selectedLibrary = useRecoilValue(selectedLibraryAtom);
+
   const [activeModal, setActiveModal] = useRecoilState(modalAtom);
   const [, setAlert] = useRecoilState(alertAtom);
-  const [selectedLibrary, setSelectedLibrary] =
-    useRecoilState(selectedLibraryAtom);
 
-  const [libraryToModify, setLibraryToModify] = useState<Library>({
-    ...selectedLibrary,
-  });
+  const [libraryToModify, setLibraryToModify] = useState<Library>(emptyLibrary);
+
+  useEffect(() => {
+    setLibraryToModify(selectedLibrary);
+  }, []);
 
   const handleCancelModal = (e: any) => {
     if (e && e.target.classList.contains("modal-overlay")) {
@@ -141,12 +143,6 @@ const UpdateLibraryModal = () => {
       }
 
       const data = await res.json();
-
-      setSelectedLibrary({
-        ...data,
-        streetAddress: data.street_address,
-        postalCode: data.postal_code,
-      });
 
       setLibraryToModify({
         id: data.id,
@@ -303,7 +299,7 @@ const UpdateLibraryModal = () => {
                     id="name"
                     type="text"
                     onChange={handleNameChange}
-                    value={selectedLibrary.name}
+                    value={libraryToModify.name}
                     className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
                     placeholder="Name"
                     autoComplete="name"
@@ -325,7 +321,7 @@ const UpdateLibraryModal = () => {
                     id="city"
                     type="text"
                     onChange={handleCityChange}
-                    value={selectedLibrary.city}
+                    value={libraryToModify.city}
                     className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
                     placeholder="City"
                     autoComplete="city"
@@ -347,7 +343,7 @@ const UpdateLibraryModal = () => {
                     id="streetAddress"
                     type="text"
                     onChange={handleAddressChange}
-                    value={selectedLibrary.streetAddress}
+                    value={libraryToModify.streetAddress}
                     className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
                     placeholder="Street Address"
                     autoComplete="streetAddress"
@@ -369,7 +365,7 @@ const UpdateLibraryModal = () => {
                     id="postalCode"
                     type="text"
                     onChange={handlePostalChange}
-                    value={selectedLibrary.postalCode}
+                    value={libraryToModify.postalCode}
                     className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
                     placeholder="Postal Code"
                     autoComplete="postalCode"
@@ -391,7 +387,7 @@ const UpdateLibraryModal = () => {
                     id="country"
                     type="text"
                     onChange={handleCountryChange}
-                    value={selectedLibrary.country}
+                    value={libraryToModify.country}
                     className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
                     placeholder="Country"
                     autoComplete="country"
@@ -414,7 +410,7 @@ const UpdateLibraryModal = () => {
                     type="tel"
                     pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
                     onChange={handlePhoneChange}
-                    value={selectedLibrary.phone}
+                    value={libraryToModify.phone}
                     className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
                     placeholder="(123)-456-7890"
                     autoComplete="phone"

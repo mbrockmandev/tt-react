@@ -23,7 +23,7 @@ import { emptyUserResponse } from "../../../utils/models/UserResponse";
 // modals
 import CreateUserModal from "../Modals/Users/CreateUserModal";
 import LookupUserModal from "../Modals/Users/LookupUserModal";
-import UpdateUserModal from "../Modals/Users/UpdateUserModal";
+import UpdateUserModal from "../Modals/Users/UpdateUserModal.1";
 import DeleteUserModal from "../Modals/Users/DeleteUserModal";
 import CreateLibraryModal from "../Modals/Libraries/CreateLibraryModal";
 import LookupLibraryModal from "../Modals/Libraries/LookupLibraryModal";

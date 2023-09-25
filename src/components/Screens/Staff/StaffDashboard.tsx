@@ -7,7 +7,7 @@ import { UpdateCurrentUrl } from "./../../../utils/urlStorage";
 
 // modal screens
 import LookupUserModal from "../Modals/Users/LookupUserModal";
-import UpdateUserModal from "../Modals/Users/UpdateUserModal";
+import UpdateUserModal from "../Modals/Users/UpdateUserModal.1";
 import LookupLibraryModal from "../Modals/Libraries/LookupLibraryModal";
 import UpdateLibraryModal from "../Modals/Libraries/UpdateLibraryModal";
 import LookupBookModal from "../Modals/Books/LookupBookModal";
