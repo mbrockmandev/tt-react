@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { Link } from "react-router-dom";
 
 import { alertAtom } from "../../../recoil/atoms/alertAtom";
@@ -13,7 +13,6 @@ const BooksByLibraryFetcher = () => {
   const [booksByLibrary, setBooksByLibrary] =
     useRecoilState(booksByLibraryAtom);
   const [, setAlert] = useRecoilState(alertAtom);
-  const user = useRecoilValue(userAtom);
 
   const [libraryId, setLibraryId] = useState("");
 
@@ -26,7 +25,8 @@ const BooksByLibraryFetcher = () => {
   };
 
   const fetchReport = async () => {
-    const url = `${process.env.REACT_APP_BACKEND}/${user.role}/reports/booksByLibrary?library_id=${libraryId}`;
+    const url = `${process.env.REACT_APP_BACKEND}/staff/reports/booksByLibrary?library_id=${libraryId}`;
+    console.log("fetchReport URL:", url);
     const reqOptions: RequestInit = {
       method: "GET",
       credentials: "include",
