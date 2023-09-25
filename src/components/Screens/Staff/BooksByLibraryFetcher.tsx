@@ -1,20 +1,21 @@
-import React, {useState} from "react";
-import {useRecoilState} from "recoil";
-import {Link} from "react-router-dom";
+import React, { useState } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { Link } from "react-router-dom";
 
-import {alertAtom} from "../../../recoil/atoms/alertAtom";
-import {booksByLibraryAtom} from "../../../recoil/atoms/booksByLibraryAtom";
+import { alertAtom } from "../../../recoil/atoms/alertAtom";
+import { booksByLibraryAtom } from "../../../recoil/atoms/booksByLibraryAtom";
 
-import {keysToCamelCase} from "../../../utils/jsonConverter";
+import { keysToCamelCase } from "../../../utils/jsonConverter";
 import Book from "../../../utils/models/Book";
+import { userAtom } from "../../../recoil/atoms/userAtom";
 
 const BooksByLibraryFetcher = () => {
   const [booksByLibrary, setBooksByLibrary] =
     useRecoilState(booksByLibraryAtom);
   const [, setAlert] = useRecoilState(alertAtom);
+  const user = useRecoilValue(userAtom);
 
   const [libraryId, setLibraryId] = useState("");
-  const [libraryName, setLibraryName] = useState("");
 
   const calculateTotalBooksAtLibrary = (books: Book[]): number => {
     let sum = 0;
@@ -22,10 +23,10 @@ const BooksByLibraryFetcher = () => {
       sum += book.metadata.totalCopies;
     }
     return sum;
-  }
+  };
 
   const fetchReport = async () => {
-    const url = `${process.env.REACT_APP_BACKEND}/admin/reports/booksByLibrary?library_id=${libraryId}`;
+    const url = `${process.env.REACT_APP_BACKEND}/${user.role}/reports/booksByLibrary?library_id=${libraryId}`;
     const reqOptions: RequestInit = {
       method: "GET",
       credentials: "include",
@@ -52,9 +53,13 @@ const BooksByLibraryFetcher = () => {
         setAlert({
           message: camelCasedData.message,
           type: "error",
-        })
+        });
       }
-      if (camelCasedData.books && Array.isArray(camelCasedData.books) && camelCasedData.metadata) {
+      if (
+        camelCasedData.books &&
+        Array.isArray(camelCasedData.books) &&
+        camelCasedData.metadata
+      ) {
         setBooksByLibrary({
           books: camelCasedData.books,
           libraryId: +libraryId,
