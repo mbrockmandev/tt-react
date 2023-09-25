@@ -26,8 +26,8 @@ const UpdateBookModal = () => {
 
   const handleIdChange = (e: any) => {
     if (e && e.target.value) {
-      setBookToModify({
-        ...bookToModify,
+      setSelectedBook({
+        ...selectedBook,
         id: e.target.value,
       });
     }

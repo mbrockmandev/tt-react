@@ -7,6 +7,7 @@ import { modalAtom } from "../../../../recoil/atoms/modalAtom";
 import { alertAtom } from "../../../../recoil/atoms/alertAtom";
 import { selectedUserAtom } from "../../../../recoil/atoms/selectedUserAtom";
 import { userAtom } from "../../../../recoil/atoms/userAtom";
+import { UserResponse } from "../../../../utils/models/UserResponse";
 
 const UpdateUserModal = () => {
   const user = useRecoilValue(userAtom);
@@ -15,7 +16,7 @@ const UpdateUserModal = () => {
   const [selectedUser, setSelectedUser] = useRecoilState(selectedUserAtom);
   const [isBypassChecked, setIsBypassChecked] = useState(false);
 
-  const [userToModify, setUserToModify] = useState({
+  const [userToModify, setUserToModify] = useState<UserResponse>({
     ...selectedUser,
   });
 
@@ -40,8 +41,8 @@ const UpdateUserModal = () => {
 
   const handleIdChange = (e: any) => {
     if (e && e.target.value) {
-      setUserToModify({
-        ...userToModify,
+      setSelectedUser({
+        ...selectedUser,
         id: e.target.value,
       });
     }
@@ -49,47 +50,47 @@ const UpdateUserModal = () => {
 
   const handleRoleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value === "user") {
-      setUserToModify({
-        ...userToModify,
+      setSelectedUser({
+        ...selectedUser,
         role: e.target.value,
       });
     } else if (e.target.value === "staff") {
-      setUserToModify({
-        ...userToModify,
+      setSelectedUser({
+        ...selectedUser,
         role: e.target.value,
       });
     } else if (e.target.value === "admin") {
-      setUserToModify({
-        ...userToModify,
+      setSelectedUser({
+        ...selectedUser,
         role: e.target.value,
       });
     }
   };
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUserToModify({
-      ...userToModify,
+    setSelectedUser({
+      ...selectedUser,
       email: e.target.value,
     });
   };
 
   const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUserToModify({
-      ...userToModify,
+    setSelectedUser({
+      ...selectedUser,
       firstName: e.target.value,
     });
   };
 
   const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUserToModify({
-      ...userToModify,
+    setSelectedUser({
+      ...selectedUser,
       lastName: e.target.value,
     });
   };
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUserToModify({
-      ...userToModify,
+    setSelectedUser({
+      ...selectedUser,
       password: e.target.value,
     });
   };
@@ -97,8 +98,8 @@ const UpdateUserModal = () => {
   const handleConfirmPasswordChange = (
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    setUserToModify({
-      ...userToModify,
+    setSelectedUser({
+      ...selectedUser,
       confirmPassword: e.target.value,
     });
   };
