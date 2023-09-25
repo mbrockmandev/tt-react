@@ -303,7 +303,7 @@ const UpdateLibraryModal = () => {
                     id="name"
                     type="text"
                     onChange={handleNameChange}
-                    value={libraryToModify.name}
+                    value={selectedLibrary.name}
                     className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
                     placeholder="Name"
                     autoComplete="name"
@@ -325,7 +325,7 @@ const UpdateLibraryModal = () => {
                     id="city"
                     type="text"
                     onChange={handleCityChange}
-                    value={libraryToModify.city}
+                    value={selectedLibrary.city}
                     className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
                     placeholder="City"
                     autoComplete="city"
@@ -347,7 +347,7 @@ const UpdateLibraryModal = () => {
                     id="streetAddress"
                     type="text"
                     onChange={handleAddressChange}
-                    value={libraryToModify.streetAddress}
+                    value={selectedLibrary.streetAddress}
                     className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
                     placeholder="Street Address"
                     autoComplete="streetAddress"
@@ -369,7 +369,7 @@ const UpdateLibraryModal = () => {
                     id="postalCode"
                     type="text"
                     onChange={handlePostalChange}
-                    value={libraryToModify.postalCode}
+                    value={selectedLibrary.postalCode}
                     className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
                     placeholder="Postal Code"
                     autoComplete="postalCode"
@@ -391,7 +391,7 @@ const UpdateLibraryModal = () => {
                     id="country"
                     type="text"
                     onChange={handleCountryChange}
-                    value={libraryToModify.country}
+                    value={selectedLibrary.country}
                     className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
                     placeholder="Country"
                     autoComplete="country"
@@ -414,7 +414,7 @@ const UpdateLibraryModal = () => {
                     type="tel"
                     pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
                     onChange={handlePhoneChange}
-                    value={libraryToModify.phone}
+                    value={selectedLibrary.phone}
                     className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
                     placeholder="(123)-456-7890"
                     autoComplete="phone"

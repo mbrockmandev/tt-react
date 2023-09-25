@@ -297,7 +297,7 @@ const UpdateUserModal = () => {
                       id="email"
                       type="email"
                       onChange={handleEmailChange}
-                      value={userToModify.email}
+                      value={selectedUser.email}
                       className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
                       placeholder="Email"
                       autoComplete="email"
@@ -377,7 +377,7 @@ const UpdateUserModal = () => {
                         id="firstName"
                         type="text"
                         onChange={handleFirstNameChange}
-                        value={userToModify.firstName}
+                        value={selectedUser.firstName}
                         className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm shadow-gray-300 focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
                         placeholder="First Name"
                         pattern="[a-zA-Z]*"
@@ -393,7 +393,7 @@ const UpdateUserModal = () => {
                         id="lastName"
                         type="text"
                         onChange={handleLastNameChange}
-                        value={userToModify.lastName}
+                        value={selectedUser.lastName}
                         className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm shadow-gray-300 focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
                         placeholder="Last Name"
                         pattern="[a-zA-Z]*"
@@ -429,7 +429,7 @@ const UpdateUserModal = () => {
                         className="rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm shadow-gray-300 focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
                         onChange={handleRoleChange}>
                         <option
-                          value={userToModify.role}
+                          value={selectedUser.role}
                           placeholder="Role"
                           defaultChecked>
                           User
