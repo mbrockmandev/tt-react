@@ -150,11 +150,13 @@ const UpdateUserModal = () => {
 
       const data = await res.json();
 
-      setSelectedUser({
+      const lookedUpUser = {
         ...data,
         firstName: data.first_name,
         lastName: data.last_name,
-      });
+      };
+      setSelectedUser(lookedUpUser);
+      setUserToModify(lookedUpUser);
     } catch (err) {
       setAlert({ message: err.message, type: "error" });
       console.error(err);
