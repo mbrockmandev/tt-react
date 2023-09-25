@@ -28,6 +28,7 @@ const UpdateUserModal = () => {
   }, []);
 
   const handleModalChange = () => {
+    console.log(selectedUser);
     if (selectedUser) setActiveModal("UpdateUserModal");
   };
 

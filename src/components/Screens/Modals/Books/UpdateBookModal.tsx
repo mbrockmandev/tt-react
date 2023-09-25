@@ -24,6 +24,7 @@ const UpdateBookModal = () => {
   }, []);
 
   const handleModalChange = () => {
+    console.log(selectedBook);
     if (selectedBook) setActiveModal("UpdateBookModal");
   };
 
