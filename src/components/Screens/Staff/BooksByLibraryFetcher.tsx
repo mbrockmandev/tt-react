@@ -7,7 +7,6 @@ import { booksByLibraryAtom } from "../../../recoil/atoms/booksByLibraryAtom";
 
 import { keysToCamelCase } from "../../../utils/jsonConverter";
 import Book from "../../../utils/models/Book";
-import { userAtom } from "../../../recoil/atoms/userAtom";
 
 const BooksByLibraryFetcher = () => {
   const [booksByLibrary, setBooksByLibrary] =
@@ -26,7 +25,7 @@ const BooksByLibraryFetcher = () => {
 
   const fetchReport = async () => {
     const url = `${process.env.REACT_APP_BACKEND}/staff/reports/booksByLibrary?library_id=${libraryId}`;
-    console.log("fetchReport URL:", url);
+    // console.log("fetchReport URL:", url);
     const reqOptions: RequestInit = {
       method: "GET",
       credentials: "include",
