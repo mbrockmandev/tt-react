@@ -28,7 +28,7 @@ const UpdateUserModal = () => {
   }, []);
 
   const handleModalChange = () => {
-    setActiveModal("UpdateUserModal");
+    if (selectedUser) setActiveModal("UpdateUserModal");
   };
 
   const handleCancel = (e: any) => {
@@ -43,15 +43,6 @@ const UpdateUserModal = () => {
     }
     if (e && e.target.classList.contains("modal-overlay")) {
       setActiveModal(null);
-    }
-  };
-
-  const handleIdChange = (e: any) => {
-    if (e && e.target.value) {
-      setUserToModify({
-        ...userToModify,
-        id: e.target.value,
-      });
     }
   };
 

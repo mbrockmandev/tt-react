@@ -24,16 +24,7 @@ const UpdateBookModal = () => {
   }, []);
 
   const handleModalChange = () => {
-    setActiveModal("UpdateBookModal");
-  };
-
-  const handleIdChange = (e: any) => {
-    if (e && e.target.value) {
-      setBookToModify({
-        ...bookToModify,
-        id: e.target.value,
-      });
-    }
+    if (selectedBook) setActiveModal("UpdateBookModal");
   };
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

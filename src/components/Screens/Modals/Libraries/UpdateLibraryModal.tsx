@@ -35,16 +35,7 @@ const UpdateLibraryModal = () => {
   };
 
   const handleModalChange = () => {
-    setActiveModal("UpdateLibraryModal");
-  };
-
-  const handleIdChange = (e: any) => {
-    if (e && e.target.value) {
-      setLibraryToModify({
-        ...libraryToModify,
-        id: e.target.value,
-      });
-    }
+    if (selectedLibrary) setActiveModal("UpdateLibraryModal");
   };
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
