@@ -335,7 +335,7 @@ const UpdateUserModal = () => {
     <div>
       <div
         className="flex text-sm px-4 py-2 hover:text-blue-500 hover:underline cursor-pointer"
-        onClick={handleModalChange}>
+        onClick={selectedUser ? handleModalChange : undefined}>
         Update User
       </div>
       {modal}

@@ -28,43 +28,32 @@ const UpdateBookModal = () => {
   };
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e) {
-      setAlert({
-        message: "uh oh, something went wrong",
-        type: "error",
-      });
-      return;
-    }
-
     const title = e.target.value;
+
+    setBookToModify({
+      ...bookToModify,
+      title,
+    });
+
     if (title === "") {
       setAlert({
         message: "Title cannot be blank",
         type: "error",
       });
-
-      if (title.length < 3 || title.length > 255) {
-        setAlert({
-          message: "Title must be between 3 and 255 characters long.",
-          type: "error",
-        });
-      }
-      setBookToModify({
-        ...bookToModify,
-        title,
+    } else if (title.length < 3 || title.length > 255) {
+      setAlert({
+        message: "Title must be between 3 and 255 characters long.",
+        type: "error",
       });
     }
   };
 
   const handleIsbnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e) {
-      setAlert({
-        message: "uh oh, something went wrong",
-        type: "error",
-      });
-      return;
-    }
     const isbn = e.target.value;
+    setBookToModify({
+      ...bookToModify,
+      isbn,
+    });
 
     if (isbn.length !== 13) {
       setAlert({
@@ -72,21 +61,15 @@ const UpdateBookModal = () => {
         type: "error",
       });
     }
-    setBookToModify({
-      ...bookToModify,
-      isbn,
-    });
   };
 
   const handleAuthorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e) {
-      setAlert({
-        message: "uh oh, something went wrong",
-        type: "error",
-      });
-      return;
-    }
     const author = e.target.value;
+    setBookToModify({
+      ...bookToModify,
+      author,
+    });
+
     if (author === "") {
       setAlert({
         message: "Author cannot be blank",
@@ -99,22 +82,15 @@ const UpdateBookModal = () => {
           type: "error",
         });
       }
-      setBookToModify({
-        ...bookToModify,
-        author,
-      });
     }
   };
 
   const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e) {
-      setAlert({
-        message: "uh oh, something went wrong",
-        type: "error",
-      });
-      return;
-    }
     const thumbnail = e.target.value;
+    setBookToModify({
+      ...bookToModify,
+      thumbnail,
+    });
 
     if (thumbnail === "") {
       setAlert({
@@ -128,22 +104,15 @@ const UpdateBookModal = () => {
           type: "error",
         });
       }
-      setBookToModify({
-        ...bookToModify,
-        thumbnail,
-      });
     }
   };
 
   const handlePublishedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e) {
-      setAlert({
-        message: "uh oh, something went wrong",
-        type: "error",
-      });
-      return;
-    }
     const publishedAt = formatUTCDate(e.target.value);
+    setBookToModify({
+      ...bookToModify,
+      publishedAt,
+    });
 
     if (publishedAt === "") {
       setAlert({
@@ -157,21 +126,15 @@ const UpdateBookModal = () => {
           type: "error",
         });
       }
-      setBookToModify({
-        ...bookToModify,
-        publishedAt,
-      });
     }
   };
   const handleSummaryChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    if (!e) {
-      setAlert({
-        message: "uh oh, something went wrong",
-        type: "error",
-      });
-      return;
-    }
     const summary = e.target.value;
+    setBookToModify({
+      ...bookToModify,
+      summary,
+    });
+
     if (summary === "") {
       setAlert({
         message: "Summary cannot be blank",
@@ -184,10 +147,6 @@ const UpdateBookModal = () => {
           type: "error",
         });
       }
-      setBookToModify({
-        ...bookToModify,
-        summary,
-      });
     }
   };
 
@@ -396,7 +355,7 @@ const UpdateBookModal = () => {
     <div>
       <div
         className="flex text-sm px-4 py-2 hover:text-blue-500 hover:underline cursor-pointer"
-        onClick={handleModalChange}>
+        onClick={selectedBook ? handleModalChange : undefined}>
         Update Book
       </div>
       {modal}
