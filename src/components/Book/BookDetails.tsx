@@ -141,6 +141,10 @@ const BookDetails: React.FC = () => {
     fetchBookData();
 
     const handleBorrowButtonTextChecker = async () => {
+      if (userData.role !== "user") {
+        setBorrowButtonText("n/a");
+      }
+
       const borrowedBookIds: number[] = [];
       if (!userData || !bookData) {
         return;
@@ -162,7 +166,7 @@ const BookDetails: React.FC = () => {
     };
     handleBorrowButtonTextChecker();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [userData.role]);
 
   if (!bookData) {
     return (
