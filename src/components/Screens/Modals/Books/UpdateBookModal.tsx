@@ -26,8 +26,8 @@ const UpdateBookModal = () => {
 
   const handleIdChange = (e: any) => {
     if (e && e.target.value) {
-      setSelectedBook({
-        ...selectedBook,
+      setBookToModify({
+        ...bookToModify,
         id: e.target.value,
       });
     }
@@ -55,8 +55,8 @@ const UpdateBookModal = () => {
           type: "error",
         });
       }
-      setSelectedBook({
-        ...selectedBook,
+      setBookToModify({
+        ...bookToModify,
         title,
       });
     }
@@ -78,8 +78,8 @@ const UpdateBookModal = () => {
         type: "error",
       });
     }
-    setSelectedBook({
-      ...selectedBook,
+    setBookToModify({
+      ...bookToModify,
       isbn,
     });
   };
@@ -105,8 +105,8 @@ const UpdateBookModal = () => {
           type: "error",
         });
       }
-      setSelectedBook({
-        ...selectedBook,
+      setBookToModify({
+        ...bookToModify,
         author,
       });
     }
@@ -134,8 +134,8 @@ const UpdateBookModal = () => {
           type: "error",
         });
       }
-      setSelectedBook({
-        ...selectedBook,
+      setBookToModify({
+        ...bookToModify,
         thumbnail,
       });
     }
@@ -163,8 +163,8 @@ const UpdateBookModal = () => {
           type: "error",
         });
       }
-      setSelectedBook({
-        ...selectedBook,
+      setBookToModify({
+        ...bookToModify,
         publishedAt,
       });
     }
@@ -190,8 +190,8 @@ const UpdateBookModal = () => {
           type: "error",
         });
       }
-      setSelectedBook({
-        ...selectedBook,
+      setBookToModify({
+        ...bookToModify,
         summary,
       });
     }

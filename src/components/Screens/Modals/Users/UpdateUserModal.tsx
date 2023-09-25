@@ -41,8 +41,8 @@ const UpdateUserModal = () => {
 
   const handleIdChange = (e: any) => {
     if (e && e.target.value) {
-      setSelectedUser({
-        ...selectedUser,
+      setUserToModify({
+        ...userToModify,
         id: e.target.value,
       });
     }
@@ -50,47 +50,47 @@ const UpdateUserModal = () => {
 
   const handleRoleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value === "user") {
-      setSelectedUser({
-        ...selectedUser,
+      setUserToModify({
+        ...userToModify,
         role: e.target.value,
       });
     } else if (e.target.value === "staff") {
-      setSelectedUser({
-        ...selectedUser,
+      setUserToModify({
+        ...userToModify,
         role: e.target.value,
       });
     } else if (e.target.value === "admin") {
-      setSelectedUser({
-        ...selectedUser,
+      setUserToModify({
+        ...userToModify,
         role: e.target.value,
       });
     }
   };
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedUser({
-      ...selectedUser,
+    setUserToModify({
+      ...userToModify,
       email: e.target.value,
     });
   };
 
   const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedUser({
-      ...selectedUser,
+    setUserToModify({
+      ...userToModify,
       firstName: e.target.value,
     });
   };
 
   const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedUser({
-      ...selectedUser,
+    setUserToModify({
+      ...userToModify,
       lastName: e.target.value,
     });
   };
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedUser({
-      ...selectedUser,
+    setUserToModify({
+      ...userToModify,
       password: e.target.value,
     });
   };
@@ -98,8 +98,8 @@ const UpdateUserModal = () => {
   const handleConfirmPasswordChange = (
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    setSelectedUser({
-      ...selectedUser,
+    setUserToModify({
+      ...userToModify,
       confirmPassword: e.target.value,
     });
   };
