@@ -215,69 +215,6 @@ const UpdateBookModal = () => {
     }
   };
 
-  const handleLookup = async (e: any) => {
-    e.preventDefault();
-    if (!bookToModify.id && !bookToModify.isbn) {
-      return;
-    }
-
-    const searchById = selectedBook.id !== 0;
-    const searchByIsbn = selectedBook.isbn !== "";
-
-    if (searchById && searchByIsbn) {
-      setAlert({
-        message: "Choose either ID or Email and leave the other blank",
-        type: "error",
-      });
-    }
-
-    try {
-      const reqOptions: RequestInit = {
-        method: "GET",
-        credentials: "include",
-      };
-
-      var url = "";
-      if (searchById) {
-        url = `${process.env.REACT_APP_BACKEND}/books/${selectedBook.id}`;
-      } else if (searchByIsbn) {
-        url = `${process.env.REACT_APP_BACKEND}/books/${selectedBook.isbn}`;
-      }
-      const res = await fetch(url, reqOptions);
-
-      if (res.ok) {
-        setAlert({
-          message: "Found book!",
-          type: "success",
-        });
-      } else if (!res.ok) {
-        throw new Error(`HTTP status code: ` + res.status);
-      }
-
-      const data = await res.json();
-      const updatedBook = {
-        id: data.book.id,
-        title: data.book.title,
-        isbn: data.book.isbn,
-        author: data.book.author,
-        summary: data.book.summary,
-        thumbnail: data.book.thumbnail,
-        publishedAt: formatUTCDate(data.book.published_at),
-        createdAt: formatUTCDate(data.book.created_at),
-        updatedAt: formatUTCDate(data.book.updated_at),
-        metadata: data.metadata,
-      };
-
-      setBookToModify(updatedBook);
-    } catch (err) {
-      setAlert({ message: err.message, type: "error" });
-      console.error(err);
-      if (err !== "") {
-        return;
-      }
-    }
-  };
-
   const handleUpdate = async (e: any) => {
     e.preventDefault();
     if (!bookToModify.id) {
@@ -322,64 +259,6 @@ const UpdateBookModal = () => {
         className="modal-overlay"
         onClick={handleOutsideClick}>
         <form className="mx-auto mb-0 mt-6 space-y-4 rounded-lg p-4 bg-gray-50 shadow-lg shadow-gray-300/50 sm:mt-8 sm:p-6 lg:p-8">
-          {selectedBook.id === 0 && (
-            <>
-              <p className="text-center text-lg font-medium">
-                Lookup Book By ID
-              </p>
-              <div className="flex items-center gap-x-2">
-                <label
-                  htmlFor="id"
-                  className="mr-auto">
-                  ID
-                </label>
-
-                <div className="relative">
-                  <input
-                    id="id"
-                    type="text"
-                    onChange={handleIdChange}
-                    className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
-                    placeholder="id"
-                  />
-                </div>
-              </div>
-              <div className="flex items-center gap-x-2">
-                <label
-                  htmlFor="isbn"
-                  className="mr-auto">
-                  Isbn
-                </label>
-
-                <div className="relative">
-                  <input
-                    id="isbn"
-                    type="text"
-                    onChange={handleIsbnChange}
-                    className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
-                    placeholder="1234567890123"
-                    autoComplete="isbn"
-                  />
-                </div>
-              </div>
-              <div className="flex">
-                <button
-                  type="submit"
-                  className="cancel-button block w-[35%] bg-gray-300 rounded-lg bg-secondary px-5 py-3 text-sm font-medium text-black mx-auto"
-                  onClick={handleCancel}>
-                  Cancel
-                </button>
-
-                <button
-                  type="submit"
-                  className="submit-button block w-[35%] bg-green-300 rounded-lg bg-secondary px-5 py-3 text-sm font-medium text-black mx-auto"
-                  onClick={handleLookup}>
-                  Lookup
-                </button>
-              </div>{" "}
-            </>
-          )}
-
           {selectedBook.id !== 0 && (
             <>
               <p className="text-center text-lg font-medium">Book info:</p>

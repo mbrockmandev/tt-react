@@ -115,64 +115,6 @@ const UpdateUserModal = () => {
     setIsBypassChecked(!isBypassChecked);
   };
 
-  const handleLookup = async (e: any) => {
-    e.preventDefault();
-    if (!userToModify.id && !userToModify.email) {
-      return;
-    }
-
-    const searchById = userToModify.id !== 0;
-    const searchByEmail = userToModify.email !== "";
-
-    if (searchById && searchByEmail) {
-      setAlert({
-        message: "Choose either ID or Email and leave the other blank",
-        type: "error",
-      });
-    }
-
-    try {
-      const reqOptions: RequestInit = {
-        method: "GET",
-        credentials: "include",
-      };
-
-      var url = "";
-      if (searchById) {
-        url = `${process.env.REACT_APP_BACKEND}/staff/users/${userToModify.id}`;
-      } else if (searchByEmail) {
-        url = `${process.env.REACT_APP_BACKEND}/staff/users?email=${userToModify.email}`;
-      }
-
-      // go get user
-      const res = await fetch(url, reqOptions);
-
-      if (res.ok) {
-        setAlert({
-          message: "Found user!",
-          type: "success",
-        });
-      } else if (!res.ok) {
-        throw new Error("HTTP status code: " + res.status);
-      }
-
-      const data = await res.json();
-
-      const lookedUpUser = {
-        ...data,
-        firstName: data.first_name,
-        lastName: data.last_name,
-      };
-      setUserToModify(lookedUpUser);
-    } catch (err) {
-      setAlert({ message: err.message, type: "error" });
-      console.error(err);
-      if (err !== "") {
-        return;
-      }
-    }
-  };
-
   const handleUpdate = async (e: any) => {
     e.preventDefault();
 
@@ -218,72 +160,6 @@ const UpdateUserModal = () => {
         className="modal-overlay"
         onClick={handleOutsideClick}>
         <form className="mx-auto mb-0 mt-6 space-y-4 rounded-lg p-4 bg-gray-50 shadow-lg shadow-gray-300/50 sm:mt-8 sm:p-6 lg:p-8">
-          {selectedUser.id === 0 && (
-            <>
-              <p className="text-center text-lg font-medium">Update User</p>
-
-              <div className="flex items-center">
-                <label
-                  htmlFor="email"
-                  className="mr-auto">
-                  ID
-                </label>
-
-                <div className="relative">
-                  <input
-                    id="id"
-                    type="text"
-                    onChange={handleIdChange}
-                    className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
-                    placeholder="id"
-                  />
-                </div>
-              </div>
-              <div className="flex items-center gap-x-2">
-                <label
-                  htmlFor="email"
-                  className="mr-auto">
-                  Email
-                </label>
-
-                <div className="relative">
-                  <input
-                    id="email"
-                    type="email"
-                    onChange={handleEmailChange}
-                    className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
-                    placeholder="Email"
-                    autoComplete="email"
-                  />
-
-                  <span className="absolute inset-y-0 end-0 grid place-content-center px-4">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4 text-gray-400"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
-                      />
-                    </svg>
-                  </span>
-                </div>
-              </div>
-              <div className="flex">
-                <button
-                  type="submit"
-                  className="submit-button block w-[35%] bg-green-300 rounded-lg bg-secondary px-5 py-3 text-sm font-medium text-black mx-auto"
-                  onClick={handleLookup}>
-                  Lookup
-                </button>
-              </div>
-            </>
-          )}
-
           {selectedUser.id !== 0 && (
             <>
               <p className="text-center text-lg font-medium">User info:</p>

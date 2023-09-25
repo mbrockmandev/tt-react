@@ -101,64 +101,6 @@ const UpdateLibraryModal = () => {
     });
   };
 
-  const handleLookup = async (e: any) => {
-    e.preventDefault();
-
-    if (!libraryToModify.id && !libraryToModify.name) {
-      return;
-    }
-
-    const searchById = libraryToModify.id !== null;
-    const searchByName = libraryToModify.name !== "";
-
-    if (searchById && searchByName) {
-      setAlert({
-        message: "Choose either ID or Email and leave the other blank",
-        type: "error",
-      });
-      return;
-    }
-
-    try {
-      const reqOptions: RequestInit = {
-        method: "GET",
-        credentials: "include",
-      };
-
-      let url = "";
-      if (searchById) {
-        url = `${process.env.REACT_APP_BACKEND}/${user.role}/libraries/${libraryToModify.id}`;
-      } else if (searchByName) {
-        url = `${process.env.REACT_APP_BACKEND}/${user.role}/libraries?name=${libraryToModify.name}`;
-      }
-      const res = await fetch(url, reqOptions);
-
-      if (res.ok) {
-        setAlert({
-          message: "Found library!",
-          type: "success",
-        });
-      } else if (!res.ok) {
-        throw new Error(`HTTP status code: ` + res.status);
-      }
-
-      const data = await res.json();
-
-      setLibraryToModify({
-        id: data.id,
-        name: data.name,
-        city: data.city,
-        streetAddress: data.street_address,
-        postalCode: data.postal_code,
-        country: data.country,
-        phone: data.phone,
-      });
-    } catch (err) {
-      setAlert({ message: err.message, type: "error" });
-      console.error(err);
-    }
-  };
-
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
@@ -216,72 +158,6 @@ const UpdateLibraryModal = () => {
         className="modal-overlay"
         onClick={handleCancelModal}>
         <form className="mx-auto mb-0 mt-6 space-y-4 rounded-lg p-4 bg-gray-50 shadow-lg shadow-gray-300/50 sm:mt-8 sm:p-6 lg:p-8">
-          {selectedLibrary.id === 0 && (
-            <>
-              <p className="text-center text-lg font-medium">Update Library</p>
-
-              <div className="flex items-center">
-                <label
-                  htmlFor="email"
-                  className="mr-auto">
-                  ID
-                </label>
-
-                <div className="relative">
-                  <input
-                    id="id"
-                    type="text"
-                    onChange={handleIdChange}
-                    className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
-                    placeholder="id"
-                  />
-                </div>
-              </div>
-              <div className="flex items-center gap-x-2">
-                <label
-                  htmlFor="email"
-                  className="mr-auto">
-                  Name
-                </label>
-
-                <div className="relative">
-                  <input
-                    id="name"
-                    type="text"
-                    onChange={handleNameChange}
-                    className="search-name w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
-                    placeholder="Name"
-                    autoComplete="name"
-                  />
-
-                  <span className="absolute inset-y-0 end-0 grid place-content-center px-4">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4 text-gray-400"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
-                      />
-                    </svg>
-                  </span>
-                </div>
-              </div>
-              <div className="flex">
-                <button
-                  type="submit"
-                  className="submit-button block w-[35%] bg-green-300 rounded-lg bg-secondary px-5 py-3 text-sm font-medium text-black mx-auto"
-                  onClick={handleLookup}>
-                  Lookup
-                </button>
-              </div>
-            </>
-          )}
-
           {selectedLibrary.id !== 0 && (
             <>
               <p className="text-center text-lg font-medium">Update Library</p>
