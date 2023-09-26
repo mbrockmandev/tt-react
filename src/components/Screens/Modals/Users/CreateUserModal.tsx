@@ -125,7 +125,7 @@ const CreateUserModal = () => {
         }),
       };
 
-      const url = `${process.env.REACT_APP_BACKEND}/users`;
+      const url = `${process.env.REACT_APP_BACKEND}/admin/users`;
       const res = await fetch(url, reqOptions);
 
       if (!res.ok && res.status === 409) {
