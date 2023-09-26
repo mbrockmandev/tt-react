@@ -60,14 +60,6 @@ const LookupLibraryModal = () => {
     const searchById = id && id !== 0;
     const searchByName = name && name !== "";
 
-    if (searchById && searchByName) {
-      setAlert({
-        message: "Choose either ID or Email and leave the other blank",
-        type: "error",
-      });
-      return;
-    }
-
     try {
       const reqOptions: RequestInit = {
         method: "GET",
@@ -76,9 +68,9 @@ const LookupLibraryModal = () => {
 
       let url = "";
       if (searchById) {
-        url = `${process.env.REACT_APP_BACKEND}/${user.role}/libraries/${id}`;
+        url = `${process.env.REACT_APP_BACKEND}/staff/libraries/${id}`;
       } else if (searchByName) {
-        url = `${process.env.REACT_APP_BACKEND}/${user.role}/libraries?name=${name}`;
+        url = `${process.env.REACT_APP_BACKEND}/staff/libraries?name=${name}`;
       }
       const res = await fetch(url, reqOptions);
 
