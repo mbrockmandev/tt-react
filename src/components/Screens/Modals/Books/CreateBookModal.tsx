@@ -164,7 +164,7 @@ const CreateBookModal = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          newBook,
+          ...newBook,
         }),
       };
 
