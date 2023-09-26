@@ -57,10 +57,7 @@ const LookupBookModal = () => {
       return;
     }
 
-    const searchById = id !== 0;
-    const searchByIsbn = isbn !== "";
-
-    if (!searchById && !searchByIsbn) {
+    if (id === 0 && isbn === "") {
       setAlert({
         message: "Enter an ID or ISBN",
         type: "error",
@@ -74,27 +71,30 @@ const LookupBookModal = () => {
       };
 
       var url = "";
-      if (searchById) {
+      if (isbn === "") {
         url = `${process.env.REACT_APP_BACKEND}/books/${id}`;
-      } else if (searchByIsbn) {
+      } else if (id === 0) {
         url = `${process.env.REACT_APP_BACKEND}/books/isbn/${isbn}`;
       }
 
       const res = await fetch(url, reqOptions);
-      setId(0);
-      setIsbn("");
 
       if (res.ok) {
         setAlert({
           message: "Found book!",
           type: "success",
         });
-      } else if (!res.ok) {
-        console.log("!res.ok:", id, isbn, searchById, searchByIsbn);
+        setId(0);
+        setIsbn("");
+      } else {
+        console.log("!res.ok:", id, isbn);
         throw new Error(`HTTP status code: ` + res.status);
       }
 
       const data = await res.json();
+      console.log("data:", data);
+      console.log("data.book:", data.book);
+      console.log("data.metadata:", data.metadata);
 
       setBookToModify({
         id: data.book.id,
@@ -111,9 +111,6 @@ const LookupBookModal = () => {
     } catch (err) {
       setAlert({ message: err.message, type: "error" });
       console.error(err);
-      if (err !== "") {
-        return;
-      }
     }
   };
 
@@ -186,7 +183,7 @@ const LookupBookModal = () => {
       <div
         className="flex text-sm px-4 py-2 hover:text-blue-500 hover:underline cursor-pointer"
         onClick={handleModalChange}>
-        Lookup Book ???
+        Lookup Book
       </div>
       {modal}
     </div>
