@@ -78,11 +78,13 @@ const LookupUserModal = () => {
 
       var url = "";
       if (searchById) {
-        url = `${process.env.REACT_APP_BACKEND}/${user.role}/users/${id}`;
+        url = `${process.env.REACT_APP_BACKEND}/staff/users/${id}`;
       } else if (searchByEmail) {
-        url = `${process.env.REACT_APP_BACKEND}/${user.role}/users?email=${email}`;
+        url = `${process.env.REACT_APP_BACKEND}/staff/users?email=${email}`;
       }
       const res = await fetch(url, reqOptions);
+      setId(0);
+      setEmail("");
 
       if (res.ok) {
         setAlert({
@@ -90,7 +92,6 @@ const LookupUserModal = () => {
           type: "success",
         });
       } else if (!res.ok && res.status === 400) {
-        setId(0);
         throw new Error(`Unable to find user with ID: ${id}`);
       }
 

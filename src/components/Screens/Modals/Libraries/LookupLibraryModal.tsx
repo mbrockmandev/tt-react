@@ -57,8 +57,15 @@ const LookupLibraryModal = () => {
       return;
     }
 
-    const searchById = id && id !== 0;
-    const searchByName = name && name !== "";
+    const searchById = id !== 0;
+    const searchByName = name !== "";
+
+    if (!searchById && !searchByName) {
+      setAlert({
+        message: "Please enter an ID or name",
+        type: "error",
+      });
+    }
 
     try {
       const reqOptions: RequestInit = {
@@ -73,6 +80,8 @@ const LookupLibraryModal = () => {
         url = `${process.env.REACT_APP_BACKEND}/staff/libraries?name=${name}`;
       }
       const res = await fetch(url, reqOptions);
+      setId(0);
+      setName("");
 
       if (res.ok) {
         setAlert({

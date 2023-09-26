@@ -58,11 +58,11 @@ const LookupBookModal = () => {
     }
 
     const searchById = id !== 0;
-    const searchByEmail = isbn !== "";
+    const searchByIsbn = isbn !== "";
 
-    if (searchById && searchByEmail) {
+    if (!searchById && !searchByIsbn) {
       setAlert({
-        message: "Choose either ID or Email and leave the other blank",
+        message: "Enter an ID or ISBN",
         type: "error",
       });
     }
@@ -79,10 +79,12 @@ const LookupBookModal = () => {
       var url = "";
       if (searchById) {
         url = `${process.env.REACT_APP_BACKEND}/books/${id}`;
-      } else if (searchByEmail) {
+      } else if (searchByIsbn) {
         url = `${process.env.REACT_APP_BACKEND}/books/${isbn}`;
       }
       const res = await fetch(url, reqOptions);
+      setId(0);
+      setIsbn("");
 
       if (res.ok) {
         setAlert({
