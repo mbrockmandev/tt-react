@@ -91,13 +91,11 @@ const LookupBookModal = () => {
           type: "success",
         });
       } else if (!res.ok) {
-        setId(0);
-        setIsbn("");
+        console.log("!res.ok:", id, isbn, searchById, searchByIsbn);
         throw new Error(`HTTP status code: ` + res.status);
       }
 
       const data = await res.json();
-      // console.log(data);
 
       setBookToModify({
         id: data.book.id,
