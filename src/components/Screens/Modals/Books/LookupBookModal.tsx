@@ -186,7 +186,7 @@ const LookupBookModal = () => {
       <div
         className="flex text-sm px-4 py-2 hover:text-blue-500 hover:underline cursor-pointer"
         onClick={handleModalChange}>
-        Lookup Book
+        Lookup Book ???
       </div>
       {modal}
     </div>
