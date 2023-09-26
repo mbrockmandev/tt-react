@@ -60,6 +60,9 @@ const LookupBookModal = () => {
     const searchById = id !== 0;
     const searchByIsbn = isbn !== "";
 
+    console.log("searchById:", searchById, id);
+    console.log("searchByIsbn:", searchByIsbn, isbn);
+
     if (!searchById && !searchByIsbn) {
       setAlert({
         message: "Enter an ID or ISBN",
@@ -79,9 +82,7 @@ const LookupBookModal = () => {
       } else if (searchByIsbn) {
         url = `${process.env.REACT_APP_BACKEND}/books/isbn/${isbn}`;
       }
-      console.log("url:", url);
-      console.log("searchById:", searchById, id);
-      console.log("searchByIsbn:", searchByIsbn, isbn);
+
       const res = await fetch(url, reqOptions);
       setId(0);
       setIsbn("");
