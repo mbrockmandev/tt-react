@@ -52,6 +52,7 @@ const LookupBookModal = () => {
   };
 
   const handleLookup = async (e: any) => {
+    console.log("handleLookup? ", id, isbn);
     e.preventDefault();
     if (!id && !isbn) {
       return;
@@ -59,9 +60,6 @@ const LookupBookModal = () => {
 
     const searchById = id !== 0;
     const searchByIsbn = isbn !== "";
-
-    console.log("searchById:", searchById, id);
-    console.log("searchByIsbn:", searchByIsbn, isbn);
 
     if (!searchById && !searchByIsbn) {
       setAlert({
