@@ -42,7 +42,6 @@ const LookupBookModal = () => {
   };
 
   const handleOutsideClick = (e: any) => {
-    // console.log("e:", e);
     if (e && e.target.classList.contains("submit-button")) {
       return;
     }
@@ -125,7 +124,7 @@ const LookupBookModal = () => {
         className="modal-overlay"
         onClick={handleOutsideClick}>
         <form className="mx-auto mb-0 mt-6 space-y-4 rounded-lg p-4 bg-gray-50 shadow-lg shadow-gray-300/50 sm:mt-8 sm:p-6 lg:p-8">
-          <p className="text-center text-lg font-medium">Lookup Book By ID</p>
+          <p className="text-center text-lg font-medium">Lookup Book</p>
 
           <div className="flex items-center gap-x-2">
             <label
