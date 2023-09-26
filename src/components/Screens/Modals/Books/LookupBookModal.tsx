@@ -78,8 +78,14 @@ const LookupBookModal = () => {
 
       var url = "";
       if (searchById) {
+        console.log("should be searching by id...");
+        console.log("searchById:", searchById, id);
+        console.log("searchByIsbn:", searchByIsbn, isbn);
         url = `${process.env.REACT_APP_BACKEND}/books/${id}`;
       } else if (searchByIsbn) {
+        console.log("should be searching by isbn...");
+        console.log("searchById:", searchById, id);
+        console.log("searchByIsbn:", searchByIsbn, isbn);
         url = `${process.env.REACT_APP_BACKEND}/books/isbn/${isbn}`;
       }
       const res = await fetch(url, reqOptions);
