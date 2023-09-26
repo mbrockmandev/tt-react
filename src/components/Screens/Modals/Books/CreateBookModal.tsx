@@ -30,15 +30,12 @@ const CreateBookModal = () => {
   };
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e) {
-      setAlert({
-        message: "uh oh, something went wrong",
-        type: "error",
-      });
-      return;
-    }
-
     const title = e.target.value;
+    setNewBook({
+      ...newBook,
+      title,
+    });
+
     if (title === "") {
       setAlert({
         message: "Title cannot be blank",
@@ -51,22 +48,15 @@ const CreateBookModal = () => {
           type: "error",
         });
       }
-      setNewBook({
-        ...newBook,
-        title,
-      });
     }
   };
 
   const handleIsbnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e) {
-      setAlert({
-        message: "uh oh, something went wrong",
-        type: "error",
-      });
-      return;
-    }
     const isbn = e.target.value;
+    setNewBook({
+      ...newBook,
+      isbn,
+    });
 
     if (isbn.length !== 13) {
       setAlert({
@@ -74,21 +64,15 @@ const CreateBookModal = () => {
         type: "error",
       });
     }
-    setNewBook({
-      ...newBook,
-      isbn,
-    });
   };
 
   const handleAuthorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e) {
-      setAlert({
-        message: "uh oh, something went wrong",
-        type: "error",
-      });
-      return;
-    }
     const author = e.target.value;
+    setNewBook({
+      ...newBook,
+      author,
+    });
+
     if (author === "") {
       setAlert({
         message: "Author cannot be blank",
@@ -101,22 +85,15 @@ const CreateBookModal = () => {
           type: "error",
         });
       }
-      setNewBook({
-        ...newBook,
-        author,
-      });
     }
   };
 
   const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e) {
-      setAlert({
-        message: "uh oh, something went wrong",
-        type: "error",
-      });
-      return;
-    }
     const thumbnail = e.target.value;
+    setNewBook({
+      ...newBook,
+      thumbnail,
+    });
 
     if (thumbnail === "") {
       setAlert({
@@ -130,22 +107,15 @@ const CreateBookModal = () => {
           type: "error",
         });
       }
-      setNewBook({
-        ...newBook,
-        thumbnail,
-      });
     }
   };
 
   const handlePublishedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e) {
-      setAlert({
-        message: "uh oh, something went wrong",
-        type: "error",
-      });
-      return;
-    }
     const publishedAt = formatUTCDate(e.target.value);
+    setNewBook({
+      ...newBook,
+      publishedAt,
+    });
 
     if (publishedAt === "") {
       setAlert({
@@ -159,21 +129,15 @@ const CreateBookModal = () => {
           type: "error",
         });
       }
-      setNewBook({
-        ...newBook,
-        publishedAt,
-      });
     }
   };
   const handleSummaryChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    if (!e) {
-      setAlert({
-        message: "uh oh, something went wrong",
-        type: "error",
-      });
-      return;
-    }
     const summary = e.target.value;
+    setNewBook({
+      ...newBook,
+      summary,
+    });
+
     if (summary === "") {
       setAlert({
         message: "Summary cannot be blank",
@@ -186,10 +150,6 @@ const CreateBookModal = () => {
           type: "error",
         });
       }
-      setNewBook({
-        ...newBook,
-        summary,
-      });
     }
   };
 

@@ -130,12 +130,12 @@ const BookDetails: React.FC = () => {
   useEffect(() => {
     UpdateCurrentUrl();
 
-    console.log(
-      "loading data: (librarydata, userdata, bookdata): ",
-      libraryData,
-      userData,
-      bookData,
-    );
+    // console.log(
+    //   "loading data: (librarydata, userdata, bookdata): ",
+    //   libraryData,
+    //   userData,
+    //   bookData,
+    // );
     // slight delay if no data on initial load
 
     fetchBookData();

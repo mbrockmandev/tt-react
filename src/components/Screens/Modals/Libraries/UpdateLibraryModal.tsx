@@ -35,7 +35,6 @@ const UpdateLibraryModal = () => {
   };
 
   const handleModalChange = () => {
-    console.log(selectedLibrary);
     if (selectedLibrary.id !== 0) setActiveModal("UpdateLibraryModal");
   };
 
