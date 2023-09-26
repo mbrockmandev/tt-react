@@ -57,8 +57,8 @@ const LookupLibraryModal = () => {
       return;
     }
 
-    const searchById = id !== null;
-    const searchByName = name !== "";
+    const searchById = id && id !== 0;
+    const searchByName = name && name !== "";
 
     if (searchById && searchByName) {
       setAlert({
