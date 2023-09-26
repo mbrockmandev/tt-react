@@ -125,7 +125,7 @@ const CreateUserModal = () => {
         }),
       };
 
-      const url = `${process.env.REACT_APP_BACKEND}/register`;
+      const url = `${process.env.REACT_APP_BACKEND}/users`;
       const res = await fetch(url, reqOptions);
 
       if (!res.ok && res.status === 409) {
@@ -138,9 +138,7 @@ const CreateUserModal = () => {
         throw new Error("HTTP status code: " + res.status);
       }
 
-      const data = await res.json();
-
-      setAlert({ message: data.message, type: "success" });
+      setAlert({ message: "User Created", type: "success" });
       handleCancelModal(null);
     } catch (err) {
       setAlert({ message: err.message, type: "error" });

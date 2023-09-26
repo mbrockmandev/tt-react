@@ -28,23 +28,12 @@ import { ResetCurrentUrl, UpdateCurrentUrl } from "../../utils/urlStorage";
 
 import { userAtom } from "../../recoil/atoms/userAtom";
 import { alertAtom } from "../../recoil/atoms/alertAtom";
-import { selectedLibraryAtom } from "../../recoil/atoms/selectedLibraryAtom";
-import { libraryAtom } from "../../recoil/atoms/libraryAtom";
-import { selectedBookAtom } from "../../recoil/atoms/selectedBookAtom";
-import { selectedUserAtom } from "../../recoil/atoms/selectedUserAtom";
 
-import { emptyLibrary } from "../../utils/models/Library";
-import { emptyBook } from "../../utils/models/Book";
 import { emptyUser } from "../../utils/models/User";
-import { emptyUserResponse } from "../../utils/models/UserResponse";
 
 function NavMenu() {
   const [user, setUser] = useRecoilState(userAtom);
   const [, setAlert] = useRecoilState(alertAtom);
-  const [, setSelectedLibrary] = useRecoilState(selectedLibraryAtom);
-  const [, setLibrary] = useRecoilState(libraryAtom);
-  const [, setSelectedBook] = useRecoilState(selectedBookAtom);
-  const [, setSelectedUser] = useRecoilState(selectedUserAtom);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
@@ -62,10 +51,6 @@ function NavMenu() {
     if (label === "Logout") {
       logout();
       localStorage.clear();
-      // setSelectedLibrary(emptyLibrary);
-      // setLibrary(emptyLibrary);
-      // setSelectedBook(emptyBook);
-      // setSelectedUser(emptyUserResponse);
       setUser(emptyUser);
       navigate("/login");
     }
