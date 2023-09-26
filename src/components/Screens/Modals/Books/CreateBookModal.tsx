@@ -288,7 +288,7 @@ const CreateBookModal = () => {
             <div className="relative">
               <input
                 id="published"
-                type="text"
+                type="datetime-local"
                 onChange={handlePublishedChange}
                 className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
                 placeholder="Published"
