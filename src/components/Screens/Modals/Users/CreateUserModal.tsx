@@ -206,7 +206,7 @@ const CreateUserModal = () => {
             <div className="relative">
               <input
                 id="password"
-                type={"text"}
+                type="password"
                 onChange={handlePasswordChange}
                 className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm shadow-gray-300 focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
                 placeholder="Password"
@@ -221,7 +221,7 @@ const CreateUserModal = () => {
             <div className="relative pt-4">
               <input
                 id="confirmPassword"
-                type={"text"}
+                type="password"
                 onChange={handleConfirmPasswordChange}
                 className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm shadow-gray-300 focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
                 placeholder="Confirm Password"
