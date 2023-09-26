@@ -80,7 +80,7 @@ const LookupBookModal = () => {
       if (searchById) {
         url = `${process.env.REACT_APP_BACKEND}/books/${id}`;
       } else if (searchByIsbn) {
-        url = `${process.env.REACT_APP_BACKEND}/books/${isbn}`;
+        url = `${process.env.REACT_APP_BACKEND}/books/isbn/${isbn}`;
       }
       const res = await fetch(url, reqOptions);
       setId(0);
