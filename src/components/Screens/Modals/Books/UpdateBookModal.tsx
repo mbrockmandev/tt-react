@@ -12,7 +12,7 @@ import { formatUTCDate } from "../../../../utils/formatDate";
 
 const UpdateBookModal = () => {
   const user = useRecoilValue(userAtom);
-  const selectedBook = useRecoilValue(selectedBookAtom);
+  const [selectedBook, setSelectedBook] = useRecoilState(selectedBookAtom);
 
   const [, setAlert] = useRecoilState(alertAtom);
   const [activeModal, setActiveModal] = useRecoilState(modalAtom);
@@ -49,6 +49,17 @@ const UpdateBookModal = () => {
     }
 
     return payload;
+  };
+
+  const updateSelectedBookAfterSuccessfulUpdate = (payload: any) => {
+    let updatedBook = { ...selectedBook };
+    for (let key in payload) {
+      if (payload[key] && payload[key] !== "") {
+        let newKey = key.replace(/_([a-z])/g, (g) => g[1].toUpperCase());
+        updatedBook[newKey] = payload[key];
+      }
+    }
+    setSelectedBook(updatedBook);
   };
 
   useEffect(() => {
@@ -220,18 +231,14 @@ const UpdateBookModal = () => {
       const url = `${process.env.REACT_APP_BACKEND}/${user.role}/books/${selectedBook.id}`;
       const res = await fetch(url, reqOptions);
 
-      if (res.ok) {
-        setAlert({
-          message: "Found user!",
-          type: "success",
-        });
-      } else if (!res.ok) {
+      if (!res.ok) {
         throw new Error("HTTP status code: " + res.status);
       }
 
       const data = await res.json();
 
       setAlert({ message: data.message, type: "success" });
+      updateSelectedBookAfterSuccessfulUpdate(payload);
     } catch (err) {
       setAlert({ message: err.message, type: "error" });
       console.error(err);

@@ -13,7 +13,8 @@ import { isValidName } from "../../../../utils/validators";
 
 const UpdateLibraryModal = () => {
   const user = useRecoilValue(userAtom);
-  const selectedLibrary = useRecoilValue(selectedLibraryAtom);
+  const [selectedLibrary, setSelectedLibrary] =
+    useRecoilState(selectedLibraryAtom);
 
   const [activeModal, setActiveModal] = useRecoilState(modalAtom);
   const [, setAlert] = useRecoilState(alertAtom);
@@ -50,6 +51,17 @@ const UpdateLibraryModal = () => {
     }
 
     return payload;
+  };
+
+  const updateSelectedBookAfterSuccessfulUpdate = (payload: any) => {
+    let updatedLibrary = { ...selectedLibrary };
+    for (let key in payload) {
+      if (payload[key] && payload[key] !== "") {
+        let newKey = key.replace(/_([a-z])/g, (g) => g[1].toUpperCase());
+        updatedLibrary[newKey] = payload[key];
+      }
+    }
+    setSelectedLibrary(updatedLibrary);
   };
 
   useEffect(() => {
@@ -187,6 +199,7 @@ const UpdateLibraryModal = () => {
       const data = await res.json();
 
       setAlert({ message: data.message, type: "success" });
+      updateSelectedBookAfterSuccessfulUpdate(payload);
     } catch (err) {
       setAlert({ message: err.message, type: "error" });
       console.error(err);

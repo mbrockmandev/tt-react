@@ -14,7 +14,7 @@ import {
 
 const UpdateUserModal = () => {
   const user = useRecoilValue(userAtom);
-  const selectedUser = useRecoilValue(selectedUserAtom);
+  const [selectedUser, setSelectedUser] = useRecoilState(selectedUserAtom);
 
   const [, setAlert] = useRecoilState(alertAtom);
   const [activeModal, setActiveModal] = useRecoilState(modalAtom);
@@ -53,6 +53,17 @@ const UpdateUserModal = () => {
 
     console.log("payload: ", payload);
     return payload;
+  };
+
+  const updateSelectedUserAfterSuccessfulUpdate = (payload: any) => {
+    let updatedUser = { ...selectedUser };
+    for (let key in payload) {
+      if (payload[key] && payload[key] !== "") {
+        let newKey = key.replace(/_([a-z])/g, (g) => g[1].toUpperCase());
+        updatedUser[newKey] = payload[key];
+      }
+    }
+    setSelectedUser(updatedUser);
   };
 
   useEffect(() => {
@@ -157,18 +168,14 @@ const UpdateUserModal = () => {
       const url = `${process.env.REACT_APP_BACKEND}/${user.role}/users/${selectedUser.id}`;
       const res = await fetch(url, reqOptions);
 
-      if (res.ok) {
-        setAlert({
-          message: "Found user!",
-          type: "success",
-        });
-      } else if (!res.ok) {
+      if (!res.ok) {
         throw new Error("HTTP status code: " + res.status);
       }
 
       const data = await res.json();
 
       setAlert({ message: data.message, type: "success" });
+      updateSelectedUserAfterSuccessfulUpdate(payload);
     } catch (err) {
       setAlert({ message: err.message, type: "error" });
       console.error(err);
@@ -234,8 +241,7 @@ const UpdateUserModal = () => {
                       id="password"
                       type="password"
                       onChange={handlePasswordChange}
-                      className={`w-full rounded-lg p-4 pe-12 text-sm shadow-sm shadow-gray-300 focus:ring-gray-200 focus:border-gray-400 active:border-gray-200
-                      }`}
+                      className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm shadow-gray-300 focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
                       placeholder="Password"
                     />
                   </div>
@@ -253,7 +259,7 @@ const UpdateUserModal = () => {
                       id="confirmPassword"
                       type="password"
                       onChange={handleConfirmPasswordChange}
-                      className={`w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm shadow-gray-300 focus:ring-gray-200 focus:border-gray-400 active:border-gray-200 `}
+                      className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm shadow-gray-300 focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
                       placeholder="Confirm Password"
                     />
                   </div>

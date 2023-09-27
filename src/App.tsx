@@ -64,7 +64,7 @@ const App = () => {
       } else if (!res.ok && res.status === 401) {
         setAlert({
           message: "Please log in!",
-          type: "success",
+          type: "info",
         });
       } else if (!res.ok) {
         setAlert({
