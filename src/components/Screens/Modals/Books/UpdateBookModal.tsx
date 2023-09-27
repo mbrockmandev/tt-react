@@ -19,9 +19,34 @@ const UpdateBookModal = () => {
 
   const [bookToModify, setBookToModify] = useState<Book>(emptyBook);
 
+  const getDiffPayload = () => {
+    let payload: Partial<Book> = {};
+
+    if (bookToModify.title !== selectedBook.title) {
+      payload.title = bookToModify.title;
+    }
+    if (bookToModify.author !== selectedBook.author) {
+      payload.author = bookToModify.author;
+    }
+    if (bookToModify.isbn !== selectedBook.isbn) {
+      payload.isbn = bookToModify.isbn;
+    }
+    if (bookToModify.summary !== selectedBook.summary) {
+      payload.summary = bookToModify.summary;
+    }
+    if (bookToModify.thumbnail !== selectedBook.thumbnail) {
+      payload.thumbnail = bookToModify.thumbnail;
+    }
+    if (bookToModify.publishedAt !== selectedBook.publishedAt) {
+      payload.publishedAt = bookToModify.publishedAt;
+    }
+
+    return payload;
+  };
+
   useEffect(() => {
     setBookToModify(selectedBook);
-  }, []);
+  }, [selectedBook]);
 
   const handleModalChange = () => {
     if (selectedBook.id !== 0) setActiveModal("UpdateBookModal");
@@ -169,16 +194,17 @@ const UpdateBookModal = () => {
     e.preventDefault();
 
     try {
+      const payload = getDiffPayload();
       const reqOptions: RequestInit = {
         method: "PUT",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(bookToModify),
+        body: JSON.stringify(payload),
       };
 
-      const url = `${process.env.REACT_APP_BACKEND}/${user.role}/books/${bookToModify.id}`;
+      const url = `${process.env.REACT_APP_BACKEND}/${user.role}/books/${selectedBook.id}`;
       const res = await fetch(url, reqOptions);
 
       if (res.ok) {

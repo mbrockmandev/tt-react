@@ -20,6 +20,31 @@ const UpdateLibraryModal = () => {
 
   const [libraryToModify, setLibraryToModify] = useState<Library>(emptyLibrary);
 
+  const getDiffPayload = () => {
+    let payload: Partial<Library> = {};
+
+    if (libraryToModify.name !== selectedLibrary.name) {
+      payload.name = libraryToModify.name;
+    }
+    if (libraryToModify.city !== selectedLibrary.city) {
+      payload.city = libraryToModify.city;
+    }
+    if (libraryToModify.streetAddress !== selectedLibrary.streetAddress) {
+      payload.streetAddress = libraryToModify.streetAddress;
+    }
+    if (libraryToModify.postalCode !== selectedLibrary.postalCode) {
+      payload.postalCode = libraryToModify.postalCode;
+    }
+    if (libraryToModify.country !== selectedLibrary.country) {
+      payload.country = libraryToModify.country;
+    }
+    if (libraryToModify.phone !== selectedLibrary.phone) {
+      payload.phone = libraryToModify.phone;
+    }
+
+    return payload;
+  };
+
   useEffect(() => {
     setLibraryToModify(selectedLibrary);
   }, []);
@@ -106,23 +131,17 @@ const UpdateLibraryModal = () => {
       if (!isValidName(libraryToModify.country))
         throw new Error("Invalid country");
 
+      const payload = getDiffPayload();
       const reqOptions: RequestInit = {
         method: "PUT",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          name: libraryToModify.name,
-          city: libraryToModify.city,
-          street_address: libraryToModify.streetAddress,
-          postal_code: libraryToModify.postalCode,
-          country: libraryToModify.country,
-          phone: libraryToModify.phone,
-        }),
+        body: JSON.stringify(payload),
       };
 
-      const url = `${process.env.REACT_APP_BACKEND}/${user.role}/libraries/${libraryToModify.id}`;
+      const url = `${process.env.REACT_APP_BACKEND}/${user.role}/libraries/${selectedLibrary.id}`;
       const res = await fetch(url, reqOptions);
 
       if (!res.ok) {

@@ -23,9 +23,28 @@ const UpdateUserModal = () => {
   const [userToModify, setUserToModify] =
     useState<UserResponse>(emptyUserResponse);
 
+  const getDiffPayload = () => {
+    let payload: Partial<UserResponse> = {};
+
+    if (userToModify.email !== selectedUser.email) {
+      payload.email = userToModify.email;
+    }
+    if (userToModify.firstName !== selectedUser.firstName) {
+      payload.firstName = userToModify.firstName;
+    }
+    if (userToModify.lastName !== selectedUser.lastName) {
+      payload.lastName = userToModify.lastName;
+    }
+    if (userToModify.role !== selectedUser.role) {
+      payload.role = userToModify.role;
+    }
+
+    return payload;
+  };
+
   useEffect(() => {
     setUserToModify(selectedUser);
-  }, []);
+  }, [selectedUser]);
 
   const handleModalChange = () => {
     if (selectedUser.id !== 0) setActiveModal("UpdateUserModal");
@@ -110,10 +129,12 @@ const UpdateUserModal = () => {
     e.preventDefault();
 
     try {
-      const userToUpdate = {
-        ...userToModify,
-        id: selectedUser.id,
-      };
+      const payload = getDiffPayload();
+
+      if (Object.keys(payload).length === 0) {
+        setAlert({ message: "No changes made", type: "success" });
+        return;
+      }
 
       const reqOptions: RequestInit = {
         method: "PUT",
@@ -121,7 +142,7 @@ const UpdateUserModal = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(userToUpdate),
+        body: JSON.stringify(payload),
       };
 
       const url = `${process.env.REACT_APP_BACKEND}/${user.role}/users/${selectedUser.id}`;
@@ -169,7 +190,6 @@ const UpdateUserModal = () => {
                       id="email"
                       type="email"
                       onChange={handleEmailChange}
-                      value={userToModify.email}
                       className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
                       placeholder="Email"
                       autoComplete="email"
@@ -249,7 +269,6 @@ const UpdateUserModal = () => {
                         id="firstName"
                         type="text"
                         onChange={handleFirstNameChange}
-                        value={userToModify.firstName}
                         className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm shadow-gray-300 focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
                         placeholder="First Name"
                         pattern="[a-zA-Z]*"
@@ -265,7 +284,6 @@ const UpdateUserModal = () => {
                         id="lastName"
                         type="text"
                         onChange={handleLastNameChange}
-                        value={userToModify.lastName}
                         className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm shadow-gray-300 focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
                         placeholder="Last Name"
                         pattern="[a-zA-Z]*"
