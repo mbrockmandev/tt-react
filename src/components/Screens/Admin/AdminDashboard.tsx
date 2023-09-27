@@ -181,7 +181,7 @@ const AdminDashboard = () => {
         {/* Sidebar */}
         <aside className="hidden sm:block max-w-xs sidebar p-4 space-y-4 border-l">
           <div className="upcoming-events space-y-2">
-            <h2 className="text-xl font-semibold">Active Entities</h2>
+            <h2 className="text-xl font-semibold">Entities To Modify</h2>
             <hr />
           </div>
 

@@ -20,7 +20,6 @@ const CreateLibraryModal = () => {
     if (e && e.target.classList.contains("modal-overlay")) {
       setNewLibrary(emptyLibrary);
       setActiveModal(null);
-      setLibraryToModify(emptyLibrary);
     }
   };
 
