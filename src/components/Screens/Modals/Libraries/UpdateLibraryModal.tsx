@@ -164,10 +164,11 @@ const UpdateLibraryModal = () => {
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let tempPhone = e.target.value;
-    const numericPhone = tempPhone.replace(/\D/g, "");
+    const numericPhone = e.target.value.replace(/\D/g, "");
 
-    const formattedPhone = "+" + numericPhone;
+    const formattedPhone = numericPhone.startsWith("+")
+      ? numericPhone
+      : "+" + numericPhone;
     setLibraryToModify({
       ...libraryToModify,
       phone: formattedPhone,
@@ -344,11 +345,11 @@ const UpdateLibraryModal = () => {
                   <input
                     id="phone"
                     type="tel"
-                    pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                    pattern="\+?[0-9]{10}"
                     onChange={handlePhoneChange}
                     value={libraryToModify.phone}
                     className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
-                    placeholder="(123)-456-7890"
+                    placeholder="+1234567890"
                     autoComplete="phone"
                     required
                   />
