@@ -52,17 +52,21 @@ const LookupBookModal = () => {
   };
 
   const handleLookup = async (e: any) => {
-    console.log("handleLookup? ", id, isbn);
+    console.log("handleLookup -- id ", id, "isbn ", isbn);
     e.preventDefault();
-    if (!id && !isbn) {
-      return;
-    }
 
     if (id === 0 && isbn === "") {
       setAlert({
         message: "Enter an ID or ISBN",
         type: "error",
       });
+      return;
+    } else if (id !== 0 && isbn !== "") {
+      setAlert({
+        message: "Please search by either ID or ISBN, not both.",
+        type: "error",
+      });
+      return;
     }
 
     try {
