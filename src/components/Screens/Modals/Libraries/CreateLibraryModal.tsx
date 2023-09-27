@@ -300,14 +300,14 @@ const CreateLibraryModal = () => {
           <div className="flex">
             <button
               type="submit"
-              className="block w-[35%] bg-red-300 rounded-lg bg-secondary px-5 py-3 text-sm font-medium text-black mx-auto"
+              className="block w-[35%] bg-red-300 rounded-lg bg-secondary py-3 text-sm font-medium text-black mx-auto"
               onClick={handleCancelModal}>
               Cancel
             </button>
 
             <button
               type="submit"
-              className="block w-[35%] bg-green-300 rounded-lg bg-secondary px-5 py-3 text-sm font-medium text-black mx-auto"
+              className="block w-[35%] bg-green-300 rounded-lg bg-secondary py-3 text-sm font-medium text-black mx-auto"
               onClick={handleSubmit}>
               Register
             </button>
