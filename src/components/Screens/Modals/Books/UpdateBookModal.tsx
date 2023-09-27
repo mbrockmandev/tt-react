@@ -21,12 +21,12 @@ const UpdateBookModal = () => {
 
   const getDiffPayload = () => {
     let payload = {
-      title: "",
-      author: "",
-      isbn: "",
-      summary: "",
-      thumbnail: "",
-      published_at: "",
+      title: undefined,
+      author: undefined,
+      isbn: undefined,
+      summary: undefined,
+      thumbnail: undefined,
+      published_at: undefined,
     };
 
     if (bookToModify.title !== selectedBook.title) {
@@ -48,7 +48,9 @@ const UpdateBookModal = () => {
       payload.published_at = bookToModify.publishedAt;
     }
 
-    return payload;
+    return Object.fromEntries(
+      Object.entries(payload).filter(([k, v]) => v !== undefined),
+    );
   };
 
   const updateSelectedBookAfterSuccessfulUpdate = (payload: any) => {
@@ -137,13 +139,13 @@ const UpdateBookModal = () => {
 
     if (thumbnail === "") {
       setAlert({
-        message: "Title cannot be blank",
+        message: "Thumbnail cannot be blank",
         type: "error",
       });
 
       if (thumbnail.length < 3 || thumbnail.length > 255) {
         setAlert({
-          message: "Title must be between 3 and 255 characters long.",
+          message: "Thumbnail must be between 3 and 255 characters long.",
           type: "error",
         });
       }
@@ -151,7 +153,9 @@ const UpdateBookModal = () => {
   };
 
   const handlePublishedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const publishedAt = formatUTCDate(e.target.value);
+    const publishedAt = e.target.value
+      ? formatUTCDate(e.target.value)
+      : undefined;
     setBookToModify({
       ...bookToModify,
       publishedAt,
@@ -186,7 +190,7 @@ const UpdateBookModal = () => {
 
       if (summary.length < 3 || summary.length > 2048) {
         setAlert({
-          message: "Title must be between 3 and 2048 characters long.",
+          message: "Summary must be between 3 and 2048 characters long.",
           type: "error",
         });
       }
@@ -252,7 +256,9 @@ const UpdateBookModal = () => {
       <div
         className="modal-overlay"
         onClick={handleOutsideClick}>
-        <form className="mx-auto mb-0 mt-6 space-y-4 rounded-lg p-4 bg-gray-50 shadow-lg shadow-gray-300/50 sm:mt-8 sm:p-6 lg:p-8">
+        <form
+          className="mx-auto mb-0 mt-6 space-y-4 rounded-lg p-4 bg-gray-50 shadow-lg shadow-gray-300/50 sm:mt-8 sm:p-6 lg:p-8"
+          onSubmit={handleUpdate}>
           {selectedBook.id !== 0 && (
             <>
               <p className="text-center text-lg font-medium">Book info:</p>
@@ -386,8 +392,7 @@ const UpdateBookModal = () => {
 
                 <button
                   type="submit"
-                  className="block w-[35%] bg-green-300 rounded-lg bg-secondary px-5 py-3 mx-2 text-sm font-medium text-black mx-auto"
-                  onClick={handleUpdate}>
+                  className="block w-[35%] bg-green-300 rounded-lg bg-secondary px-5 py-3 mx-2 text-sm font-medium text-black mx-auto">
                   Update
                 </button>
               </div>

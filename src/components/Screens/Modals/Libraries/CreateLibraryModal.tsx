@@ -165,7 +165,9 @@ const CreateLibraryModal = () => {
       <div
         className="modal-overlay"
         onClick={handleCancelModal}>
-        <form className="mx-auto mb-0 mt-6 space-y-4 rounded-lg p-4 bg-gray-50 shadow-lg shadow-gray-300/50 sm:mt-8 sm:p-6 lg:p-8">
+        <form
+          className="mx-auto mb-0 mt-6 space-y-4 rounded-lg p-4 bg-gray-50 shadow-lg shadow-gray-300/50 sm:mt-8 sm:p-6 lg:p-8"
+          onSubmit={handleSubmit}>
           <p className="text-center text-lg font-medium">
             Create a new Library
           </p>
@@ -307,8 +309,7 @@ const CreateLibraryModal = () => {
 
             <button
               type="submit"
-              className="block w-[35%] bg-green-300 rounded-lg bg-secondary py-3 text-sm font-medium text-black mx-auto"
-              onClick={handleSubmit}>
+              className="block w-[35%] bg-green-300 rounded-lg bg-secondary py-3 text-sm font-medium text-black mx-auto">
               Register
             </button>
           </div>

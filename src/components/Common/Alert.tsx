@@ -130,7 +130,7 @@ const Alert = () => {
       {alert.type === "info" && (
         <div
           role="alert"
-          className="rounded-xl border border-gray-100 bg-red-200 p-4">
+          className="rounded-xl border border-gray-100 bg-white-200 p-4">
           <div className="flex items-start gap-4">
             <span className="text-gray-600">
               <XMarkIcon />

@@ -189,7 +189,9 @@ const UpdateUserModal = () => {
       <div
         className="modal-overlay"
         onClick={handleOutsideClick}>
-        <form className="mx-auto mb-0 mt-6 space-y-4 rounded-lg p-4 bg-gray-50 shadow-lg shadow-gray-300/50 sm:mt-8 sm:p-6 lg:p-8">
+        <form
+          className="mx-auto mb-0 mt-6 space-y-4 rounded-lg p-4 bg-gray-50 shadow-lg shadow-gray-300/50 sm:mt-8 sm:p-6 lg:p-8"
+          onSubmit={handleUpdate}>
           {selectedUser.id !== 0 && (
             <>
               <p className="text-center text-lg font-medium">User info:</p>
@@ -326,8 +328,7 @@ const UpdateUserModal = () => {
 
                   <button
                     type="submit"
-                    className="submit-button block w-[35%] bg-green-300 rounded-lg bg-secondary px-5 py-3 text-sm font-medium text-black mx-auto"
-                    onClick={handleUpdate}>
+                    className="submit-button block w-[35%] bg-green-300 rounded-lg bg-secondary px-5 py-3 text-sm font-medium text-black mx-auto">
                     Update
                   </button>
                 </div>

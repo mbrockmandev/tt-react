@@ -11,6 +11,6 @@ export const alertAtom = atom<AlertAtomState>({
   default: {
     message: "",
     type: "",
-    duration: 5000,
+    duration: 3000,
   },
 });
