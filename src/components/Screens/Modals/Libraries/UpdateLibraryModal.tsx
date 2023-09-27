@@ -68,6 +68,12 @@ const UpdateLibraryModal = () => {
       ...libraryToModify,
       name: e.target.value,
     });
+    if (!isValidName(libraryToModify.name) && libraryToModify.name.length > 0)
+      setAlert({
+        message:
+          "Invalid Name. Name must be between 3 and 255 characters long.",
+        type: "error",
+      });
   };
 
   const handleCityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,6 +81,13 @@ const UpdateLibraryModal = () => {
       ...libraryToModify,
       city: e.target.value,
     });
+    if (!isValidName(libraryToModify.city)) {
+      setAlert({
+        message:
+          "Invalid City. City must be between 3 and 255 characters long.",
+        type: "error",
+      });
+    }
   };
 
   const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,6 +95,13 @@ const UpdateLibraryModal = () => {
       ...libraryToModify,
       streetAddress: e.target.value,
     });
+    if (!isValidName(libraryToModify.streetAddress)) {
+      setAlert({
+        message:
+          "Invalid Street Address. Street Address must be between 3 and 255 characters long.",
+        type: "error",
+      });
+    }
   };
 
   const handlePostalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,6 +109,13 @@ const UpdateLibraryModal = () => {
       ...libraryToModify,
       postalCode: e.target.value,
     });
+    if (!isValidName(libraryToModify.postalCode)) {
+      setAlert({
+        message:
+          "Invalid Postal Code. Postal Code must be between 3 and 255 characters long.",
+        type: "error",
+      });
+    }
   };
 
   const handleCountryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -96,42 +123,44 @@ const UpdateLibraryModal = () => {
       ...libraryToModify,
       country: e.target.value,
     });
+    if (!isValidName(libraryToModify.country)) {
+      setAlert({
+        message:
+          "Invalid Country. Country must be between 3 and 255 characters long.",
+        type: "error",
+      });
+    }
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let tempPhone = e.target.value;
     const numericPhone = tempPhone.replace(/\D/g, "");
 
-    if (numericPhone.length > 10) {
-      setAlert({
-        message: "invalid phone number",
-        type: "error",
-      });
-      return;
-    }
     const formattedPhone = "+" + numericPhone;
     setLibraryToModify({
       ...libraryToModify,
       phone: formattedPhone,
     });
+
+    if (formattedPhone.length > 10) {
+      setAlert({
+        message: "Invalid phone number. Phone numbers must be 10 digits long.",
+        type: "error",
+      });
+    }
   };
 
   const handleUpdate = async (e: any) => {
     e.preventDefault();
 
     try {
-      if (!isValidName(libraryToModify.name)) throw new Error("Invalid name");
-      if (!isValidName(libraryToModify.city)) throw new Error("Invalid city");
-      if (!isValidName(libraryToModify.streetAddress)) {
-        throw new Error("Invalid streetAddress");
-      }
-      if (!isValidName(libraryToModify.postalCode)) {
-        throw new Error("Invalid postalCode");
-      }
-      if (!isValidName(libraryToModify.country))
-        throw new Error("Invalid country");
-
       const payload = getDiffPayload();
+
+      if (Object.keys(payload).length === 0) {
+        setAlert({ message: "No changes made", type: "info" });
+        return;
+      }
+
       const reqOptions: RequestInit = {
         method: "PUT",
         credentials: "include",

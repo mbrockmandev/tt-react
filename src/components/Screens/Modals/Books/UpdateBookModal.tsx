@@ -195,6 +195,12 @@ const UpdateBookModal = () => {
 
     try {
       const payload = getDiffPayload();
+
+      if (Object.keys(payload).length === 0) {
+        setAlert({ message: "No changes made", type: "info" });
+        return;
+      }
+
       const reqOptions: RequestInit = {
         method: "PUT",
         credentials: "include",

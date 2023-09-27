@@ -132,7 +132,7 @@ const UpdateUserModal = () => {
       const payload = getDiffPayload();
 
       if (Object.keys(payload).length === 0) {
-        setAlert({ message: "No changes made", type: "success" });
+        setAlert({ message: "No changes made", type: "info" });
         return;
       }
 
