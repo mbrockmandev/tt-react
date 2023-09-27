@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 
 import { modalAtom } from "../../../../recoil/atoms/modalAtom";
 import { alertAtom } from "../../../../recoil/atoms/alertAtom";
 import { selectedLibraryAtom } from "../../../../recoil/atoms/selectedLibraryAtom";
-import { userAtom } from "../../../../recoil/atoms/userAtom";
+import { emptyLibrary } from "../../../../utils/models/Library";
 
 const LookupLibraryModal = () => {
-  const user = useRecoilValue(userAtom);
   const [, setAlert] = useRecoilState(alertAtom);
   const [activeModal, setActiveModal] = useRecoilState(modalAtom);
   const [, setSelectedLibrary] = useRecoilState(selectedLibraryAtom);
@@ -79,6 +78,7 @@ const LookupLibraryModal = () => {
       } else if (searchByName) {
         url = `${process.env.REACT_APP_BACKEND}/staff/libraries?name=${name}`;
       }
+      setSelectedLibrary(emptyLibrary);
       const res = await fetch(url, reqOptions);
       setId(0);
       setName("");
@@ -108,20 +108,17 @@ const LookupLibraryModal = () => {
   const modal =
     activeModal === "LookupLibraryModal" &&
     ReactDOM.createPortal(
-      <div
-        className="modal-overlay"
-        onClick={handleOutsideClick}>
+      <div className="modal-overlay" onClick={handleOutsideClick}>
         <form
           className="mx-auto mb-0 mt-6 space-y-4 rounded-lg p-4 bg-gray-50 shadow-lg shadow-gray-300/50 sm:mt-8 sm:p-6 lg:p-8"
-          onSubmit={handleLookup}>
+          onSubmit={handleLookup}
+        >
           <p className="text-center text-lg font-medium">
             Lookup Library (ID or Name)
           </p>
 
           <div className="flex items-center gap-x-2">
-            <label
-              htmlFor="email"
-              className="mr-auto">
+            <label htmlFor="email" className="mr-auto">
               ID
             </label>
 
@@ -136,9 +133,7 @@ const LookupLibraryModal = () => {
             </div>
           </div>
           <div className="flex items-center gap-x-2">
-            <label
-              htmlFor="name"
-              className="mr-auto">
+            <label htmlFor="name" className="mr-auto">
               Name
             </label>
 
@@ -157,13 +152,15 @@ const LookupLibraryModal = () => {
             <button
               type="submit"
               className="cancel-button block w-[35%] bg-gray-300 rounded-lg bg-secondary px-5 py-3 text-sm font-medium text-black mx-auto"
-              onClick={handleCancel}>
+              onClick={handleCancel}
+            >
               Cancel
             </button>
 
             <button
               type="submit"
-              className="submit-button block w-[35%] bg-green-300 rounded-lg bg-secondary px-5 py-3 text-sm font-medium text-black mx-auto">
+              className="submit-button block w-[35%] bg-green-300 rounded-lg bg-secondary px-5 py-3 text-sm font-medium text-black mx-auto"
+            >
               Lookup
             </button>
           </div>
@@ -176,7 +173,8 @@ const LookupLibraryModal = () => {
     <div>
       <div
         className="flex text-sm px-4 py-2 hover:text-blue-500 hover:underline cursor-pointer"
-        onClick={handleModalChange}>
+        onClick={handleModalChange}
+      >
         Lookup Library
       </div>
       {modal}

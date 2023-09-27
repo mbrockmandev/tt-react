@@ -6,11 +6,12 @@ import { modalAtom } from "../../../../recoil/atoms/modalAtom";
 import { alertAtom } from "../../../../recoil/atoms/alertAtom";
 import { selectedBookAtom } from "../../../../recoil/atoms/selectedBookAtom";
 import { formatUTCDate } from "../../../../utils/formatDate";
+import { emptyBook } from "../../../../utils/models/Book";
 
 const LookupBookModal = () => {
   const [, setAlert] = useRecoilState(alertAtom);
   const [activeModal, setActiveModal] = useRecoilState(modalAtom);
-  const [, setBookToModify] = useRecoilState(selectedBookAtom);
+  const [, setSelectedBook] = useRecoilState(selectedBookAtom);
 
   const [id, setId] = useState<number>(0);
   const [isbn, setIsbn] = useState<string>("");
@@ -77,6 +78,7 @@ const LookupBookModal = () => {
         url = `${process.env.REACT_APP_BACKEND}/books/isbn/${isbn}`;
       }
 
+      setSelectedBook(emptyBook);
       const res = await fetch(url, reqOptions);
 
       if (res.ok) {
@@ -96,7 +98,7 @@ const LookupBookModal = () => {
       console.log("data.book:", data.book);
       console.log("data.metadata:", data.metadata);
 
-      setBookToModify({
+      setSelectedBook({
         id: data.book.id,
         title: data.book.title,
         isbn: data.book.isbn,
@@ -117,18 +119,15 @@ const LookupBookModal = () => {
   const modal =
     activeModal === "LookupBookModal" &&
     ReactDOM.createPortal(
-      <div
-        className="modal-overlay"
-        onClick={handleOutsideClick}>
+      <div className="modal-overlay" onClick={handleOutsideClick}>
         <form
           className="mx-auto mb-0 mt-6 space-y-4 rounded-lg p-4 bg-gray-50 shadow-lg shadow-gray-300/50 sm:mt-8 sm:p-6 lg:p-8"
-          onSubmit={handleLookup}>
+          onSubmit={handleLookup}
+        >
           <p className="text-center text-lg font-medium">Lookup Book</p>
 
           <div className="flex items-center gap-x-2">
-            <label
-              htmlFor="id"
-              className="mr-auto">
+            <label htmlFor="id" className="mr-auto">
               ID
             </label>
 
@@ -143,9 +142,7 @@ const LookupBookModal = () => {
             </div>
           </div>
           <div className="flex items-center gap-x-2">
-            <label
-              htmlFor="isbn"
-              className="mr-auto">
+            <label htmlFor="isbn" className="mr-auto">
               ISBN
             </label>
 
@@ -164,13 +161,15 @@ const LookupBookModal = () => {
             <button
               type="submit"
               className="cancel-button block w-[35%] bg-gray-300 rounded-lg bg-secondary px-5 py-3 text-sm font-medium text-black mx-auto"
-              onClick={handleCancel}>
+              onClick={handleCancel}
+            >
               Cancel
             </button>
 
             <button
               type="submit"
-              className="submit-button block w-[35%] bg-green-300 rounded-lg bg-secondary px-5 py-3 text-sm font-medium text-black mx-auto">
+              className="submit-button block w-[35%] bg-green-300 rounded-lg bg-secondary px-5 py-3 text-sm font-medium text-black mx-auto"
+            >
               Lookup
             </button>
           </div>
@@ -183,7 +182,8 @@ const LookupBookModal = () => {
     <div>
       <div
         className="flex text-sm px-4 py-2 hover:text-blue-500 hover:underline cursor-pointer"
-        onClick={handleModalChange}>
+        onClick={handleModalChange}
+      >
         Lookup Book
       </div>
       {modal}

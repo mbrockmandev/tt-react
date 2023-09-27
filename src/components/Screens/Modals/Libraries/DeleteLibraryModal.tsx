@@ -85,20 +85,17 @@ const DeleteLibraryModal = () => {
   const modal =
     activeModal === "DeleteLibraryModal" &&
     ReactDOM.createPortal(
-      <div
-        className="modal-overlay"
-        onClick={handleCancel}>
+      <div className="modal-overlay" onClick={handleCancel}>
         <form
           className="mx-auto mb-0 mt-6 space-y-4 rounded-lg p-4 bg-gray-50 shadow-lg shadow-gray-300/50 sm:mt-8 sm:p-6 lg:p-8"
-          onSubmit={handleDelete}>
+          onSubmit={handleDelete}
+        >
           <p className="text-center text-lg font-medium">
             Delete Library By ID
           </p>
 
           <div>
-            <label
-              htmlFor="email"
-              className="sr-only">
+            <label htmlFor="email" className="sr-only">
               ID
             </label>
 
@@ -116,13 +113,16 @@ const DeleteLibraryModal = () => {
             <button
               type="button"
               className="cancel-button block w-[35%] bg-gray-300 rounded-lg bg-secondary px-5 py-3 text-sm font-medium text-black mx-auto"
-              onClick={handleCancel}>
+              onClick={handleCancel}
+            >
               Cancel
             </button>
 
             <button
               type="button"
-              className="block w-[35%] bg-red-300 rounded-lg bg-secondary px-5 py-3 text-sm font-medium text-black mx-auto">
+              className="block w-[35%] bg-red-300 rounded-lg bg-secondary px-5 py-3 text-sm font-medium text-black mx-auto"
+              onClick={handleDelete}
+            >
               Delete
             </button>
           </div>
@@ -135,7 +135,8 @@ const DeleteLibraryModal = () => {
     <div>
       <div
         className="flex text-sm px-4 py-2 hover:text-blue-500 hover:underline cursor-pointer"
-        onClick={handleModalChange}>
+        onClick={handleModalChange}
+      >
         Delete Library
       </div>
       {modal}
