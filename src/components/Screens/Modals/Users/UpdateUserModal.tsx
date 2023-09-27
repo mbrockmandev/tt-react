@@ -50,17 +50,17 @@ const UpdateUserModal = () => {
     if (e.target.value === "user") {
       setUserToModify({
         ...userToModify,
-        role: e.target.value,
+        role: "user",
       });
     } else if (e.target.value === "staff") {
       setUserToModify({
         ...userToModify,
-        role: e.target.value,
+        role: "staff",
       });
     } else if (e.target.value === "admin") {
       setUserToModify({
         ...userToModify,
-        role: e.target.value,
+        role: "admin",
       });
     }
   };
@@ -285,7 +285,7 @@ const UpdateUserModal = () => {
                               ${
                                 isBypassChecked
                                   ? "underline text-red-700 font-bold"
-                                  : ""
+                                  : "underlien text-blue-500 font-bold"
                               }`}>
                           {isBypassChecked
                             ? "Bypass Password"
