@@ -110,13 +110,26 @@ const UpdateUserModal = () => {
     e.preventDefault();
 
     try {
+      const userToUpdate = {
+        ...userToModify,
+        id: selectedUser.id,
+      };
+
+      console.log(
+        "userToUpdate: ",
+        userToUpdate,
+        "userToModify: ",
+        userToModify,
+        "selectedUser: ",
+        selectedUser,
+      );
       const reqOptions: RequestInit = {
         method: "PUT",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(userToModify),
+        body: JSON.stringify(userToUpdate),
       };
 
       const url = `${process.env.REACT_APP_BACKEND}/${user.role}/users/${userToModify.id}`;
