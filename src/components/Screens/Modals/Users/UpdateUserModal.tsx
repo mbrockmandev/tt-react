@@ -24,16 +24,22 @@ const UpdateUserModal = () => {
     useState<UserResponse>(emptyUserResponse);
 
   const getDiffPayload = () => {
-    let payload: Partial<UserResponse> = {};
+    let payload;
 
     if (userToModify.email !== selectedUser.email) {
       payload.email = userToModify.email;
     }
+    if (userToModify.password !== selectedUser.password) {
+      payload.password = userToModify.password;
+    }
+    if (userToModify.confirmPassword !== selectedUser.confirmPassword) {
+      payload.confirm_password = userToModify.confirmPassword;
+    }
     if (userToModify.firstName !== selectedUser.firstName) {
-      payload.firstName = userToModify.firstName;
+      payload.first_name = userToModify.firstName;
     }
     if (userToModify.lastName !== selectedUser.lastName) {
-      payload.lastName = userToModify.lastName;
+      payload.last_name = userToModify.lastName;
     }
     if (userToModify.role !== selectedUser.role) {
       payload.role = userToModify.role;

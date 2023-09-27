@@ -20,7 +20,7 @@ const UpdateBookModal = () => {
   const [bookToModify, setBookToModify] = useState<Book>(emptyBook);
 
   const getDiffPayload = () => {
-    let payload: Partial<Book> = {};
+    let payload;
 
     if (bookToModify.title !== selectedBook.title) {
       payload.title = bookToModify.title;
@@ -38,7 +38,7 @@ const UpdateBookModal = () => {
       payload.thumbnail = bookToModify.thumbnail;
     }
     if (bookToModify.publishedAt !== selectedBook.publishedAt) {
-      payload.publishedAt = bookToModify.publishedAt;
+      payload.published_at = bookToModify.publishedAt;
     }
 
     return payload;

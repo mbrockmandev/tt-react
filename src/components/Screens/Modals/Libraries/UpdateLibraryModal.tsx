@@ -21,7 +21,7 @@ const UpdateLibraryModal = () => {
   const [libraryToModify, setLibraryToModify] = useState<Library>(emptyLibrary);
 
   const getDiffPayload = () => {
-    let payload: Partial<Library> = {};
+    let payload;
 
     if (libraryToModify.name !== selectedLibrary.name) {
       payload.name = libraryToModify.name;
@@ -30,10 +30,10 @@ const UpdateLibraryModal = () => {
       payload.city = libraryToModify.city;
     }
     if (libraryToModify.streetAddress !== selectedLibrary.streetAddress) {
-      payload.streetAddress = libraryToModify.streetAddress;
+      payload.street_address = libraryToModify.streetAddress;
     }
     if (libraryToModify.postalCode !== selectedLibrary.postalCode) {
-      payload.postalCode = libraryToModify.postalCode;
+      payload.postal_code = libraryToModify.postalCode;
     }
     if (libraryToModify.country !== selectedLibrary.country) {
       payload.country = libraryToModify.country;
@@ -47,7 +47,7 @@ const UpdateLibraryModal = () => {
 
   useEffect(() => {
     setLibraryToModify(selectedLibrary);
-  }, []);
+  }, [selectedLibrary]);
 
   const handleCancelModal = (e: any) => {
     if (e && e.target.classList.contains("modal-overlay")) {
