@@ -8,7 +8,6 @@ import { selectedBookAtom } from "../../../../recoil/atoms/selectedBookAtom";
 import { userAtom } from "../../../../recoil/atoms/userAtom";
 
 import Book, { emptyBook } from "../../../../utils/models/Book";
-import { formatUTCDate } from "../../../../utils/formatDate";
 
 const UpdateBookModal = () => {
   const user = useRecoilValue(userAtom);
@@ -26,7 +25,6 @@ const UpdateBookModal = () => {
       isbn: undefined,
       summary: undefined,
       thumbnail: undefined,
-      published_at: undefined,
     };
 
     if (bookToModify.title !== selectedBook.title && bookToModify.title) {
@@ -46,12 +44,6 @@ const UpdateBookModal = () => {
       bookToModify.thumbnail
     ) {
       payload.thumbnail = bookToModify.thumbnail;
-    }
-    if (
-      bookToModify.publishedAt !== selectedBook.publishedAt &&
-      bookToModify.publishedAt
-    ) {
-      payload.published_at = bookToModify.publishedAt;
     }
 
     return Object.fromEntries(
@@ -158,29 +150,6 @@ const UpdateBookModal = () => {
     }
   };
 
-  const handlePublishedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const publishedAt = e.target.value
-      ? formatUTCDate(e.target.value)
-      : undefined;
-    setBookToModify({
-      ...bookToModify,
-      publishedAt,
-    });
-
-    if (publishedAt === "") {
-      setAlert({
-        message: "Title cannot be blank",
-        type: "error",
-      });
-
-      if (publishedAt.length < 3 || publishedAt.length > 255) {
-        setAlert({
-          message: "Title must be between 3 and 255 characters long.",
-          type: "error",
-        });
-      }
-    }
-  };
   const handleSummaryChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const summary = e.target.value;
     setBookToModify({
@@ -336,24 +305,6 @@ const UpdateBookModal = () => {
                     className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
                     placeholder="Thumbnail URL"
                     autoComplete="thumbnail"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label htmlFor="published" className="sr-only">
-                  Published
-                </label>
-
-                <div className="relative">
-                  <input
-                    id="published"
-                    type="datetime-local"
-                    onChange={handlePublishedChange}
-                    value={bookToModify.publishedAt}
-                    className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
-                    placeholder="Published"
-                    autoComplete="published"
                   />
                 </div>
               </div>
