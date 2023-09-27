@@ -124,7 +124,7 @@ const UpdateUserModal = () => {
         body: JSON.stringify(userToUpdate),
       };
 
-      const url = `${process.env.REACT_APP_BACKEND}/${user.role}/users/${userToUpdate.id}`;
+      const url = `${process.env.REACT_APP_BACKEND}/${user.role}/users/${selectedUser.id}`;
       const res = await fetch(url, reqOptions);
 
       if (res.ok) {
