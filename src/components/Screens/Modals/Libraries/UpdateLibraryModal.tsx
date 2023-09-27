@@ -21,7 +21,14 @@ const UpdateLibraryModal = () => {
   const [libraryToModify, setLibraryToModify] = useState<Library>(emptyLibrary);
 
   const getDiffPayload = () => {
-    let payload;
+    let payload = {
+      name: "",
+      city: "",
+      street_address: "",
+      postal_code: "",
+      country: "",
+      phone: "",
+    };
 
     if (libraryToModify.name !== selectedLibrary.name) {
       payload.name = libraryToModify.name;

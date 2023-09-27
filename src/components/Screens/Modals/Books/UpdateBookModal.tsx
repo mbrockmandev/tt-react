@@ -20,7 +20,14 @@ const UpdateBookModal = () => {
   const [bookToModify, setBookToModify] = useState<Book>(emptyBook);
 
   const getDiffPayload = () => {
-    let payload;
+    let payload = {
+      title: "",
+      author: "",
+      isbn: "",
+      summary: "",
+      thumbnail: "",
+      published_at: "",
+    };
 
     if (bookToModify.title !== selectedBook.title) {
       payload.title = bookToModify.title;

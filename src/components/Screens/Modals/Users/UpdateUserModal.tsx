@@ -24,7 +24,14 @@ const UpdateUserModal = () => {
     useState<UserResponse>(emptyUserResponse);
 
   const getDiffPayload = () => {
-    let payload;
+    let payload = {
+      email: "",
+      password: "",
+      confirm_password: "",
+      first_name: "",
+      last_name: "",
+      role: "",
+    };
 
     if (userToModify.email !== selectedUser.email) {
       payload.email = userToModify.email;
@@ -45,6 +52,7 @@ const UpdateUserModal = () => {
       payload.role = userToModify.role;
     }
 
+    console.log("payload: ", payload);
     return payload;
   };
 
