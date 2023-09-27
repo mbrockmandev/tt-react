@@ -6,7 +6,6 @@ import { modalAtom } from "../../../../recoil/atoms/modalAtom";
 import { alertAtom } from "../../../../recoil/atoms/alertAtom";
 
 import Book, { emptyBook } from "../../../../utils/models/Book";
-import { formatUTCDate } from "../../../../utils/formatDate";
 
 const CreateBookModal = () => {
   const [activeModal, setActiveModal] = useRecoilState(modalAtom);
@@ -110,29 +109,9 @@ const CreateBookModal = () => {
     }
   };
 
-  const handlePublishedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const publishedAt = formatUTCDate(e.target.value);
-    setNewBook({
-      ...newBook,
-      publishedAt,
-    });
-
-    if (publishedAt === "") {
-      setAlert({
-        message: "Title cannot be blank",
-        type: "error",
-      });
-
-      if (publishedAt.length < 3 || publishedAt.length > 255) {
-        setAlert({
-          message: "Title must be between 3 and 255 characters long.",
-          type: "error",
-        });
-      }
-    }
-  };
   const handleSummaryChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const summary = e.target.value;
+
     setNewBook({
       ...newBook,
       summary,
@@ -164,11 +143,16 @@ const CreateBookModal = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          ...newBook,
+          title: newBook.title,
+          author: newBook.author,
+          isbn: newBook.isbn,
+          published_at: Date.now(),
+          summary: newBook.summary,
+          thumbnail: newBook.thumbnail,
         }),
       };
 
-      const url = `${process.env.REACT_APP_BACKEND}/register`;
+      const url = `${process.env.REACT_APP_BACKEND}/admin/books`;
       const res = await fetch(url, reqOptions);
 
       if (!res.ok && res.status === 409) {
@@ -274,25 +258,6 @@ const CreateBookModal = () => {
                 className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
                 placeholder="Thumbnail URL"
                 autoComplete="thumbnail"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label
-              htmlFor="published"
-              className="sr-only">
-              Published
-            </label>
-
-            <div className="relative">
-              <input
-                id="published"
-                type="datetime-local"
-                onChange={handlePublishedChange}
-                className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
-                placeholder="Published"
-                autoComplete="published"
               />
             </div>
           </div>
