@@ -6,7 +6,7 @@ import { useRecoilState } from "recoil";
 import { modalAtom } from "../../../../recoil/atoms/modalAtom";
 import { alertAtom } from "../../../../recoil/atoms/alertAtom";
 import { selectedUserAtom } from "../../../../recoil/atoms/selectedUserAtom";
-import { emptyUser } from "../../../../utils/models/User";
+import { emptyUserResponse } from "../../../../utils/models/UserResponse";
 
 const LookupUserModal = () => {
   const [, setAlert] = useRecoilState(alertAtom);
@@ -81,7 +81,7 @@ const LookupUserModal = () => {
       } else if (searchByEmail) {
         url = `${process.env.REACT_APP_BACKEND}/staff/users?email=${email}`;
       }
-      setSelectedUser(emptyUser);
+      setSelectedUser(emptyUserResponse);
       const res = await fetch(url, reqOptions);
       setId(0);
       setEmail("");
