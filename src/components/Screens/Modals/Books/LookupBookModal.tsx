@@ -92,15 +92,12 @@ const LookupBookModal = () => {
         });
         setId(0);
         setIsbn("");
+        setActiveModal(null);
       } else {
-        console.log("!res.ok:", id, isbn);
         throw new Error(`HTTP status code: ` + res.status);
       }
 
       const data = await res.json();
-      console.log("data:", data);
-      console.log("data.book:", data.book);
-      console.log("data.metadata:", data.metadata);
 
       setSelectedBook({
         id: data.book.id,

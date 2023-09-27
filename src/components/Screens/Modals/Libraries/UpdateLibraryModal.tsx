@@ -173,7 +173,7 @@ const UpdateLibraryModal = () => {
       phone: formattedPhone,
     });
 
-    if (formattedPhone.length > 10) {
+    if (formattedPhone.length !== 11) {
       setAlert({
         message: "Invalid phone number. Phone numbers must be 10 digits long.",
         type: "error",

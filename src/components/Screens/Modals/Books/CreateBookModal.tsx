@@ -183,18 +183,15 @@ const CreateBookModal = () => {
   const modal =
     activeModal === "CreateBookModal" &&
     ReactDOM.createPortal(
-      <div
-        className="modal-overlay"
-        onClick={handleCancelModal}>
+      <div className="modal-overlay" onClick={handleCancelModal}>
         <form
           className="mx-auto mb-0 mt-6 space-y-4 rounded-lg p-4 bg-gray-50 shadow-lg shadow-gray-300/50 sm:mt-8 sm:p-6 lg:p-8"
-          onSubmit={handleSubmit}>
+          onSubmit={handleSubmit}
+        >
           <p className="text-center text-lg font-medium">Register a new book</p>
 
           <div>
-            <label
-              htmlFor="title"
-              className="sr-only">
+            <label htmlFor="title" className="sr-only">
               Title
             </label>
 
@@ -211,9 +208,7 @@ const CreateBookModal = () => {
           </div>
 
           <div>
-            <label
-              htmlFor="isbn"
-              className="sr-only">
+            <label htmlFor="isbn" className="sr-only">
               ISBN
             </label>
 
@@ -230,9 +225,7 @@ const CreateBookModal = () => {
           </div>
 
           <div>
-            <label
-              htmlFor="title"
-              className="sr-only">
+            <label htmlFor="title" className="sr-only">
               Author
             </label>
 
@@ -249,9 +242,7 @@ const CreateBookModal = () => {
           </div>
 
           <div>
-            <label
-              htmlFor="thumbnail"
-              className="sr-only">
+            <label htmlFor="thumbnail" className="sr-only">
               Thumbnail URL
             </label>
 
@@ -268,9 +259,7 @@ const CreateBookModal = () => {
           </div>
 
           <div>
-            <label
-              htmlFor="summary"
-              className="sr-only">
+            <label htmlFor="summary" className="sr-only">
               Summary
             </label>
 
@@ -289,13 +278,15 @@ const CreateBookModal = () => {
             <button
               type="submit"
               className="cancel-button block w-[35%] bg-red-300 rounded-lg bg-secondary py-3 text-sm font-medium text-black mx-auto"
-              onClick={handleCancelModal}>
+              onClick={handleCancelModal}
+            >
               Cancel
             </button>
 
             <button
               type="submit"
-              className="block w-[35%] bg-green-300 rounded-lg bg-secondary py-3 text-sm font-medium text-black mx-auto">
+              className="block w-[35%] bg-green-300 rounded-lg bg-secondary py-3 text-sm font-medium text-black mx-auto"
+            >
               Register
             </button>
           </div>
@@ -308,7 +299,8 @@ const CreateBookModal = () => {
     <div>
       <div
         className="flex text-sm px-4 py-2 hover:text-blue-500 hover:underline cursor-pointer"
-        onClick={handleModalChange}>
+        onClick={handleModalChange}
+      >
         Create Book
       </div>
       {modal}
