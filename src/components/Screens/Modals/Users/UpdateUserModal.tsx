@@ -114,7 +114,7 @@ const UpdateUserModal = () => {
         ...userToModify,
         id: selectedUser.id,
       };
-      
+
       const reqOptions: RequestInit = {
         method: "PUT",
         credentials: "include",
@@ -124,7 +124,7 @@ const UpdateUserModal = () => {
         body: JSON.stringify(userToUpdate),
       };
 
-      const url = `${process.env.REACT_APP_BACKEND}/${user.role}/users/${selectedUser.id}`;
+      const url = `${process.env.REACT_APP_BACKEND}/${user.role}/users/${userToUpdate.id}`;
       const res = await fetch(url, reqOptions);
 
       if (res.ok) {
