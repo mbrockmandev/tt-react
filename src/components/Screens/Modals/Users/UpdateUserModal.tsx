@@ -176,6 +176,7 @@ const UpdateUserModal = () => {
 
       setAlert({ message: data.message, type: "success" });
       updateSelectedUserAfterSuccessfulUpdate(payload);
+      setActiveModal(null);
     } catch (err) {
       setAlert({ message: err.message, type: "error" });
       console.error(err);

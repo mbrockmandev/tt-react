@@ -200,6 +200,7 @@ const UpdateLibraryModal = () => {
 
       setAlert({ message: data.message, type: "success" });
       updateSelectedBookAfterSuccessfulUpdate(payload);
+      setActiveModal(null);
     } catch (err) {
       setAlert({ message: err.message, type: "error" });
       console.error(err);

@@ -36,10 +36,10 @@ const AdminDashboard = () => {
   const [, setAlert] = useRecoilState(alertAtom);
   const [user, setUser] = useRecoilState(userAtom);
 
-  const [userToModify, setUserToModify] = useRecoilState(selectedUserAtom);
-  const [libraryToModify, setLibraryToModify] =
+  const [selectedUser, setSelectedUser] = useRecoilState(selectedUserAtom);
+  const [selectedLibrary, setSelectedLibrary] =
     useRecoilState(selectedLibraryAtom);
-  const [bookToModify, setBookToModify] = useRecoilState(selectedBookAtom);
+  const [selectedBook, setSelectedBook] = useRecoilState(selectedBookAtom);
 
   const [showBookByLibraryReport, setShowBookByLibraryReport] =
     React.useState(false);
@@ -85,17 +85,17 @@ const AdminDashboard = () => {
 
   const handleResetLibraryToModify = (e: any) => {
     e.preventDefault();
-    setLibraryToModify(emptyLibrary);
+    setSelectedLibrary(emptyLibrary);
   };
 
   const handleResetUserToModify = (e: any) => {
     e.preventDefault();
-    setUserToModify(emptyLoginUser);
+    setSelectedUser(emptyLoginUser);
   };
 
   const handleResetBookToModify = (e: any) => {
     e.preventDefault();
-    setBookToModify(emptyBook);
+    setSelectedBook(emptyBook);
   };
 
   const toggleShowBookByLibraryFetcher = () => {
@@ -147,19 +147,19 @@ const AdminDashboard = () => {
               <h2 className="text-xl font-semibold">User</h2>
               <button
                 className={`hover:underline hover:text-blue-400 ${
-                  userToModify.id === 0 ? "hidden" : ""
+                  selectedUser.id === 0 ? "hidden" : ""
                 }`}
                 onClick={handleResetUserToModify}>
                 Reset User
               </button>
             </div>
-            {userToModify.id !== 0 && (
+            {selectedUser.id !== 0 && (
               <>
-                <p>ID: {userToModify.id}</p>
-                <p>User to Modify: {userToModify.email}</p>
-                <p>First Name: {userToModify.firstName}</p>
-                <p>Last Name: {userToModify.lastName}</p>
-                <p>Role: {userToModify.role}</p>
+                <p>ID: {selectedUser.id}</p>
+                <p>User to Modify: {selectedUser.email}</p>
+                <p>First Name: {selectedUser.firstName}</p>
+                <p>Last Name: {selectedUser.lastName}</p>
+                <p>Role: {selectedUser.role}</p>
               </>
             )}
 
@@ -171,21 +171,21 @@ const AdminDashboard = () => {
               <h2 className="text-xl font-semibold">Library</h2>
               <button
                 className={`hover:underline hover:text-blue-400 ${
-                  libraryToModify.id === 0 ? "hidden" : ""
+                  selectedLibrary.id === 0 ? "hidden" : ""
                 }`}
                 onClick={handleResetLibraryToModify}>
                 Reset Library
               </button>
             </div>
-            {libraryToModify.id !== 0 && (
+            {selectedLibrary.id !== 0 && (
               <>
-                <p>ID: {libraryToModify.id}</p>
-                <p>Name: {libraryToModify.name}</p>
-                <p>City: {libraryToModify.city}</p>
-                <p>Street Address: {libraryToModify.streetAddress}</p>
-                <p>Country: {libraryToModify.country}</p>
-                <p>PostalCode: {libraryToModify.postalCode}</p>
-                <p>Phone: {libraryToModify.phone}</p>
+                <p>ID: {selectedLibrary.id}</p>
+                <p>Name: {selectedLibrary.name}</p>
+                <p>City: {selectedLibrary.city}</p>
+                <p>Street Address: {selectedLibrary.streetAddress}</p>
+                <p>Country: {selectedLibrary.country}</p>
+                <p>PostalCode: {selectedLibrary.postalCode}</p>
+                <p>Phone: {selectedLibrary.phone}</p>
               </>
             )}
 
@@ -197,18 +197,18 @@ const AdminDashboard = () => {
               <h2 className="text-xl font-semibold">Book</h2>
               <button
                 className={`hover:underline hover:text-blue-400 ${
-                  bookToModify.id === 0 ? "hidden" : ""
+                  selectedBook.id === 0 ? "hidden" : ""
                 }`}
                 onClick={handleResetBookToModify}>
                 Reset Book
               </button>
             </div>
-            {bookToModify.id !== 0 && (
+            {selectedBook.id !== 0 && (
               <>
-                <p>ID: {bookToModify.id}</p>
-                <p>Title: {bookToModify.title}</p>
-                <p>ISBN: {bookToModify.isbn}</p>
-                <p>Author: {bookToModify.author}</p>
+                <p>ID: {selectedBook.id}</p>
+                <p>Title: {selectedBook.title}</p>
+                <p>ISBN: {selectedBook.isbn}</p>
+                <p>Author: {selectedBook.author}</p>
               </>
             )}
           </div>

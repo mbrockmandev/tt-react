@@ -136,6 +136,9 @@ const CreateBookModal = () => {
     e.preventDefault();
 
     try {
+      // ISO string without milliseconds
+      const currentDateISOString = new Date().toISOString().slice(0, 19) + "Z";
+
       const reqOptions: RequestInit = {
         method: "POST",
         credentials: "include",
@@ -146,7 +149,7 @@ const CreateBookModal = () => {
           title: newBook.title,
           author: newBook.author,
           isbn: newBook.isbn,
-          published_at: Date.now(),
+          published_at: currentDateISOString,
           summary: newBook.summary,
           thumbnail: newBook.thumbnail,
         }),
