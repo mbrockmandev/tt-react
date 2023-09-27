@@ -19,7 +19,6 @@ const UpdateUserModal = () => {
   const [, setAlert] = useRecoilState(alertAtom);
   const [activeModal, setActiveModal] = useRecoilState(modalAtom);
 
-  const [isBypassChecked, setIsBypassChecked] = useState(false);
   const [userToModify, setUserToModify] =
     useState<UserResponse>(emptyUserResponse);
 
@@ -135,10 +134,6 @@ const UpdateUserModal = () => {
     });
   };
 
-  const handleBypassChecked = () => {
-    setIsBypassChecked(!isBypassChecked);
-  };
-
   const handleUpdate = async (e: any) => {
     e.preventDefault();
 
@@ -238,14 +233,10 @@ const UpdateUserModal = () => {
                     <input
                       id="password"
                       type="password"
-                      disabled={isBypassChecked}
                       onChange={handlePasswordChange}
-                      className={`w-full rounded-lg p-4 pe-12 text-sm shadow-sm shadow-gray-300 focus:ring-gray-200 focus:border-gray-400 active:border-gray-200 ${
-                        isBypassChecked
-                          ? "bg-gray-100 border-white"
-                          : "border-gray-200"
+                      className={`w-full rounded-lg p-4 pe-12 text-sm shadow-sm shadow-gray-300 focus:ring-gray-200 focus:border-gray-400 active:border-gray-200
                       }`}
-                      placeholder={`${isBypassChecked ? "" : "Password"}`}
+                      placeholder="Password"
                     />
                   </div>
                 </div>
@@ -261,16 +252,9 @@ const UpdateUserModal = () => {
                     <input
                       id="confirmPassword"
                       type="password"
-                      disabled={isBypassChecked}
                       onChange={handleConfirmPasswordChange}
-                      className={`w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm shadow-gray-300 focus:ring-gray-200 focus:border-gray-400 active:border-gray-200 ${
-                        isBypassChecked
-                          ? "bg-gray-100 border-white"
-                          : "border-gray-200"
-                      }`}
-                      placeholder={`${
-                        isBypassChecked ? "" : "Confirm Password"
-                      }`}
+                      className={`w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm shadow-gray-300 focus:ring-gray-200 focus:border-gray-400 active:border-gray-200 `}
+                      placeholder="Confirm Password"
                     />
                   </div>
                 </div>
@@ -306,26 +290,6 @@ const UpdateUserModal = () => {
                   </div>
 
                   <div className="flex items-center gap-x-4">
-                    <div className="">
-                      <label
-                        htmlFor="bypass"
-                        className={`mr-2`}
-                        onClick={handleBypassChecked}>
-                        <span
-                          className={`
-                              cursor-pointer
-                              ${
-                                isBypassChecked
-                                  ? "underline text-red-700 font-bold"
-                                  : "underlien text-blue-500 font-bold"
-                              }`}>
-                          {isBypassChecked
-                            ? "Bypass Password"
-                            : "Require Password"}
-                        </span>
-                      </label>
-                    </div>
-
                     <div className="py-4 flex justify-end items-center gap-4">
                       <label htmlFor="role">Role:</label>
                       <select
