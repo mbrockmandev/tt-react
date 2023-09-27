@@ -11,7 +11,8 @@ function XMarkIcon(props) {
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
-      {...props}>
+      {...props}
+    >
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -43,7 +44,8 @@ const Alert = () => {
       {alert.type === "success" && (
         <div
           role="alert"
-          className="rounded-xl border border-gray-100 bg-green-200 p-4">
+          className="rounded-xl border border-gray-100 bg-green-200 p-4"
+        >
           <div className="flex items-start gap-4">
             <span className="text-gray-600">
               <svg
@@ -52,7 +54,8 @@ const Alert = () => {
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                className="h-6 w-6">
+                className="h-6 w-6"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -67,7 +70,8 @@ const Alert = () => {
 
             <button
               className="text-green-500 transition hover:text-green-600"
-              onClick={handleDismissButtonClick}>
+              onClick={handleDismissButtonClick}
+            >
               <span className="sr-only">Dismiss popup</span>
 
               <svg
@@ -76,7 +80,8 @@ const Alert = () => {
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                className="h-6 w-6">
+                className="h-6 w-6"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -90,7 +95,8 @@ const Alert = () => {
       {alert.type === "error" && (
         <div
           role="alert"
-          className="rounded-xl border border-gray-100 bg-red-200 p-4">
+          className="rounded-xl border border-gray-100 bg-red-200 p-4"
+        >
           <div className="flex items-start gap-4">
             <span className="text-gray-600">
               <XMarkIcon />
@@ -107,7 +113,8 @@ const Alert = () => {
 
             <button
               className="text-red-500 transition hover:text-red-600"
-              onClick={handleDismissButtonClick}>
+              onClick={handleDismissButtonClick}
+            >
               <span className="sr-only">Dismiss popup</span>
 
               <svg
@@ -116,7 +123,8 @@ const Alert = () => {
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                className="h-6 w-6">
+                className="h-6 w-6"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -130,7 +138,8 @@ const Alert = () => {
       {alert.type === "info" && (
         <div
           role="alert"
-          className="rounded-xl border border-gray-100 bg-white-200 p-4">
+          className="rounded-xl border border-gray-100 bg-sky-300 p-4"
+        >
           <div className="flex items-start gap-4">
             <span className="text-gray-600">
               <XMarkIcon />
@@ -144,7 +153,8 @@ const Alert = () => {
 
             <button
               className="text-gray-500 transition hover:text-gray-600"
-              onClick={handleDismissButtonClick}>
+              onClick={handleDismissButtonClick}
+            >
               <span className="sr-only">Dismiss popup</span>
 
               <svg
@@ -153,7 +163,8 @@ const Alert = () => {
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                className="h-6 w-6">
+                className="h-6 w-6"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
