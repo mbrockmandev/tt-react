@@ -23,30 +23,42 @@ const UpdateLibraryModal = () => {
 
   const getDiffPayload = () => {
     let payload = {
-      name: "",
-      city: "",
-      street_address: "",
-      postal_code: "",
-      country: "",
-      phone: "",
+      name: undefined,
+      city: undefined,
+      street_address: undefined,
+      postal_code: undefined,
+      country: undefined,
+      phone: undefined,
     };
 
-    if (libraryToModify.name !== selectedLibrary.name) {
+    if (libraryToModify.name !== selectedLibrary.name && libraryToModify.name) {
       payload.name = libraryToModify.name;
     }
-    if (libraryToModify.city !== selectedLibrary.city) {
+    if (libraryToModify.city !== selectedLibrary.city && libraryToModify.city) {
       payload.city = libraryToModify.city;
     }
-    if (libraryToModify.streetAddress !== selectedLibrary.streetAddress) {
+    if (
+      libraryToModify.streetAddress !== selectedLibrary.streetAddress &&
+      libraryToModify.streetAddress
+    ) {
       payload.street_address = libraryToModify.streetAddress;
     }
-    if (libraryToModify.postalCode !== selectedLibrary.postalCode) {
+    if (
+      libraryToModify.postalCode !== selectedLibrary.postalCode &&
+      libraryToModify.postalCode
+    ) {
       payload.postal_code = libraryToModify.postalCode;
     }
-    if (libraryToModify.country !== selectedLibrary.country) {
+    if (
+      libraryToModify.country !== selectedLibrary.country &&
+      libraryToModify.country
+    ) {
       payload.country = libraryToModify.country;
     }
-    if (libraryToModify.phone !== selectedLibrary.phone) {
+    if (
+      libraryToModify.phone !== selectedLibrary.phone &&
+      libraryToModify.phone
+    ) {
       payload.phone = libraryToModify.phone;
     }
 
@@ -213,21 +225,18 @@ const UpdateLibraryModal = () => {
   const modal =
     activeModal === "UpdateLibraryModal" &&
     ReactDOM.createPortal(
-      <div
-        className="modal-overlay"
-        onClick={handleCancelModal}>
+      <div className="modal-overlay" onClick={handleCancelModal}>
         <form
           className="mx-auto mb-0 mt-6 space-y-4 rounded-lg p-4 bg-gray-50 shadow-lg shadow-gray-300/50 sm:mt-8 sm:p-6 lg:p-8"
-          onSubmit={handleUpdate}>
+          onSubmit={handleUpdate}
+        >
           {selectedLibrary.id !== 0 && (
             <>
               <p className="text-center text-lg font-medium">Update Library</p>
 
               {/* Name */}
               <div>
-                <label
-                  htmlFor="name"
-                  className="mr-auto">
+                <label htmlFor="name" className="mr-auto">
                   Name
                 </label>
 
@@ -247,9 +256,7 @@ const UpdateLibraryModal = () => {
 
               {/* City */}
               <div>
-                <label
-                  htmlFor="city"
-                  className="mr-auto">
+                <label htmlFor="city" className="mr-auto">
                   City
                 </label>
 
@@ -269,9 +276,7 @@ const UpdateLibraryModal = () => {
 
               {/* Street Address */}
               <div>
-                <label
-                  htmlFor="streetAddress"
-                  className="mr-auto">
+                <label htmlFor="streetAddress" className="mr-auto">
                   Street Address
                 </label>
 
@@ -291,9 +296,7 @@ const UpdateLibraryModal = () => {
 
               {/* Postal Code */}
               <div>
-                <label
-                  htmlFor="postalCode"
-                  className="mr-auto">
+                <label htmlFor="postalCode" className="mr-auto">
                   Postal Code
                 </label>
 
@@ -313,9 +316,7 @@ const UpdateLibraryModal = () => {
 
               {/* Country */}
               <div>
-                <label
-                  htmlFor="country"
-                  className="mr-auto">
+                <label htmlFor="country" className="mr-auto">
                   Country
                 </label>
 
@@ -335,9 +336,7 @@ const UpdateLibraryModal = () => {
 
               {/* Phone */}
               <div>
-                <label
-                  htmlFor="phone"
-                  className="mr-auto">
+                <label htmlFor="phone" className="mr-auto">
                   Phone
                 </label>
 
@@ -360,13 +359,15 @@ const UpdateLibraryModal = () => {
                 <button
                   type="submit"
                   className="cancel-button block w-[35%] bg-red-300 rounded-lg bg-secondary px-5 py-3 text-sm font-medium text-black mx-auto"
-                  onClick={handleCancelModal}>
+                  onClick={handleCancelModal}
+                >
                   Cancel
                 </button>
 
                 <button
                   type="submit"
-                  className="block w-[35%] bg-green-300 rounded-lg bg-secondary px-5 py-3 text-sm font-medium text-black mx-auto">
+                  className="block w-[35%] bg-green-300 rounded-lg bg-secondary px-5 py-3 text-sm font-medium text-black mx-auto"
+                >
                   Update
                 </button>
               </div>
@@ -381,7 +382,8 @@ const UpdateLibraryModal = () => {
     <div>
       <div
         className="flex text-sm px-4 py-2 hover:text-blue-500 hover:underline cursor-pointer"
-        onClick={selectedLibrary ? handleModalChange : undefined}>
+        onClick={selectedLibrary ? handleModalChange : undefined}
+      >
         Update Library
       </div>
       {modal}

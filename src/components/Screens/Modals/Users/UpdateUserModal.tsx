@@ -24,30 +24,42 @@ const UpdateUserModal = () => {
 
   const getDiffPayload = () => {
     let payload = {
-      email: "",
-      password: "",
-      confirm_password: "",
-      first_name: "",
-      last_name: "",
-      role: "",
+      email: undefined,
+      password: undefined,
+      confirm_password: undefined,
+      first_name: undefined,
+      last_name: undefined,
+      role: undefined,
     };
 
-    if (userToModify.email !== selectedUser.email) {
+    if (userToModify.email !== selectedUser.email && userToModify.email) {
       payload.email = userToModify.email;
     }
-    if (userToModify.password !== selectedUser.password) {
+    if (
+      userToModify.password !== selectedUser.password &&
+      userToModify.password
+    ) {
       payload.password = userToModify.password;
     }
-    if (userToModify.confirmPassword !== selectedUser.confirmPassword) {
+    if (
+      userToModify.confirmPassword !== selectedUser.confirmPassword &&
+      userToModify.confirmPassword
+    ) {
       payload.confirm_password = userToModify.confirmPassword;
     }
-    if (userToModify.firstName !== selectedUser.firstName) {
+    if (
+      userToModify.firstName !== selectedUser.firstName &&
+      userToModify.firstName
+    ) {
       payload.first_name = userToModify.firstName;
     }
-    if (userToModify.lastName !== selectedUser.lastName) {
+    if (
+      userToModify.lastName !== selectedUser.lastName &&
+      userToModify.lastName
+    ) {
       payload.last_name = userToModify.lastName;
     }
-    if (userToModify.role !== selectedUser.role) {
+    if (userToModify.role !== selectedUser.role && userToModify.role) {
       payload.role = userToModify.role;
     }
 
@@ -186,21 +198,18 @@ const UpdateUserModal = () => {
   const modal =
     activeModal === "UpdateUserModal" &&
     ReactDOM.createPortal(
-      <div
-        className="modal-overlay"
-        onClick={handleOutsideClick}>
+      <div className="modal-overlay" onClick={handleOutsideClick}>
         <form
           className="mx-auto mb-0 mt-6 space-y-4 rounded-lg p-4 bg-gray-50 shadow-lg shadow-gray-300/50 sm:mt-8 sm:p-6 lg:p-8"
-          onSubmit={handleUpdate}>
+          onSubmit={handleUpdate}
+        >
           {selectedUser.id !== 0 && (
             <>
               <p className="text-center text-lg font-medium">User info:</p>
 
               <div>
                 <div className="flex items-center gap-x-2">
-                  <label
-                    htmlFor="email"
-                    className="mr-auto">
+                  <label htmlFor="email" className="mr-auto">
                     Email
                   </label>
 
@@ -220,7 +229,8 @@ const UpdateUserModal = () => {
                         className="h-4 w-4 text-gray-400"
                         fill="none"
                         viewBox="0 0 24 24"
-                        stroke="currentColor">
+                        stroke="currentColor"
+                      >
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -233,9 +243,7 @@ const UpdateUserModal = () => {
                 </div>
 
                 <div className="flex items-center gap-x-2">
-                  <label
-                    htmlFor="password"
-                    className="mr-auto">
+                  <label htmlFor="password" className="mr-auto">
                     Password
                   </label>
 
@@ -251,9 +259,7 @@ const UpdateUserModal = () => {
                 </div>
 
                 <div className="flex items-center gap-x-2">
-                  <label
-                    htmlFor="confirmPassword"
-                    className="mr-auto">
+                  <label htmlFor="confirmPassword" className="mr-auto">
                     Confirm
                   </label>
 
@@ -304,11 +310,13 @@ const UpdateUserModal = () => {
                       <select
                         id="role"
                         className="rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm shadow-gray-300 focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
-                        onChange={handleRoleChange}>
+                        onChange={handleRoleChange}
+                      >
                         <option
                           value={userToModify.role}
                           placeholder="Role"
-                          defaultChecked>
+                          defaultChecked
+                        >
                           User
                         </option>
                         <option value="staff">Staff</option>
@@ -322,13 +330,15 @@ const UpdateUserModal = () => {
                   <button
                     type="submit"
                     className="cancel-button block w-[35%] bg-red-300 rounded-lg bg-secondary px-5 py-3 text-sm font-medium text-black mx-auto"
-                    onClick={handleCancel}>
+                    onClick={handleCancel}
+                  >
                     Cancel
                   </button>
 
                   <button
                     type="submit"
-                    className="submit-button block w-[35%] bg-green-300 rounded-lg bg-secondary px-5 py-3 text-sm font-medium text-black mx-auto">
+                    className="submit-button block w-[35%] bg-green-300 rounded-lg bg-secondary px-5 py-3 text-sm font-medium text-black mx-auto"
+                  >
                     Update
                   </button>
                 </div>
@@ -344,7 +354,8 @@ const UpdateUserModal = () => {
     <div>
       <div
         className="flex text-sm px-4 py-2 hover:text-blue-500 hover:underline cursor-pointer"
-        onClick={selectedUser ? handleModalChange : undefined}>
+        onClick={selectedUser ? handleModalChange : undefined}
+      >
         Update User
       </div>
       {modal}

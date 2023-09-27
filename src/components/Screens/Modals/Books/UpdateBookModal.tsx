@@ -29,27 +29,33 @@ const UpdateBookModal = () => {
       published_at: undefined,
     };
 
-    if (bookToModify.title !== selectedBook.title) {
+    if (bookToModify.title !== selectedBook.title && bookToModify.title) {
       payload.title = bookToModify.title;
     }
-    if (bookToModify.author !== selectedBook.author) {
+    if (bookToModify.author !== selectedBook.author && bookToModify.author) {
       payload.author = bookToModify.author;
     }
-    if (bookToModify.isbn !== selectedBook.isbn) {
+    if (bookToModify.isbn !== selectedBook.isbn && bookToModify.isbn) {
       payload.isbn = bookToModify.isbn;
     }
-    if (bookToModify.summary !== selectedBook.summary) {
+    if (bookToModify.summary !== selectedBook.summary && bookToModify.summary) {
       payload.summary = bookToModify.summary;
     }
-    if (bookToModify.thumbnail !== selectedBook.thumbnail) {
+    if (
+      bookToModify.thumbnail !== selectedBook.thumbnail &&
+      bookToModify.thumbnail
+    ) {
       payload.thumbnail = bookToModify.thumbnail;
     }
-    if (bookToModify.publishedAt !== selectedBook.publishedAt) {
+    if (
+      bookToModify.publishedAt !== selectedBook.publishedAt &&
+      bookToModify.publishedAt
+    ) {
       payload.published_at = bookToModify.publishedAt;
     }
 
     return Object.fromEntries(
-      Object.entries(payload).filter(([k, v]) => v !== undefined),
+      Object.entries(payload).filter(([, v]) => v !== undefined),
     );
   };
 
@@ -253,20 +259,17 @@ const UpdateBookModal = () => {
   const modal =
     activeModal === "UpdateBookModal" &&
     ReactDOM.createPortal(
-      <div
-        className="modal-overlay"
-        onClick={handleOutsideClick}>
+      <div className="modal-overlay" onClick={handleOutsideClick}>
         <form
           className="mx-auto mb-0 mt-6 space-y-4 rounded-lg p-4 bg-gray-50 shadow-lg shadow-gray-300/50 sm:mt-8 sm:p-6 lg:p-8"
-          onSubmit={handleUpdate}>
+          onSubmit={handleUpdate}
+        >
           {selectedBook.id !== 0 && (
             <>
               <p className="text-center text-lg font-medium">Book info:</p>
 
               <div>
-                <label
-                  htmlFor="title"
-                  className="sr-only">
+                <label htmlFor="title" className="sr-only">
                   Title
                 </label>
 
@@ -284,9 +287,7 @@ const UpdateBookModal = () => {
               </div>
 
               <div>
-                <label
-                  htmlFor="isbn"
-                  className="sr-only">
+                <label htmlFor="isbn" className="sr-only">
                   ISBN
                 </label>
 
@@ -304,9 +305,7 @@ const UpdateBookModal = () => {
               </div>
 
               <div>
-                <label
-                  htmlFor="title"
-                  className="sr-only">
+                <label htmlFor="title" className="sr-only">
                   Author
                 </label>
 
@@ -324,9 +323,7 @@ const UpdateBookModal = () => {
               </div>
 
               <div>
-                <label
-                  htmlFor="thumbnail"
-                  className="sr-only">
+                <label htmlFor="thumbnail" className="sr-only">
                   Thumbnail URL
                 </label>
 
@@ -344,9 +341,7 @@ const UpdateBookModal = () => {
               </div>
 
               <div>
-                <label
-                  htmlFor="published"
-                  className="sr-only">
+                <label htmlFor="published" className="sr-only">
                   Published
                 </label>
 
@@ -364,9 +359,7 @@ const UpdateBookModal = () => {
               </div>
 
               <div>
-                <label
-                  htmlFor="summary"
-                  className="sr-only">
+                <label htmlFor="summary" className="sr-only">
                   Summary
                 </label>
 
@@ -386,13 +379,15 @@ const UpdateBookModal = () => {
                 <button
                   type="submit"
                   className="cancel-button block w-[35%] bg-red-300 rounded-lg bg-secondary px-5 py-3 text-sm font-medium text-black mx-auto"
-                  onClick={handleCancel}>
+                  onClick={handleCancel}
+                >
                   Cancel
                 </button>
 
                 <button
                   type="submit"
-                  className="block w-[35%] bg-green-300 rounded-lg bg-secondary px-5 py-3 mx-2 text-sm font-medium text-black mx-auto">
+                  className="block w-[35%] bg-green-300 rounded-lg bg-secondary px-5 py-3 mx-2 text-sm font-medium text-black mx-auto"
+                >
                   Update
                 </button>
               </div>
@@ -407,7 +402,8 @@ const UpdateBookModal = () => {
     <div>
       <div
         className="flex text-sm px-4 py-2 hover:text-blue-500 hover:underline cursor-pointer"
-        onClick={selectedBook ? handleModalChange : undefined}>
+        onClick={selectedBook ? handleModalChange : undefined}
+      >
         Update Book
       </div>
       {modal}

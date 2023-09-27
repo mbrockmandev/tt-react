@@ -71,3 +71,7 @@ keytmp.pem
 react-app.zip
 
 .backupenv
+.idea/modules.xml
+.idea/tt-react.iml
+.idea/vcs.xml
+.idea
