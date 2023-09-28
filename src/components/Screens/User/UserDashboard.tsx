@@ -9,6 +9,7 @@ import { userAtom } from "../../../recoil/atoms/userAtom";
 import { alertAtom } from "../../../recoil/atoms/alertAtom";
 
 import Library, { emptyLibrary } from "../../../utils/models/Library";
+import { UpdateCurrentUrl } from "../../../utils/urlStorage";
 
 const UserDashboard = () => {
   const [userData, setUserData] = useRecoilState(userAtom);
@@ -18,6 +19,7 @@ const UserDashboard = () => {
   const [allDoneLoading, setAllDoneLoading] = useState(false);
 
   const fetchAllUserData = async () => {
+    UpdateCurrentUrl();
     const reqOptions: RequestInit = {
       method: "GET",
       credentials: "include",

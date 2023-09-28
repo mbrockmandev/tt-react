@@ -87,7 +87,7 @@ const BookDetails: React.FC = () => {
 
   // initial load, update current URL and get book, library data
   useEffect(() => {
-    if (!loading) return;
+    if (!loading || !userData) return;
 
     UpdateCurrentUrl();
 
@@ -136,10 +136,9 @@ const BookDetails: React.FC = () => {
     fetchBookData();
 
     const updateBorrowButtonText = async () => {
+      // only users may borrow/return
       if (userData.role !== "user") {
         setBorrowButtonText("n/a");
-      }
-      if (userData.id === 0 && bookData.id === 0) {
         return;
       }
 
