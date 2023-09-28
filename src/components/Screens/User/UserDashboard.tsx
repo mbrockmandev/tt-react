@@ -141,6 +141,7 @@ const UserDashboard = () => {
   };
 
   useEffect(() => {
+    if (allDoneLoading) return;
     // done loading all data
     if (!isFetchingUserData) fetchUserData();
     if (!isFetchingHomeLibrary) fetchHomeLibraryInfo();
@@ -162,12 +163,7 @@ const UserDashboard = () => {
     setTimeout(() => {
       setAllDoneLoading(hasEverythingLoaded());
     }, 200);
-  }, [
-    isFetchingUserData,
-    isFetchingHomeLibrary,
-    isFetchingReturnedBooks,
-    isFetchingBorrowedBooks,
-  ]);
+  }, []);
 
   return allDoneLoading ? (
     <div>
