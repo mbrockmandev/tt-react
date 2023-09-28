@@ -8,8 +8,6 @@ import RecommendedBooks from "../User/RecommendedBooks";
 import { userAtom } from "../../../recoil/atoms/userAtom";
 import { alertAtom } from "../../../recoil/atoms/alertAtom";
 
-import { UpdateCurrentUrl } from "../../../utils/urlStorage";
-import Book from "../../../utils/models/Book";
 import Library, { emptyLibrary } from "../../../utils/models/Library";
 
 import debounce from "lodash.debounce";
@@ -18,8 +16,8 @@ const UserDashboard = () => {
   const [userData, setUserData] = useRecoilState(userAtom);
   const [, setAlert] = useRecoilState(alertAtom);
 
-  // const [returnedBooks, setReturnedBooks] = useState<Book[]>([]);
-  // const [borrowedBooks, setBorrowedBooks] = useState<Book[]>([]);
+  const [borrowedBooks, setBorrowedBooks] = useState([]);
+  const [returnedBooks, setReturnedBooks] = useState([]);
   const [library, setLibrary] = useState<Library>(emptyLibrary);
   const [loading, setLoading] = useState([true, true, true, true]);
 
@@ -42,7 +40,6 @@ const UserDashboard = () => {
         role: data.role,
         email: data.email,
       });
-      localStorage.setItem("user", JSON.stringify(data));
     } catch (error) {
       setAlert({
         message: error.message,
@@ -72,7 +69,6 @@ const UserDashboard = () => {
         ...userData,
         homeLibraryId: data.id,
       });
-      localStorage.setItem("library", JSON.stringify(data));
     } catch (error) {
       setAlert({
         message: error.message,
@@ -95,11 +91,7 @@ const UserDashboard = () => {
       if (res.status !== 204) {
         const data = await res.json();
         if (data) {
-          setUserData({
-            ...userData,
-            returnedBooks: data,
-          });
-          // setReturnedBooks(data);
+          setReturnedBooks(data);
         }
       }
     } catch (error) {
@@ -124,11 +116,7 @@ const UserDashboard = () => {
       if (res.status !== 204) {
         const data = await res.json();
         if (data) {
-          setUserData({
-            ...userData,
-            borrowedBooks: data,
-          });
-          // setBorrowedBooks(data);
+          setBorrowedBooks(data);
         }
       }
     } catch (error) {
@@ -150,6 +138,16 @@ const UserDashboard = () => {
     if (loading[1]) debouncedHomeLibraryInfo();
     if (loading[2]) debouncedFetchReturnedBooks();
     if (loading[3]) debouncedFetchBorrowedBooks();
+
+    const updatedUser = {
+      ...userData,
+      homeLibraryId: library.id,
+      returnedBooks,
+      borrowedBooks,
+    };
+    setUserData(updatedUser);
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+    localStorage.setItem("library", JSON.stringify(library));
   }, [loading]);
 
   return (
