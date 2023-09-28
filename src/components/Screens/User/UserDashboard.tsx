@@ -10,8 +10,6 @@ import { alertAtom } from "../../../recoil/atoms/alertAtom";
 
 import Library, { emptyLibrary } from "../../../utils/models/Library";
 
-import debounce from "lodash.debounce";
-
 const UserDashboard = () => {
   const [userData, setUserData] = useRecoilState(userAtom);
   const [, setAlert] = useRecoilState(alertAtom);
@@ -46,7 +44,9 @@ const UserDashboard = () => {
         email: data.email,
       });
       setIsFetchingUserData(false);
-      checkAllLoaded();
+      setTimeout(() => {
+        checkAllLoaded();
+      }, 200);
     } catch (error) {
       setAlert({
         message: error.message,
@@ -74,7 +74,9 @@ const UserDashboard = () => {
       const updatedLibrary = { ...data };
       setLibrary(updatedLibrary);
       setIsFetchingHomeLibrary(false);
-      checkAllLoaded();
+      setTimeout(() => {
+        checkAllLoaded();
+      }, 200);
     } catch (error) {
       setAlert({
         message: error.message,
@@ -99,7 +101,9 @@ const UserDashboard = () => {
         const data = await res.json();
         setReturnedBooks(data);
         setIsFetchingReturnedBooks(false);
-        checkAllLoaded();
+        setTimeout(() => {
+          checkAllLoaded();
+        }, 200);
       }
     } catch (error) {
       setAlert({
@@ -125,7 +129,9 @@ const UserDashboard = () => {
         const data = await res.json();
         setBorrowedBooks(data);
         setIsFetchingBorrowedBooks(false);
-        checkAllLoaded();
+        setTimeout(() => {
+          checkAllLoaded();
+        }, 200);
       }
     } catch (error) {
       setAlert({
@@ -137,10 +143,10 @@ const UserDashboard = () => {
 
   const checkAllLoaded = () => {
     if (
-      isFetchingUserData &&
-      isFetchingHomeLibrary &&
-      isFetchingReturnedBooks &&
-      isFetchingBorrowedBooks
+      !isFetchingUserData &&
+      !isFetchingHomeLibrary &&
+      !isFetchingReturnedBooks &&
+      !isFetchingBorrowedBooks
     ) {
       setAllDoneLoading(true);
 
