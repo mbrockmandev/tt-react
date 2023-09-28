@@ -30,11 +30,10 @@ const UserDashboard = () => {
     const url = `${process.env.REACT_APP_BACKEND}/users/${userData.id}`;
     try {
       const res = await fetch(url, reqOptions);
-      const data = await res.json();
-      console.log("fetchuserdata: ", data);
-
-      setUserData({ ...data });
       setLoading((p) => [true, p[1], p[2], p[3]]);
+
+      const data = await res.json();
+      setUserData({ ...data });
     } catch (error) {
       setAlert({
         message: error.message,
@@ -55,11 +54,11 @@ const UserDashboard = () => {
 
       url = `${process.env.REACT_APP_BACKEND}/libraries/${data}`;
       res = await fetch(url, reqOptions);
+      setLoading((p) => [p[0], true, p[2], p[3]]);
+
       data = await res.json();
       const updatedLibrary = { ...data };
       setLibrary(updatedLibrary);
-
-      setLoading((p) => [p[0], true, p[2], p[3]]);
     } catch (error) {
       setAlert({
         message: error.message,
@@ -77,11 +76,12 @@ const UserDashboard = () => {
 
     try {
       const res = await fetch(url, reqOptions);
+      setLoading((p) => [p[0], p[1], true, p[3]]);
+
       if (res.status !== 204) {
         const data = await res.json();
         if (data) {
           setReturnedBooks(data);
-          setLoading((p) => [p[0], p[1], true, p[3]]);
         }
       }
     } catch (error) {
@@ -101,11 +101,12 @@ const UserDashboard = () => {
 
     try {
       const res = await fetch(url, reqOptions);
+      setLoading((p) => [p[0], p[1], p[2], true]);
+
       if (res.status !== 204) {
         const data = await res.json();
         if (data) {
           setBorrowedBooks(data);
-          setLoading((p) => [p[0], p[1], p[2], true]);
         }
       }
     } catch (error) {
