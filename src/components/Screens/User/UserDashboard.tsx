@@ -116,15 +116,25 @@ const UserDashboard = () => {
   };
 
   const checkIfDoneLoading = () => {
+    console.log(
+      "checking if the page is done loading, the following are part of the logical check: ",
+      userData,
+      userData.id,
+      userData.isLoggedIn,
+    );
     let isDoneLoading = userData && userData.id !== 0;
     isDoneLoading = isDoneLoading && userData.isLoggedIn;
-    return isDoneLoading;
+    console.log("isDoneLoading = ", isDoneLoading);
+    setLoading(isDoneLoading);
+    console.log("setting loading to...", isDoneLoading);
+    console.log("loading is now: ", loading);
   };
 
   useEffect(() => {
     UpdateCurrentUrl();
-
-    setLoading(checkIfDoneLoading());
+    setTimeout(() => {
+      checkIfDoneLoading();
+    }, 5000);
     if (!loading) return;
     fetchUserData();
     fetchReturnedBooks();
