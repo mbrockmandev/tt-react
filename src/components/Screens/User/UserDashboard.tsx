@@ -46,6 +46,7 @@ const UserDashboard = () => {
         email: data.email,
       });
       setIsFetchingUserData(false);
+      checkAllLoaded();
     } catch (error) {
       setAlert({
         message: error.message,
@@ -73,6 +74,7 @@ const UserDashboard = () => {
       const updatedLibrary = { ...data };
       setLibrary(updatedLibrary);
       setIsFetchingHomeLibrary(false);
+      checkAllLoaded();
     } catch (error) {
       setAlert({
         message: error.message,
@@ -97,6 +99,7 @@ const UserDashboard = () => {
         const data = await res.json();
         setReturnedBooks(data);
         setIsFetchingReturnedBooks(false);
+        checkAllLoaded();
       }
     } catch (error) {
       setAlert({
@@ -122,6 +125,7 @@ const UserDashboard = () => {
         const data = await res.json();
         setBorrowedBooks(data);
         setIsFetchingBorrowedBooks(false);
+        checkAllLoaded();
       }
     } catch (error) {
       setAlert({
@@ -131,13 +135,25 @@ const UserDashboard = () => {
     }
   };
 
-  const hasEverythingLoaded = () => {
-    return (
-      isFetchingUserData &&
-      isFetchingHomeLibrary &&
-      isFetchingReturnedBooks &&
-      isFetchingBorrowedBooks
-    );
+  const checkAllLoaded = () => {
+    if (
+      !isFetchingUserData &&
+      !isFetchingHomeLibrary &&
+      !isFetchingReturnedBooks &&
+      !isFetchingBorrowedBooks
+    ) {
+      setAllDoneLoading(true);
+
+      const updatedUser = {
+        ...userData,
+        homeLibraryId: library.id,
+        returnedBooks,
+        borrowedBooks,
+      };
+      setUserData(updatedUser);
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+      localStorage.setItem("library", JSON.stringify(library));
+    }
   };
 
   useEffect(() => {
@@ -147,22 +163,6 @@ const UserDashboard = () => {
     if (!isFetchingHomeLibrary) fetchHomeLibraryInfo();
     if (!isFetchingReturnedBooks) fetchReturnedBooks();
     if (!isFetchingBorrowedBooks) fetchBorrowedBooks();
-
-    if (!hasEverythingLoaded()) return;
-
-    const updatedUser = {
-      ...userData,
-      homeLibraryId: library.id,
-      returnedBooks,
-      borrowedBooks,
-    };
-    setUserData(updatedUser);
-    localStorage.setItem("user", JSON.stringify(updatedUser));
-    localStorage.setItem("library", JSON.stringify(library));
-
-    setTimeout(() => {
-      setAllDoneLoading(hasEverythingLoaded());
-    }, 200);
   }, []);
 
   return allDoneLoading ? (
