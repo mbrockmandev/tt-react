@@ -30,11 +30,13 @@ import BooksReport from "./BooksReport";
 import BooksByLibraryFetcher from "./BooksByLibraryFetcher";
 import { alertAtom } from "../../../recoil/atoms/alertAtom";
 import UpdateUserModal from "../Modals/Users/UpdateUserModal";
+import { libraryAtom } from "../../../recoil/atoms/libraryAtom";
 
 const AdminDashboard = () => {
   const [, setActiveModal] = useRecoilState(modalAtom);
   const [, setAlert] = useRecoilState(alertAtom);
-  const [user, setUser] = useRecoilState(userAtom);
+  const [userData, setUserData] = useRecoilState(userAtom);
+  const [library, setLibrary] = useRecoilState(libraryAtom);
 
   const [selectedUser, setSelectedUser] = useRecoilState(selectedUserAtom);
   const [selectedLibrary, setSelectedLibrary] =
@@ -47,34 +49,51 @@ const AdminDashboard = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    setActiveModal(null);
+  const fetchAllUserData = async () => {
     UpdateCurrentUrl();
-    if (user && user.id !== 0) {
-      localStorage.setItem("user", JSON.stringify(user));
-    } else {
-      fetchUserData();
-    }
-
-    if (!user.isLoggedIn) {
-      navigate("/login");
-      return;
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const fetchUserData = async () => {
     const reqOptions: RequestInit = {
       method: "GET",
       credentials: "include",
     };
-    const url = `${process.env.REACT_APP_BACKEND}/users/${user.id}`;
+
+    let tempUserData = { ...userData };
+
     try {
-      const res = await fetch(url, reqOptions);
-      const data = await res.json();
-      const updatedUser = { ...data };
-      setUser(updatedUser);
+      if (userData.id === 0) {
+        return;
+      }
+      // fetch user data first
+      let url = `${process.env.REACT_APP_BACKEND}/users/${userData.id}`;
+      let res = await fetch(url, reqOptions);
+      let data = await res.json();
+
+      tempUserData = {
+        ...tempUserData,
+        id: data.id,
+        isLoggedIn: true,
+        lastUrl: "staff/dashboard",
+        role: data.role,
+        email: data.email,
+      };
+
+      // Fetch home library info
+      url = `${process.env.REACT_APP_BACKEND}/users/${userData.id}/homeLibrary`;
+      res = await fetch(url, reqOptions);
+      data = await res.json();
+
+      url = `${process.env.REACT_APP_BACKEND}/libraries/${data}`;
+      res = await fetch(url, reqOptions);
+      data = await res.json();
+
+      tempUserData = {
+        ...tempUserData,
+        homeLibraryId: data.id,
+      };
+      setLibrary({ ...data });
+
+      setUserData(tempUserData);
+      localStorage.setItem("user", JSON.stringify(tempUserData));
+      localStorage.setItem("library", JSON.stringify(library));
     } catch (error) {
       setAlert({
         message: error.message,
@@ -82,6 +101,12 @@ const AdminDashboard = () => {
       });
     }
   };
+
+  useEffect(() => {
+    if (!userData.id) navigate("/login");
+
+    fetchAllUserData();
+  }, []);
 
   const handleResetLibraryToModify = (e: any) => {
     e.preventDefault();
@@ -149,7 +174,8 @@ const AdminDashboard = () => {
                 className={`hover:underline hover:text-blue-400 ${
                   selectedUser.id === 0 ? "hidden" : ""
                 }`}
-                onClick={handleResetUserToModify}>
+                onClick={handleResetUserToModify}
+              >
                 Reset User
               </button>
             </div>
@@ -173,7 +199,8 @@ const AdminDashboard = () => {
                 className={`hover:underline hover:text-blue-400 ${
                   selectedLibrary.id === 0 ? "hidden" : ""
                 }`}
-                onClick={handleResetLibraryToModify}>
+                onClick={handleResetLibraryToModify}
+              >
                 Reset Library
               </button>
             </div>
@@ -199,7 +226,8 @@ const AdminDashboard = () => {
                 className={`hover:underline hover:text-blue-400 ${
                   selectedBook.id === 0 ? "hidden" : ""
                 }`}
-                onClick={handleResetBookToModify}>
+                onClick={handleResetBookToModify}
+              >
                 Reset Book
               </button>
             </div>
@@ -219,7 +247,8 @@ const AdminDashboard = () => {
                 <div className="">
                   <div
                     className="ml-auto hover:underline hover:text-blue-400 cursor-pointer"
-                    onClick={toggleShowBookByLibraryFetcher}>
+                    onClick={toggleShowBookByLibraryFetcher}
+                  >
                     Books By Library
                   </div>
                   {showBookByLibraryReport && <BooksByLibraryFetcher />}
@@ -227,7 +256,8 @@ const AdminDashboard = () => {
                 <div className="">
                   <div
                     className="ml-auto hover:underline hover:text-blue-400 cursor-pointer"
-                    onClick={toggleShowAllBooksReport}>
+                    onClick={toggleShowAllBooksReport}
+                  >
                     All Books
                   </div>
                 </div>
