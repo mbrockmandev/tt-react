@@ -39,6 +39,10 @@ const App = () => {
     if (user && user.isLoggedIn) {
       const targetPath = `/${user.role}/dashboard`;
 
+      if (window.location.pathname === "register") {
+        navigate("/login");
+      }
+
       if (window.location.pathname !== targetPath) {
         navigate(targetPath);
       }

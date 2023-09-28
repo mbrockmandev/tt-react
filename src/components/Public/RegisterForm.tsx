@@ -10,7 +10,6 @@ import Alert from "../Common/Alert";
 import { useRecoilState } from "recoil";
 import { userAtom } from "../../recoil/atoms/userAtom";
 import { alertAtom } from "../../recoil/atoms/alertAtom";
-import { emptyUser } from "../../utils/models/User";
 
 export interface LoginUser {
   id: number;
@@ -162,7 +161,6 @@ const RegisterForm = () => {
           id: data.user_info.id,
           email: data.user_info.email,
           role: data.user_info.role,
-          lastUrl: "/login",
         });
       }
     } catch (err) {
@@ -173,14 +171,6 @@ const RegisterForm = () => {
       }
     }
   };
-
-  // useEffect(() => {
-  //   if (user.id !== 0) {
-  //     navigate("/login");
-  //   } else {
-  //     navigate("/register");
-  //   }
-  // }, [user]);
 
   const createUserModal = (
     <>
