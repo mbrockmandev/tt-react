@@ -162,7 +162,7 @@ const RegisterForm = () => {
           id: data.user_info.id,
           email: data.user_info.email,
           role: data.user_info.role,
-          lastUrl: `/${user.role}/dashboard`,
+          lastUrl: "/login",
         });
         navigate(user.lastUrl);
       }
