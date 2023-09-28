@@ -174,9 +174,13 @@ const RegisterForm = () => {
     }
   };
 
-  useEffect(() => {
-    navigate("/login");
-  }, [user]);
+  // useEffect(() => {
+  //   if (user.id !== 0) {
+  //     navigate("/login");
+  //   } else {
+  //     navigate("/register");
+  //   }
+  // }, [user]);
 
   const createUserModal = (
     <>
