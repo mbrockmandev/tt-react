@@ -71,6 +71,7 @@ function NavMenu() {
           type: "success",
         });
         ResetCurrentUrl();
+        localStorage.clear();
       }
     } catch (err) {
       setAlert({
@@ -81,15 +82,13 @@ function NavMenu() {
   };
 
   return (
-    <Menu
-      open={isMenuOpen}
-      handler={setIsMenuOpen}
-      placement="bottom-end">
+    <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
       <MenuHandler>
         <Button
           variant="text"
           color="gray"
-          className="flex items-center gap-1 py-3 px-2 lg:ml-auto bg-gray-200">
+          className="flex items-center gap-1 py-3 px-2 lg:ml-auto bg-gray-200"
+        >
           Menu
           <ChevronDownIcon
             strokeWidth={2.5}
@@ -103,7 +102,8 @@ function NavMenu() {
         {/* user dashboard item */}
         <MenuItem
           onClick={menuItemClick}
-          className={`flex items-center gap-2 rounded hover:bg-gray-500/10 focus:bg-gray-500/10 active:bg-gray-500/10`}>
+          className={`flex items-center gap-2 rounded hover:bg-gray-500/10 focus:bg-gray-500/10 active:bg-gray-500/10`}
+        >
           {React.createElement(UserCircleIcon, {
             className: `h-4 w-4`,
             strokeWidth: 2,
@@ -112,7 +112,8 @@ function NavMenu() {
             as="span"
             variant="lead"
             className="text-md py-2"
-            color="inherit">
+            color="inherit"
+          >
             My Dashboard
           </Typography>
         </MenuItem>
@@ -121,7 +122,8 @@ function NavMenu() {
           <MenuItem
             onClick={menuItemClick}
             className={`flex items-center gap-2 rounded hover:bg-gray-500/10 focus:bg-gray-500/10 active:bg-gray-500/10
-          `}>
+          `}
+          >
             {React.createElement(PowerIcon, {
               className: `h-4 w-4`,
               strokeWidth: 2,
@@ -130,7 +132,8 @@ function NavMenu() {
               as="span"
               variant="lead"
               className="text-md py-2"
-              color="inherit">
+              color="inherit"
+            >
               Login
             </Typography>
           </MenuItem>
@@ -140,7 +143,8 @@ function NavMenu() {
           <MenuItem
             onClick={menuItemClick}
             className={`flex items-center gap-2 rounded hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/100
-            }`}>
+            }`}
+          >
             {React.createElement(PowerIcon, {
               className: `h-4 w-4 text-red-500`,
               strokeWidth: 2,
@@ -149,7 +153,8 @@ function NavMenu() {
               as="span"
               variant="lead"
               className="text-md py-2"
-              color="red">
+              color="red"
+            >
               Logout
             </Typography>
           </MenuItem>
@@ -186,7 +191,8 @@ export function NavList({ items }) {
           to={link}
           key={`${label}-${link}`}
           color="gray-gray"
-          className="font-normal hover:bg-gray-200 focus:bg-gray-200/10 active:bg-gray-500/10 hover:text-gray-800">
+          className="font-normal hover:bg-gray-200 focus:bg-gray-200/10 active:bg-gray-500/10 hover:text-gray-800"
+        >
           <MenuItem className="flex items-center gap-2 md:rounded-full">
             {React.createElement(icon, { className: "h-[18px] w-[18px]" })}{" "}
             {label}
@@ -218,7 +224,8 @@ export default function Header() {
   return (
     <Navbar
       className="mx-auto max-w-screen-xl p-2 lg:pl-6
-       bg-gray-800 bg-gradient-to-r from-gray-600 to-gray-400 text-white drop-shadow">
+       bg-gray-800 bg-gradient-to-r from-gray-600 to-gray-400 text-white drop-shadow"
+    >
       <div className="relative flex items-center justify-between">
         <Typography
           as="a"
@@ -231,7 +238,8 @@ export default function Header() {
           hover:from-transparent
           hover:via-white
           hover:to-transparent
-          hover:background-clip-text">
+          hover:background-clip-text"
+        >
           TomeTracker
         </Typography>
 
@@ -248,9 +256,7 @@ export default function Header() {
           </div>
         )}
       </div>
-      <Collapse
-        open={isNavOpen}
-        className="overflow-scroll text-gray-500">
+      <Collapse open={isNavOpen} className="overflow-scroll text-gray-500">
         <NavList items={navListItems} />
       </Collapse>
     </Navbar>

@@ -158,14 +158,11 @@ const RegisterForm = () => {
 
       if (res.ok && data) {
         setUser({
-          ...emptyUser,
-          lastUrl: `/${user.role}/dashboard`,
-        });
-        setUser({
           ...user,
           id: data.user_info.id,
           email: data.user_info.email,
           role: data.user_info.role,
+          lastUrl: `/${user.role}/dashboard`,
         });
         navigate(user.lastUrl);
       }
@@ -190,15 +187,14 @@ const RegisterForm = () => {
     <>
       <form
         onSubmit={handleSubmit}
-        className="mb-0 mt-6 space-y-4 rounded-lg p-4 shadow-lg shadow-gray-300/50 sm:mt-8 sm:p-6 lg:p-8">
+        className="mb-0 mt-6 space-y-4 rounded-lg p-4 shadow-lg shadow-gray-300/50 sm:mt-8 sm:p-6 lg:p-8"
+      >
         <p className="text-center text-lg font-medium">
           Register a new account
         </p>
 
         <div>
-          <label
-            htmlFor="email"
-            className="sr-only">
+          <label htmlFor="email" className="sr-only">
             Email
           </label>
 
@@ -218,7 +214,8 @@ const RegisterForm = () => {
                 className="h-4 w-4 text-gray-400"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke="currentColor">
+                stroke="currentColor"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -231,9 +228,7 @@ const RegisterForm = () => {
         </div>
 
         <div>
-          <label
-            htmlFor="password"
-            className="sr-only">
+          <label htmlFor="password" className="sr-only">
             Password
           </label>
 
@@ -247,13 +242,12 @@ const RegisterForm = () => {
             />
             <span
               onClick={handlePasswordToggleClick}
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer">
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer"
+            >
               {showPassword ? "🙈" : "👀"}
             </span>
           </div>
-          <label
-            htmlFor="confirmPassword"
-            className="sr-only">
+          <label htmlFor="confirmPassword" className="sr-only">
             Password
           </label>
 
@@ -268,13 +262,12 @@ const RegisterForm = () => {
 
             <span
               onClick={handlePasswordToggleClick}
-              className="absolute right-4 top-11 transform -translate-y-1/2 cursor-pointer">
+              className="absolute right-4 top-11 transform -translate-y-1/2 cursor-pointer"
+            >
               {showPassword ? "🙈" : "👀"}
             </span>
           </div>
-          <label
-            htmlFor="firstname"
-            className="sr-only">
+          <label htmlFor="firstname" className="sr-only">
             First Name
           </label>
 
@@ -289,9 +282,7 @@ const RegisterForm = () => {
             />
           </div>
 
-          <label
-            htmlFor="lastname"
-            className="sr-only">
+          <label htmlFor="lastname" className="sr-only">
             Last Name
           </label>
 
@@ -311,11 +302,9 @@ const RegisterForm = () => {
             <select
               id="role"
               className="w-[25%] rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm shadow-gray-300 focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
-              onChange={handleRoleChange}>
-              <option
-                value="user"
-                placeholder="Role"
-                defaultChecked>
+              onChange={handleRoleChange}
+            >
+              <option value="user" placeholder="Role" defaultChecked>
                 User
               </option>
               <option value="staff">Staff</option>
@@ -326,7 +315,8 @@ const RegisterForm = () => {
 
         <button
           type="submit"
-          className="block w-[35%] bg-gray-200 rounded-lg bg-secondary px-5 py-3 text-sm font-medium text-black w-[25%] mx-auto">
+          className="block w-[35%] bg-gray-200 rounded-lg bg-secondary px-5 py-3 text-sm font-medium text-black w-[25%] mx-auto"
+        >
           Register
         </button>
 
@@ -334,7 +324,8 @@ const RegisterForm = () => {
           Already have an account?{" "}
           <Link
             className="hover:underline text-gray-700 hover:text-gray-500"
-            to="/login">
+            to="/login"
+          >
             Sign In
           </Link>
         </p>
