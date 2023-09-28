@@ -85,12 +85,13 @@ const BookDetails: React.FC = () => {
   };
 
   const fetchBookData = async () => {
+    if (userData.role !== "user") return;
     const reqOptions: RequestInit = {
       method: "GET",
       credentials: "include",
     };
     try {
-      if (userData.homeLibraryId === 0) {
+      if (userData.role === "user" && userData.homeLibraryId === 0) {
         setAlert({
           message:
             "Home library has not been set!\nPlease navigate to the Libraries page!",
@@ -135,6 +136,10 @@ const BookDetails: React.FC = () => {
     }
 
     const borrowedBookIds: number[] = [];
+    console.log("userData:", userData);
+    console.log("bookData:", bookData);
+    console.log("libraryData", libraryData);
+
     for (let book of userData.borrowedBooks) {
       borrowedBookIds.push(book.id);
     }

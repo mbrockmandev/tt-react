@@ -55,9 +55,7 @@ export const BorrowButton: React.FC<BorrowButtonProps> = ({
       >
         Borrow
       </Button>
-      {borrowButtonText === "n/a" && (
-        <Tooltip message="Book not available in this library" />
-      )}
+      {borrowButtonText === "n/a" && <Tooltip message="Book not available" />}
       {borrowButtonText === "return" && (
         <Tooltip message="Book already borrowed" />
       )}
