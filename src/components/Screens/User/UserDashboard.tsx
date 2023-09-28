@@ -44,9 +44,7 @@ const UserDashboard = () => {
         email: data.email,
       });
       setIsFetchingUserData(false);
-      setTimeout(() => {
-        checkAllLoaded();
-      }, 200);
+      checkAllLoaded();
     } catch (error) {
       setAlert({
         message: error.message,
@@ -74,9 +72,7 @@ const UserDashboard = () => {
       const updatedLibrary = { ...data };
       setLibrary(updatedLibrary);
       setIsFetchingHomeLibrary(false);
-      setTimeout(() => {
-        checkAllLoaded();
-      }, 200);
+      checkAllLoaded();
     } catch (error) {
       setAlert({
         message: error.message,
@@ -101,9 +97,7 @@ const UserDashboard = () => {
         const data = await res.json();
         setReturnedBooks(data);
         setIsFetchingReturnedBooks(false);
-        setTimeout(() => {
-          checkAllLoaded();
-        }, 200);
+        checkAllLoaded();
       }
     } catch (error) {
       setAlert({
@@ -129,9 +123,7 @@ const UserDashboard = () => {
         const data = await res.json();
         setBorrowedBooks(data);
         setIsFetchingBorrowedBooks(false);
-        setTimeout(() => {
-          checkAllLoaded();
-        }, 200);
+        checkAllLoaded();
       }
     } catch (error) {
       setAlert({
@@ -164,12 +156,18 @@ const UserDashboard = () => {
   };
 
   useEffect(() => {
-    if (allDoneLoading) return;
-    // done loading all data
-    if (!isFetchingUserData) fetchUserData();
-    if (!isFetchingHomeLibrary) fetchHomeLibraryInfo();
-    if (!isFetchingReturnedBooks) fetchReturnedBooks();
-    if (!isFetchingBorrowedBooks) fetchBorrowedBooks();
+    const fetchData = async () => {
+      if (userData.id === 0) return;
+      if (allDoneLoading) return;
+      if (!isFetchingUserData) await fetchUserData();
+      if (!isFetchingHomeLibrary) await fetchHomeLibraryInfo();
+      if (!isFetchingReturnedBooks) await fetchReturnedBooks();
+      if (!isFetchingBorrowedBooks) await fetchBorrowedBooks();
+
+      checkAllLoaded();
+    };
+
+    fetchData();
   }, []);
 
   return allDoneLoading ? (
