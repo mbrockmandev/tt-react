@@ -26,7 +26,6 @@ const BookDetails: React.FC = () => {
   const [, setAlert] = useRecoilState(alertAtom);
   const [borrowButtonText, setBorrowButtonText] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   const { bookId } = useParams();
 
@@ -88,10 +87,11 @@ const BookDetails: React.FC = () => {
 
   // initial load, update current URL and get book, library data
   useEffect(() => {
+    if (!loading) return;
+
     UpdateCurrentUrl();
 
     const fetchBookData = async () => {
-      if (userData.role !== "user") return;
       const reqOptions: RequestInit = {
         method: "GET",
         credentials: "include",
@@ -161,7 +161,11 @@ const BookDetails: React.FC = () => {
     };
 
     updateBorrowButtonText();
-  }, [bookData, bookId, setAlert, setBookData, userData]);
+    let isDoneLoading = bookData.id === 0;
+    isDoneLoading = isDoneLoading && userData.id !== 0;
+    isDoneLoading = isDoneLoading && borrowButtonText !== "";
+    setLoading(isDoneLoading);
+  }, [bookId, userData, bookData]);
 
   if (!bookData) {
     return (

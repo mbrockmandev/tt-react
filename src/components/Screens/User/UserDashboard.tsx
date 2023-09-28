@@ -20,6 +20,7 @@ const UserDashboard = () => {
   const [returnedBooks, setReturnedBooks] = useState<Book[]>([]);
   const [borrowedBooks, setBorrowedBooks] = useState<Book[]>([]);
   const [library, setLibrary] = useState<Library>(emptyLibrary);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -114,20 +115,22 @@ const UserDashboard = () => {
     }
   };
 
+  const checkIfDoneLoading = () => {
+    let isDoneLoading = userData && userData.id !== 0;
+    isDoneLoading = isDoneLoading && userData.isLoggedIn;
+    return isDoneLoading;
+  };
+
   useEffect(() => {
     UpdateCurrentUrl();
 
-    if (userData && userData.id !== 0 && userData.isLoggedIn) {
-      setTimeout(() => {
-        fetchUserData();
-        fetchReturnedBooks();
-        fetchBorrowedBooks();
-        fetchHomeLibraryInfo();
-      }, 150);
-    } else if (!userData) {
-      navigate("/login");
-    }
-  }, []);
+    setLoading(checkIfDoneLoading());
+    if (!loading) return;
+    fetchUserData();
+    fetchReturnedBooks();
+    fetchBorrowedBooks();
+    fetchHomeLibraryInfo();
+  }, [userData]);
 
   useEffect(() => {
     if (userData.id === 0) {
@@ -139,9 +142,7 @@ const UserDashboard = () => {
       borrowedBooks,
       homeLibraryId: library.id,
     };
-    // console.log("updatedUser: ", updatedUser);
     setUserData(updatedUser);
-    // console.log("UPDATING USER4", updatedUser);
     localStorage.setItem("user", JSON.stringify(updatedUser));
     localStorage.setItem("library", JSON.stringify(library));
   }, [returnedBooks, borrowedBooks, library]);
