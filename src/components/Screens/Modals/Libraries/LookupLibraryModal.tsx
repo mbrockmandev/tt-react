@@ -105,9 +105,9 @@ const LookupLibraryModal = () => {
         streetAddress: data.street_address,
         postalCode: data.postal_code,
       });
+      setActiveModal(null);
     } catch (err) {
       setAlert({ message: err.message, type: "error" });
-      console.error(err);
     }
   };
 

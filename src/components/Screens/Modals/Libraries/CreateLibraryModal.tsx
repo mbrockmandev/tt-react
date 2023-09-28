@@ -32,18 +32,10 @@ const CreateLibraryModal = () => {
       ...newLibrary,
       name: e.target.value,
     });
-    setLibraryToModify({
-      ...newLibrary,
-      name: e.target.value,
-    });
   };
 
   const handleCityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewLibrary({
-      ...newLibrary,
-      city: e.target.value,
-    });
-    setLibraryToModify({
       ...newLibrary,
       city: e.target.value,
     });
@@ -54,10 +46,6 @@ const CreateLibraryModal = () => {
       ...newLibrary,
       streetAddress: e.target.value,
     });
-    setLibraryToModify({
-      ...newLibrary,
-      streetAddress: e.target.value,
-    });
   };
 
   const handlePostalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,18 +53,10 @@ const CreateLibraryModal = () => {
       ...newLibrary,
       postalCode: e.target.value,
     });
-    setLibraryToModify({
-      ...newLibrary,
-      postalCode: e.target.value,
-    });
   };
 
   const handleCountryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewLibrary({
-      ...newLibrary,
-      country: e.target.value,
-    });
-    setLibraryToModify({
       ...newLibrary,
       country: e.target.value,
     });
@@ -88,7 +68,7 @@ const CreateLibraryModal = () => {
     const formattedPhone = numericPhone.startsWith("+")
       ? numericPhone
       : "+" + numericPhone;
-    setLibraryToModify({
+    setNewLibrary({
       ...newLibrary,
       phone: formattedPhone,
     });
@@ -145,13 +125,11 @@ const CreateLibraryModal = () => {
 
       const data = await res.json();
 
+      setLibraryToModify({ ...newLibrary });
       setAlert({ message: data.message, type: "success" });
+      setActiveModal(null);
     } catch (err) {
       setAlert({ message: err.message, type: "error" });
-      console.error(err);
-      if (err !== "") {
-        return;
-      }
     }
   };
 

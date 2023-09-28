@@ -69,11 +69,6 @@ const DeleteBookModal = () => {
     } catch (err) {
       setAlert({ message: err.message, type: "error" });
       setActiveModal(null);
-
-      console.error(err);
-      if (err !== "") {
-        return;
-      }
     }
   };
 

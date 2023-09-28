@@ -113,7 +113,6 @@ const LookupBookModal = () => {
       });
     } catch (err) {
       setAlert({ message: err.message, type: "error" });
-      console.error(err);
     }
   };
 

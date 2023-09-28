@@ -133,40 +133,33 @@ const CreateUserModal = () => {
           message: "This user already exists in the database.",
           type: "error",
         });
-        handleCancelModal(null);
+        setActiveModal(null);
       } else if (!res.ok) {
         throw new Error("HTTP status code: " + res.status);
       }
 
       setAlert({ message: "User Created", type: "success" });
-      handleCancelModal(null);
+      setActiveModal(null);
     } catch (err) {
       setAlert({ message: err.message, type: "error" });
       handleCancelModal(null);
-      console.error(err);
-      if (err !== "") {
-        return;
-      }
     }
   };
 
   const modal =
     activeModal === "CreateUserModal" &&
     ReactDOM.createPortal(
-      <div
-        className="modal-overlay"
-        onClick={handleCancelModal}>
+      <div className="modal-overlay" onClick={handleCancelModal}>
         <form
           className="mx-auto mb-0 mt-6 space-y-4 rounded-lg p-4 bg-gray-50 shadow-lg shadow-gray-300/50 sm:mt-8 sm:p-6 lg:p-8"
-          onSubmit={handleSubmit}>
+          onSubmit={handleSubmit}
+        >
           <p className="text-center text-lg font-medium">
             Register a new account
           </p>
 
           <div>
-            <label
-              htmlFor="email"
-              className="sr-only">
+            <label htmlFor="email" className="sr-only">
               Email
             </label>
 
@@ -186,7 +179,8 @@ const CreateUserModal = () => {
                   className="h-4 w-4 text-gray-400"
                   fill="none"
                   viewBox="0 0 24 24"
-                  stroke="currentColor">
+                  stroke="currentColor"
+                >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -199,9 +193,7 @@ const CreateUserModal = () => {
           </div>
 
           <div>
-            <label
-              htmlFor="password"
-              className="sr-only">
+            <label htmlFor="password" className="sr-only">
               Password
             </label>
 
@@ -214,9 +206,7 @@ const CreateUserModal = () => {
                 placeholder="Password"
               />
             </div>
-            <label
-              htmlFor="confirmPassword"
-              className="sr-only">
+            <label htmlFor="confirmPassword" className="sr-only">
               Password
             </label>
 
@@ -229,9 +219,7 @@ const CreateUserModal = () => {
                 placeholder="Confirm Password"
               />
             </div>
-            <label
-              htmlFor="firstname"
-              className="sr-only">
+            <label htmlFor="firstname" className="sr-only">
               First Name
             </label>
 
@@ -246,9 +234,7 @@ const CreateUserModal = () => {
               />
             </div>
 
-            <label
-              htmlFor="lastname"
-              className="sr-only">
+            <label htmlFor="lastname" className="sr-only">
               Last Name
             </label>
 
@@ -268,11 +254,9 @@ const CreateUserModal = () => {
               <select
                 id="role"
                 className="rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm shadow-gray-300 focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
-                onChange={handleRoleChange}>
-                <option
-                  value="user"
-                  placeholder="Role"
-                  defaultChecked>
+                onChange={handleRoleChange}
+              >
+                <option value="user" placeholder="Role" defaultChecked>
                   User
                 </option>
                 <option value="staff">Staff</option>
@@ -285,13 +269,15 @@ const CreateUserModal = () => {
             <button
               type="submit"
               className="block w-[35%] bg-red-300 rounded-lg bg-secondary py-3 text-sm font-medium text-black mx-auto"
-              onClick={handleCancelModal}>
+              onClick={handleCancelModal}
+            >
               Cancel
             </button>
 
             <button
               type="submit"
-              className="block w-[35%] bg-green-300 rounded-lg bg-secondary py-3 text-sm font-medium text-black mx-auto">
+              className="block w-[35%] bg-green-300 rounded-lg bg-secondary py-3 text-sm font-medium text-black mx-auto"
+            >
               Register
             </button>
           </div>
@@ -304,7 +290,8 @@ const CreateUserModal = () => {
     <div>
       <div
         className="flex text-sm px-4 py-2 hover:text-blue-500 hover:underline cursor-pointer"
-        onClick={handleModalChange}>
+        onClick={handleModalChange}
+      >
         Create User
       </div>
       {modal}

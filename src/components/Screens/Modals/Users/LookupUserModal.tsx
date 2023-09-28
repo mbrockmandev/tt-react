@@ -102,12 +102,9 @@ const LookupUserModal = () => {
         firstName: data.first_name,
         lastName: data.last_name,
       });
+      setActiveModal(null);
     } catch (err) {
       setAlert({ message: err.message, type: "error" });
-      console.error(err);
-      if (err !== "") {
-        return;
-      }
     }
   };
 
