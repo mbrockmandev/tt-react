@@ -133,8 +133,6 @@ const BookDetails: React.FC = () => {
       }
     };
 
-    fetchBookData();
-
     const updateBorrowButtonText = async () => {
       // only users may borrow/return
       if (userData.role !== "user") {
@@ -161,7 +159,13 @@ const BookDetails: React.FC = () => {
       }
     };
 
-    updateBorrowButtonText();
+    const loadDataAndUpdateButton = async () => {
+      await fetchBookData();
+      await updateBorrowButtonText();
+    };
+
+    loadDataAndUpdateButton();
+
     setLoading(false);
   }, [bookId, userData, bookData]);
 
