@@ -32,17 +32,20 @@ const UserDashboard = () => {
     let tempUserData = { ...userData };
 
     try {
+      // fetch user data first
       setIsFetchingUserData(true);
       let url = `${process.env.REACT_APP_BACKEND}/users/${userData.id}`;
       let res = await fetch(url, reqOptions);
       let data = await res.json();
-      Object.assign(tempUserData, {
+
+      tempUserData = {
+        ...tempUserData,
         id: data.id,
         isLoggedIn: true,
         lastUrl: "user/dashboard",
         role: data.role,
         email: data.email,
-      });
+      };
       setIsFetchingUserData(false);
 
       // Fetch home library info
@@ -50,12 +53,15 @@ const UserDashboard = () => {
       url = `${process.env.REACT_APP_BACKEND}/users/${userData.id}/homeLibrary`;
       res = await fetch(url, reqOptions);
       data = await res.json();
+
       url = `${process.env.REACT_APP_BACKEND}/libraries/${data}`;
       res = await fetch(url, reqOptions);
       data = await res.json();
-      Object.assign(tempUserData, {
+
+      tempUserData = {
+        ...tempUserData,
         homeLibraryId: data.id,
-      });
+      };
       setLibrary({ ...data });
       setIsFetchingHomeLibrary(false);
 
@@ -64,9 +70,11 @@ const UserDashboard = () => {
       url = `${process.env.REACT_APP_BACKEND}/users/${userData.id}/returned`;
       res = await fetch(url, reqOptions);
       data = await res.json();
-      Object.assign(tempUserData, {
+
+      tempUserData = {
+        ...tempUserData,
         returnedBooks: data,
-      });
+      };
       setReturnedBooks(data);
       setIsFetchingReturnedBooks(false);
 
@@ -75,14 +83,16 @@ const UserDashboard = () => {
       url = `${process.env.REACT_APP_BACKEND}/users/${userData.id}/borrowed`;
       res = await fetch(url, reqOptions);
       data = await res.json();
-      Object.assign(tempUserData, {
+
+      tempUserData = {
+        ...tempUserData,
         borrowedBooks: data,
-      });
+      };
       setBorrowedBooks(data);
       setIsFetchingBorrowedBooks(false);
 
-      // Set final aggregated user data
       setUserData(tempUserData);
+      setAllDoneLoading(true);
     } catch (error) {
       setAlert({
         message: error.message,
