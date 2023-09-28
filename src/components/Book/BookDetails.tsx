@@ -24,7 +24,7 @@ const BookDetails: React.FC = () => {
   const [bookData, setBookData] = useRecoilState(bookAtom);
   const libraryData = useRecoilValue(libraryAtom);
   const [, setAlert] = useRecoilState(alertAtom);
-  const [borrowButtonText, setBorrowButtonText] = useState("Borrow");
+  const [borrowButtonText, setBorrowButtonText] = useState("borrow");
 
   const { bookId } = useParams();
 
@@ -126,45 +126,36 @@ const BookDetails: React.FC = () => {
     }
   };
 
+  const updateBorrowButtonText = async () => {
+    if (userData.role !== "user") {
+      setBorrowButtonText("n/a");
+    }
+    if (userData.id === 0 && bookData.id === 0) {
+      return;
+    }
+
+    const borrowedBookIds: number[] = [];
+    for (let book of userData.borrowedBooks) {
+      borrowedBookIds.push(book.id);
+    }
+
+    if (borrowedBookIds.includes(bookData.id)) {
+      setBorrowButtonText("return");
+    } else if (
+      !borrowedBookIds.includes(bookData.id) &&
+      bookData.metadata?.availableCopies <= 0
+    ) {
+      setBorrowButtonText("n/a");
+    } else {
+      setBorrowButtonText("borrow");
+    }
+  };
+
   // initial load, update current URL and get book, library data
   useEffect(() => {
     UpdateCurrentUrl();
-
-    // console.log(
-    //   "loading data: (librarydata, userdata, bookdata): ",
-    //   libraryData,
-    //   userData,
-    //   bookData,
-    // );
-    // slight delay if no data on initial load
-
     fetchBookData();
-
-    const handleBorrowButtonTextChecker = async () => {
-      if (userData.role !== "user") {
-        setBorrowButtonText("n/a");
-      }
-
-      const borrowedBookIds: number[] = [];
-      if (!userData || !bookData) {
-        return;
-      }
-      for (let book of userData.borrowedBooks) {
-        borrowedBookIds.push(book.id);
-      }
-
-      if (borrowedBookIds.includes(bookData.id)) {
-        setBorrowButtonText("return");
-      } else if (
-        !borrowedBookIds.includes(bookData.id) &&
-        bookData.metadata?.availableCopies <= 0
-      ) {
-        setBorrowButtonText("n/a");
-      } else {
-        setBorrowButtonText("borrow");
-      }
-    };
-    handleBorrowButtonTextChecker();
+    updateBorrowButtonText();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userData.role]);
 
@@ -210,7 +201,8 @@ const BookDetails: React.FC = () => {
             {/* Cover Art */}
             <div
               style={{ aspectRatio: "9/6" }}
-              className="mx-auto w-fit z-10 relative py-8">
+              className="mx-auto w-fit z-10 relative py-8"
+            >
               <div className="group relative block h-96 w-60">
                 <span className="absolute inset-0 drop-shadow"></span>
 
@@ -235,7 +227,8 @@ const BookDetails: React.FC = () => {
                   <h4 className="mb-4">Book Data for {libraryData.name}</h4>
                   <button
                     className="ml-8 mb-4 hover:underline hover:text-blue-400"
-                    onClick={handleChangeLibrary}>
+                    onClick={handleChangeLibrary}
+                  >
                     Change?
                   </button>
                 </div>

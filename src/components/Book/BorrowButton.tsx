@@ -30,7 +30,8 @@ export const BorrowButton: React.FC<BorrowButtonProps> = ({
     return (
       <Button
         className="mb-4 w-36 h-16 bg-red-400 hover:bg-red-500 transition-colors duration-300"
-        onClick={() => handleBookAction("return")}>
+        onClick={() => handleBookAction("return")}
+      >
         Return
       </Button>
     );
@@ -46,10 +47,12 @@ export const BorrowButton: React.FC<BorrowButtonProps> = ({
     <div
       className={`relative group ${
         borrowButtonText === "n/a" ? "hover:cursor-not-allowed" : ""
-      }`}>
+      }`}
+    >
       <Button
         className={`mb-4 w-36 h-16 transition-colors duration-300 ${buttonClass}`}
-        onClick={isBorrowable ? (e) => handleBookAction("borrow") : undefined}>
+        onClick={isBorrowable ? () => handleBookAction("borrow") : undefined}
+      >
         Borrow
       </Button>
       {borrowButtonText === "n/a" && (
