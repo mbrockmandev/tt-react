@@ -20,9 +20,7 @@ const UserDashboard = () => {
   const [returnedBooks, setReturnedBooks] = useState<Book[]>([]);
   const [borrowedBooks, setBorrowedBooks] = useState<Book[]>([]);
   const [library, setLibrary] = useState<Library>(emptyLibrary);
-  const [loading, setLoading] = useState(true);
-
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState([false, false, false, false]); // array of booleans representing completion of loading
 
   const fetchUserData = async () => {
     const reqOptions: RequestInit = {
@@ -33,9 +31,10 @@ const UserDashboard = () => {
     try {
       const res = await fetch(url, reqOptions);
       const data = await res.json();
+      console.log("fetchuserdata: ", data);
 
-      // const updatedUser = {...data};
-      // setUserData(updatedUser);
+      setUserData({ ...data });
+      setLoading((p) => [true, p[1], p[2], p[3]]);
     } catch (error) {
       setAlert({
         message: error.message,
@@ -53,13 +52,14 @@ const UserDashboard = () => {
     try {
       let res = await fetch(url, reqOptions);
       let data = await res.json();
-      // console.log(data);
 
       url = `${process.env.REACT_APP_BACKEND}/libraries/${data}`;
       res = await fetch(url, reqOptions);
       data = await res.json();
       const updatedLibrary = { ...data };
       setLibrary(updatedLibrary);
+
+      setLoading((p) => [p[0], true, p[2], p[3]]);
     } catch (error) {
       setAlert({
         message: error.message,
@@ -81,7 +81,7 @@ const UserDashboard = () => {
         const data = await res.json();
         if (data) {
           setReturnedBooks(data);
-          return;
+          setLoading((p) => [p[0], p[1], true, p[3]]);
         }
       }
     } catch (error) {
@@ -105,6 +105,7 @@ const UserDashboard = () => {
         const data = await res.json();
         if (data) {
           setBorrowedBooks(data);
+          setLoading((p) => [p[0], p[1], p[2], true]);
         }
       }
     } catch (error) {
@@ -115,46 +116,32 @@ const UserDashboard = () => {
     }
   };
 
-  const checkIfDoneLoading = () => {
-    console.log(
-      "checking if the page is done loading, the following are part of the logical check: ",
-      userData,
-      userData.id,
-      userData.isLoggedIn,
-    );
-    let isDoneLoading = userData && userData.id !== 0;
-    isDoneLoading = isDoneLoading && userData.isLoggedIn;
-    console.log("isDoneLoading = ", isDoneLoading);
-    setLoading(isDoneLoading);
-    console.log("setting loading to...", isDoneLoading);
-    console.log("loading is now: ", loading);
+  const allFetchesDone = (loadingArray: boolean[]) => {
+    return loadingArray.every((state) => state);
   };
 
   useEffect(() => {
-    UpdateCurrentUrl();
-    setTimeout(() => {
-      checkIfDoneLoading();
-    }, 2000);
-    if (!loading) return;
-    fetchUserData();
-
-    if (userData.id === 0) {
+    // all fetches are done
+    if (allFetchesDone(loading)) {
       return;
     }
+
+    UpdateCurrentUrl();
+
+    fetchUserData();
+    fetchReturnedBooks();
+    fetchBorrowedBooks();
+    fetchHomeLibraryInfo();
+
     const updatedUser = {
       ...userData,
       returnedBooks,
       borrowedBooks,
       homeLibraryId: library.id,
     };
-    setUserData(updatedUser);
     localStorage.setItem("user", JSON.stringify(updatedUser));
     localStorage.setItem("library", JSON.stringify(library));
-
-    fetchReturnedBooks();
-    fetchBorrowedBooks();
-    fetchHomeLibraryInfo();
-  }, [userData]);
+  }, [loading]);
 
   return (
     <div>
