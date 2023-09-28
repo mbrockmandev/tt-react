@@ -134,9 +134,12 @@ const BookDetails: React.FC = () => {
       }
     };
 
-    const updateBorrowButtonText = async (book: Book) => {
+    const updateBorrowButtonText = async (b: Book) => {
       // only users may borrow/return
       if (userData.role !== "user") {
+        setBorrowButtonText("n/a");
+        return;
+      } else if (b.metadata?.availableCopies <= 0) {
         setBorrowButtonText("n/a");
         return;
       }
@@ -145,13 +148,8 @@ const BookDetails: React.FC = () => {
         (book) => book.id,
       );
 
-      if (borrowedBookIds.includes(book.id)) {
+      if (borrowedBookIds.includes(b.id)) {
         setBorrowButtonText("return");
-      } else if (
-        !borrowedBookIds.includes(book.id) &&
-        book.metadata?.availableCopies <= 0
-      ) {
-        setBorrowButtonText("n/a");
       } else {
         setBorrowButtonText("borrow");
       }
@@ -165,7 +163,7 @@ const BookDetails: React.FC = () => {
     loadDataAndUpdateButton();
 
     setLoading(false);
-  }, [bookId, userData]);
+  }, []);
 
   if (!bookData) {
     return (
