@@ -34,7 +34,14 @@ const UserDashboard = () => {
       setLoading((p) => [false, p[1], p[2], p[3]]);
 
       const data = await res.json();
-      setUserData({ ...data });
+      setUserData({
+        ...userData,
+        id: data.id,
+        isLoggedIn: true,
+        lastUrl: "user/dashboard",
+        role: data.role,
+        email: data.email,
+      });
     } catch (error) {
       setAlert({
         message: error.message,
@@ -60,6 +67,10 @@ const UserDashboard = () => {
       data = await res.json();
       const updatedLibrary = { ...data };
       setLibrary(updatedLibrary);
+      setUserData({
+        ...userData,
+        homeLibraryId: data.id,
+      });
     } catch (error) {
       setAlert({
         message: error.message,
@@ -82,6 +93,10 @@ const UserDashboard = () => {
       if (res.status !== 204) {
         const data = await res.json();
         if (data) {
+          setUserData({
+            ...userData,
+            returnedBooks: data,
+          });
           setReturnedBooks(data);
         }
       }
@@ -107,6 +122,10 @@ const UserDashboard = () => {
       if (res.status !== 204) {
         const data = await res.json();
         if (data) {
+          setUserData({
+            ...userData,
+            borrowedBooks: data,
+          });
           setBorrowedBooks(data);
         }
       }
@@ -134,15 +153,9 @@ const UserDashboard = () => {
 
   useEffect(() => {
     UpdateCurrentUrl();
-    const updatedUser = {
-      ...userData,
-      returnedBooks,
-      borrowedBooks,
-      homeLibraryId: library.id,
-    };
-    localStorage.setItem("user", JSON.stringify(updatedUser));
+    localStorage.setItem("user", JSON.stringify(userData));
     localStorage.setItem("library", JSON.stringify(library));
-  }, [userData, returnedBooks, borrowedBooks]);
+  }, [userData]);
 
   return (
     <div>
