@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 
@@ -14,33 +14,51 @@ import { userAtom } from "./recoil/atoms/userAtom";
 import { GetLastUrl, UpdateCurrentUrl } from "./utils/urlStorage";
 import { libraryAtom } from "./recoil/atoms/libraryAtom";
 import { bookAtom } from "./recoil/atoms/bookAtom";
-import { User, emptyUser } from "./utils/models/User";
 
 const App = () => {
   const [user, setUser] = useRecoilState(userAtom);
   const [, setLibrary] = useRecoilState(libraryAtom);
   const [, setBook] = useRecoilState(bookAtom);
   const [alert, setAlert] = useRecoilState(alertAtom);
-
-  const [localUser, setLocalUser] = useState<User>(emptyUser);
-
   const navigate = useNavigate();
 
-  // get user, library, book data from local storage first, if it exists
-  const fetchLocalStorageData = () => {
-    const userData = JSON.parse(localStorage.getItem("user"));
-    if (userData && userData.id !== 0) {
-      setLocalUser(userData);
+  useEffect(() => {
+    // Load data from local storage
+    const userData = JSON.parse(localStorage.getItem("user") || "null");
+    const libraryData = JSON.parse(localStorage.getItem("library") || "null");
+    const bookData = JSON.parse(localStorage.getItem("book") || "null");
+
+    if (userData && userData.id !== 0) setUser(userData);
+    if (libraryData) setLibrary(libraryData);
+    if (bookData) setBook(bookData);
+
+    if (!user || !user.isLoggedIn) fetchRefreshToken();
+  }, []);
+
+  useEffect(() => {
+    if (user && user.isLoggedIn) {
+      const targetPath = `/${user.role}/dashboard`;
+
+      if (window.location.pathname !== targetPath) {
+        navigate(targetPath);
+      }
+    } else {
+      navigate("/login");
     }
-    const libraryData = localStorage.getItem("library");
-    if (libraryData) {
-      setLibrary(JSON.parse(libraryData));
+  }, [user]);
+
+  useEffect(() => {
+    if (alert.message) {
+      setTimeout(() => {
+        setAlert({ message: "", type: "" });
+      }, 5000);
     }
-    const bookData = localStorage.getItem("book");
-    if (bookData) {
-      setBook(JSON.parse(bookData));
-    }
-  };
+  }, [alert]);
+
+  useEffect(() => {
+    const url = UpdateCurrentUrl();
+    setUser((p) => ({ ...p, lastUrl: url }));
+  }, [navigate]);
 
   // fetch refresh token from backend if it exists
   const fetchRefreshToken = async () => {
@@ -68,12 +86,12 @@ const App = () => {
           message: "Error fetching user info",
           type: "error",
         });
-        setLocalUser({ ...localUser, isLoggedIn: false });
+        setUser({ ...user, isLoggedIn: false });
+        navigate("/login");
         return;
       }
 
       const data = await res.json();
-      // console.log("data from refresh token (jwtInfo)", data);
 
       if (data && data.user_info && data.user_info.id !== 0) {
         fetchUserInfo(data.user_info.id);
@@ -93,35 +111,11 @@ const App = () => {
       const url = `${process.env.REACT_APP_BACKEND}/users/${id}`;
       const res = await fetch(url, reqOptions);
       const data = await res.json();
-      setLocalUser(data);
+      setUser(data);
     } catch (error) {
       setAlert({ message: error.message, type: "error" });
     }
   };
-
-  // load from local storage, then backend on initial load
-  useEffect(() => {
-    if (!user || !user.isLoggedIn) {
-      fetchLocalStorageData();
-      fetchRefreshToken();
-      setTimeout(() => {
-        if (user && user.isLoggedIn) {
-          navigate(user.lastUrl);
-        }
-      }, 100);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (alert.message && alert.message !== "") {
-      setTimeout(() => {
-        setAlert({
-          message: "",
-          type: "",
-        });
-      }, 5000);
-    }
-  }, [alert]);
 
   return (
     <div className="background-root">
