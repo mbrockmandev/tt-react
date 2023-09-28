@@ -20,7 +20,7 @@ const UserDashboard = () => {
   const [returnedBooks, setReturnedBooks] = useState<Book[]>([]);
   const [borrowedBooks, setBorrowedBooks] = useState<Book[]>([]);
   const [library, setLibrary] = useState<Library>(emptyLibrary);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
 
@@ -134,15 +134,10 @@ const UserDashboard = () => {
     UpdateCurrentUrl();
     setTimeout(() => {
       checkIfDoneLoading();
-    }, 5000);
+    }, 2000);
     if (!loading) return;
     fetchUserData();
-    fetchReturnedBooks();
-    fetchBorrowedBooks();
-    fetchHomeLibraryInfo();
-  }, [userData]);
 
-  useEffect(() => {
     if (userData.id === 0) {
       return;
     }
@@ -155,7 +150,11 @@ const UserDashboard = () => {
     setUserData(updatedUser);
     localStorage.setItem("user", JSON.stringify(updatedUser));
     localStorage.setItem("library", JSON.stringify(library));
-  }, [returnedBooks, borrowedBooks, library]);
+
+    fetchReturnedBooks();
+    fetchBorrowedBooks();
+    fetchHomeLibraryInfo();
+  }, [userData]);
 
   return (
     <div>
