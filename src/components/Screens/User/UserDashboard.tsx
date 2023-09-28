@@ -14,14 +14,8 @@ const UserDashboard = () => {
   const [userData, setUserData] = useRecoilState(userAtom);
   const [, setAlert] = useRecoilState(alertAtom);
 
-  const [borrowedBooks, setBorrowedBooks] = useState([]);
-  const [returnedBooks, setReturnedBooks] = useState([]);
-  const [library, setLibrary] = useState<Library>(emptyLibrary);
+  const [, setLibrary] = useState<Library>(emptyLibrary);
   const [allDoneLoading, setAllDoneLoading] = useState(false);
-  const [isFetchingUserData, setIsFetchingUserData] = useState(false);
-  const [isFetchingHomeLibrary, setIsFetchingHomeLibrary] = useState(false);
-  const [isFetchingReturnedBooks, setIsFetchingReturnedBooks] = useState(false);
-  const [isFetchingBorrowedBooks, setIsFetchingBorrowedBooks] = useState(false);
 
   const fetchAllUserData = async () => {
     const reqOptions: RequestInit = {
@@ -33,7 +27,6 @@ const UserDashboard = () => {
 
     try {
       // fetch user data first
-      setIsFetchingUserData(true);
       let url = `${process.env.REACT_APP_BACKEND}/users/${userData.id}`;
       let res = await fetch(url, reqOptions);
       let data = await res.json();
@@ -46,10 +39,8 @@ const UserDashboard = () => {
         role: data.role,
         email: data.email,
       };
-      setIsFetchingUserData(false);
 
       // Fetch home library info
-      setIsFetchingHomeLibrary(true);
       url = `${process.env.REACT_APP_BACKEND}/users/${userData.id}/homeLibrary`;
       res = await fetch(url, reqOptions);
       data = await res.json();
@@ -63,10 +54,8 @@ const UserDashboard = () => {
         homeLibraryId: data.id,
       };
       setLibrary({ ...data });
-      setIsFetchingHomeLibrary(false);
 
       // Fetch returned books
-      setIsFetchingReturnedBooks(true);
       url = `${process.env.REACT_APP_BACKEND}/users/${userData.id}/returned`;
       res = await fetch(url, reqOptions);
       data = await res.json();
@@ -75,11 +64,8 @@ const UserDashboard = () => {
         ...tempUserData,
         returnedBooks: data,
       };
-      setReturnedBooks(data);
-      setIsFetchingReturnedBooks(false);
 
       // Fetch borrowed books
-      setIsFetchingBorrowedBooks(true);
       url = `${process.env.REACT_APP_BACKEND}/users/${userData.id}/borrowed`;
       res = await fetch(url, reqOptions);
       data = await res.json();
@@ -88,8 +74,6 @@ const UserDashboard = () => {
         ...tempUserData,
         borrowedBooks: data,
       };
-      setBorrowedBooks(data);
-      setIsFetchingBorrowedBooks(false);
 
       setUserData(tempUserData);
       setAllDoneLoading(true);
@@ -100,144 +84,6 @@ const UserDashboard = () => {
       });
     }
   };
-
-  // const fetchUserData = async () => {
-  //   setIsFetchingUserData(true);
-  //   const reqOptions: RequestInit = {
-  //     method: "GET",
-  //     credentials: "include",
-  //   };
-  //   const url = `${process.env.REACT_APP_BACKEND}/users/${userData.id}`;
-  //   try {
-  //     const res = await fetch(url, reqOptions);
-  //
-  //     const data = await res.json();
-  //     setUserData({
-  //       ...userData,
-  //       id: data.id,
-  //       isLoggedIn: true,
-  //       lastUrl: "user/dashboard",
-  //       role: data.role,
-  //       email: data.email,
-  //     });
-  //     setIsFetchingUserData(false);
-  //   } catch (error) {
-  //     setAlert({
-  //       message: error.message,
-  //       type: "error",
-  //     });
-  //   }
-  // };
-  //
-  // const fetchHomeLibraryInfo = async () => {
-  //   setIsFetchingHomeLibrary(true);
-  //   const reqOptions: RequestInit = {
-  //     method: "GET",
-  //     credentials: "include",
-  //   };
-  //   let url = `${process.env.REACT_APP_BACKEND}/users/${userData.id}/homeLibrary`;
-  //   try {
-  //     let res = await fetch(url, reqOptions);
-  //     let data = await res.json();
-  //
-  //     url = `${process.env.REACT_APP_BACKEND}/libraries/${data}`;
-  //     res = await fetch(url, reqOptions);
-  //
-  //     data = await res.json();
-  //     setUserData({
-  //       ...userData,
-  //       homeLibraryId: data.id,
-  //     });
-  //     const updatedLibrary = { ...data };
-  //     setLibrary(updatedLibrary);
-  //     setIsFetchingHomeLibrary(false);
-  //   } catch (error) {
-  //     setAlert({
-  //       message: error.message,
-  //       type: "error",
-  //     });
-  //   }
-  // };
-  //
-  // const fetchReturnedBooks = async () => {
-  //   setIsFetchingReturnedBooks(true);
-  //   const reqOptions: RequestInit = {
-  //     method: "GET",
-  //     credentials: "include",
-  //   };
-  //   const url = `${process.env.REACT_APP_BACKEND}/users/${userData.id}/returned`;
-  //
-  //   try {
-  //     const res = await fetch(url, reqOptions);
-  //
-  //     const data = await res.json();
-  //     setUserData({ ...userData, returnedBooks: data });
-  //     setReturnedBooks(data);
-  //     setIsFetchingReturnedBooks(false);
-  //   } catch (error) {
-  //     setAlert({
-  //       message: error.message,
-  //       type: "error",
-  //     });
-  //   }
-  // };
-  //
-  // const fetchBorrowedBooks = async () => {
-  //   setIsFetchingBorrowedBooks(true);
-  //   const reqOptions: RequestInit = {
-  //     method: "GET",
-  //     credentials: "include",
-  //   };
-  //   const url = `${process.env.REACT_APP_BACKEND}/users/${userData.id}/borrowed`;
-  //
-  //   try {
-  //     const res = await fetch(url, reqOptions);
-  //
-  //     const data = await res.json();
-  //     setUserData({ ...userData, borrowedBooks: data });
-  //     setBorrowedBooks(data);
-  //     setIsFetchingBorrowedBooks(false);
-  //   } catch (error) {
-  //     setAlert({
-  //       message: error.message,
-  //       type: "error",
-  //     });
-  //   }
-  // };
-  //
-  // const checkAllLoaded = () => {
-  //   if (
-  //     !isFetchingUserData &&
-  //     !isFetchingHomeLibrary &&
-  //     !isFetchingReturnedBooks &&
-  //     !isFetchingBorrowedBooks
-  //   ) {
-  //     setAllDoneLoading(true);
-  //
-  //     localStorage.setItem("user", JSON.stringify(userData));
-  //     localStorage.setItem("library", JSON.stringify(library));
-  //   }
-  // };
-  //
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     if (userData.id === 0) return;
-  //
-  //     await fetchUserData();
-  //     await fetchHomeLibraryInfo();
-  //     await fetchReturnedBooks();
-  //     await fetchBorrowedBooks();
-  //
-  //     checkAllLoaded();
-  //   };
-  //
-  //   fetchData();
-  // }, []);
-
-  // useEffect(() => {
-  //   checkAllLoaded();
-  //   console.log(borrowedBooks, returnedBooks);
-  // }, [userData]);
 
   useEffect(() => {
     fetchAllUserData();
