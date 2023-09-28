@@ -150,6 +150,7 @@ const UserDashboard = () => {
         returnedBooks,
         borrowedBooks,
       };
+      console.log(updatedUser);
       setUserData(updatedUser);
       localStorage.setItem("user", JSON.stringify(updatedUser));
       localStorage.setItem("library", JSON.stringify(library));
