@@ -20,7 +20,7 @@ const UserDashboard = () => {
   const [returnedBooks, setReturnedBooks] = useState<Book[]>([]);
   const [borrowedBooks, setBorrowedBooks] = useState<Book[]>([]);
   const [library, setLibrary] = useState<Library>(emptyLibrary);
-  const [loading, setLoading] = useState([false, false, false, false]); // array of booleans representing completion of loading
+  const [loading, setLoading] = useState(false);
 
   const fetchUserData = async () => {
     const reqOptions: RequestInit = {
@@ -30,7 +30,7 @@ const UserDashboard = () => {
     const url = `${process.env.REACT_APP_BACKEND}/users/${userData.id}`;
     try {
       const res = await fetch(url, reqOptions);
-      setLoading((p) => [true, p[1], p[2], p[3]]);
+      setLoading(false);
 
       const data = await res.json();
       setUserData({ ...data });
@@ -54,7 +54,7 @@ const UserDashboard = () => {
 
       url = `${process.env.REACT_APP_BACKEND}/libraries/${data}`;
       res = await fetch(url, reqOptions);
-      setLoading((p) => [p[0], true, p[2], p[3]]);
+      setLoading(false);
 
       data = await res.json();
       const updatedLibrary = { ...data };
@@ -76,7 +76,7 @@ const UserDashboard = () => {
 
     try {
       const res = await fetch(url, reqOptions);
-      setLoading((p) => [p[0], p[1], true, p[3]]);
+      setLoading(false);
 
       if (res.status !== 204) {
         const data = await res.json();
@@ -101,7 +101,7 @@ const UserDashboard = () => {
 
     try {
       const res = await fetch(url, reqOptions);
-      setLoading((p) => [p[0], p[1], p[2], true]);
+      setLoading(false);
 
       if (res.status !== 204) {
         const data = await res.json();
@@ -117,13 +117,9 @@ const UserDashboard = () => {
     }
   };
 
-  const allFetchesDone = (loadingArray: boolean[]) => {
-    return loadingArray.every((state) => state);
-  };
-
   useEffect(() => {
     // all fetches are done
-    if (allFetchesDone(loading)) {
+    if (loading) {
       return;
     }
 
@@ -142,6 +138,7 @@ const UserDashboard = () => {
     };
     localStorage.setItem("user", JSON.stringify(updatedUser));
     localStorage.setItem("library", JSON.stringify(library));
+    setLoading(false);
   }, [loading]);
 
   return (
