@@ -68,6 +68,10 @@ const UserDashboard = () => {
       res = await fetch(url, reqOptions);
 
       data = await res.json();
+      setUserData({
+        ...userData,
+        homeLibraryId: data.id,
+      });
       const updatedLibrary = { ...data };
       setLibrary(updatedLibrary);
       setIsFetchingHomeLibrary(false);
@@ -93,6 +97,7 @@ const UserDashboard = () => {
 
       if (res.status !== 204) {
         const data = await res.json();
+        setUserData({ ...userData, returnedBooks: data });
         setReturnedBooks(data);
         setIsFetchingReturnedBooks(false);
       }
@@ -118,6 +123,7 @@ const UserDashboard = () => {
 
       if (res.status !== 204) {
         const data = await res.json();
+        setUserData({ ...userData, borrowedBooks: data });
         setBorrowedBooks(data);
         setIsFetchingBorrowedBooks(false);
       }
@@ -138,15 +144,16 @@ const UserDashboard = () => {
     ) {
       setAllDoneLoading(true);
 
-      const updatedUser = {
-        ...userData,
-        homeLibraryId: library.id,
-        returnedBooks,
-        borrowedBooks,
-      };
-      console.log(updatedUser);
-      setUserData(updatedUser);
-      localStorage.setItem("user", JSON.stringify(updatedUser));
+      // const updatedUser = {
+      //   ...userData,
+      //   homeLibraryId: library.id,
+      //   returnedBooks,
+      //   borrowedBooks,
+      // };
+      // console.log(updatedUser);
+      // setUserData(updatedUser);
+      // localStorage.setItem("user", JSON.stringify(updatedUser));
+      localStorage.setItem("user", JSON.stringify(userData));
       localStorage.setItem("library", JSON.stringify(library));
     }
   };
