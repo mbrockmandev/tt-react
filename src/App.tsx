@@ -37,11 +37,9 @@ const App = () => {
 
   useEffect(() => {
     if (user && user.isLoggedIn) {
+      if (user.role === "user" && window.location.pathname === "register")
+        return;
       const targetPath = `/${user.role}/dashboard`;
-
-      if (window.location.pathname === "register") {
-        navigate("/login");
-      }
 
       if (window.location.pathname !== targetPath) {
         navigate(targetPath);
