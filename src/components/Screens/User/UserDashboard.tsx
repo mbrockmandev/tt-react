@@ -14,7 +14,7 @@ const UserDashboard = () => {
   const [userData, setUserData] = useRecoilState(userAtom);
   const [, setAlert] = useRecoilState(alertAtom);
 
-  const [, setLibrary] = useState<Library>(emptyLibrary);
+  const [library, setLibrary] = useState<Library>(emptyLibrary);
   const [allDoneLoading, setAllDoneLoading] = useState(false);
 
   const fetchAllUserData = async () => {
@@ -76,6 +76,8 @@ const UserDashboard = () => {
       };
 
       setUserData(tempUserData);
+      localStorage.setItem("user", JSON.stringify(tempUserData));
+      localStorage.setItem("library", JSON.stringify(library));
       setAllDoneLoading(true);
     } catch (error) {
       setAlert({
