@@ -137,10 +137,10 @@ const UserDashboard = () => {
 
   const checkAllLoaded = () => {
     if (
-      !isFetchingUserData &&
-      !isFetchingHomeLibrary &&
-      !isFetchingReturnedBooks &&
-      !isFetchingBorrowedBooks
+      isFetchingUserData &&
+      isFetchingHomeLibrary &&
+      isFetchingReturnedBooks &&
+      isFetchingBorrowedBooks
     ) {
       setAllDoneLoading(true);
 
