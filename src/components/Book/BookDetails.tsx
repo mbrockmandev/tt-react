@@ -142,11 +142,13 @@ const BookDetails: React.FC = () => {
         return;
       }
 
+      console.log("userData BorrowedBooks: ", userData.borrowedBooks);
       const borrowedBookIds: number[] = [];
       for (let book of userData.borrowedBooks) {
         borrowedBookIds.push(book.id);
       }
 
+      console.log("borrowedBookIds:", borrowedBookIds);
       if (borrowedBookIds.includes(bookData.id)) {
         setBorrowButtonText("return");
       } else if (
