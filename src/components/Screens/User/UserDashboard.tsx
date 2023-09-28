@@ -19,10 +19,14 @@ const UserDashboard = () => {
   const [borrowedBooks, setBorrowedBooks] = useState([]);
   const [returnedBooks, setReturnedBooks] = useState([]);
   const [library, setLibrary] = useState<Library>(emptyLibrary);
-  const [loading, setLoading] = useState([true, true, true, true]);
   const [allDoneLoading, setAllDoneLoading] = useState(false);
+  const [isFetchingUserData, setIsFetchingUserData] = useState(false);
+  const [isFetchingHomeLibrary, setIsFetchingHomeLibrary] = useState(false);
+  const [isFetchingReturnedBooks, setIsFetchingReturnedBooks] = useState(false);
+  const [isFetchingBorrowedBooks, setIsFetchingBorrowedBooks] = useState(false);
 
   const fetchUserData = async () => {
+    setIsFetchingUserData(true);
     if (userData.id === 0) return;
     const reqOptions: RequestInit = {
       method: "GET",
@@ -31,7 +35,6 @@ const UserDashboard = () => {
     const url = `${process.env.REACT_APP_BACKEND}/users/${userData.id}`;
     try {
       const res = await fetch(url, reqOptions);
-      setLoading((p) => [false, p[1], p[2], p[3]]);
 
       const data = await res.json();
       setUserData({
@@ -42,6 +45,7 @@ const UserDashboard = () => {
         role: data.role,
         email: data.email,
       });
+      setIsFetchingUserData(false);
     } catch (error) {
       setAlert({
         message: error.message,
@@ -51,6 +55,7 @@ const UserDashboard = () => {
   };
 
   const fetchHomeLibraryInfo = async () => {
+    setIsFetchingHomeLibrary(true);
     if (userData.id === 0) return;
     const reqOptions: RequestInit = {
       method: "GET",
@@ -63,11 +68,11 @@ const UserDashboard = () => {
 
       url = `${process.env.REACT_APP_BACKEND}/libraries/${data}`;
       res = await fetch(url, reqOptions);
-      setLoading((p) => [p[0], false, p[2], p[3]]);
 
       data = await res.json();
       const updatedLibrary = { ...data };
       setLibrary(updatedLibrary);
+      setIsFetchingHomeLibrary(false);
     } catch (error) {
       setAlert({
         message: error.message,
@@ -77,6 +82,7 @@ const UserDashboard = () => {
   };
 
   const fetchReturnedBooks = async () => {
+    setIsFetchingReturnedBooks(true);
     if (userData.id === 0) return;
     const reqOptions: RequestInit = {
       method: "GET",
@@ -86,11 +92,11 @@ const UserDashboard = () => {
 
     try {
       const res = await fetch(url, reqOptions);
-      setLoading((p) => [p[0], p[1], false, p[3]]);
 
       if (res.status !== 204) {
         const data = await res.json();
         setReturnedBooks(data);
+        setIsFetchingReturnedBooks(false);
       }
     } catch (error) {
       setAlert({
@@ -101,6 +107,7 @@ const UserDashboard = () => {
   };
 
   const fetchBorrowedBooks = async () => {
+    setIsFetchingBorrowedBooks(true);
     if (userData.id === 0) return;
     const reqOptions: RequestInit = {
       method: "GET",
@@ -110,11 +117,11 @@ const UserDashboard = () => {
 
     try {
       const res = await fetch(url, reqOptions);
-      setLoading((p) => [p[0], p[1], p[2], false]);
 
       if (res.status !== 204) {
         const data = await res.json();
         setBorrowedBooks(data);
+        setIsFetchingBorrowedBooks(false);
       }
     } catch (error) {
       setAlert({
@@ -125,17 +132,22 @@ const UserDashboard = () => {
   };
 
   const hasEverythingLoaded = () => {
-    return loading.every((state) => !state);
+    return (
+      isFetchingUserData &&
+      isFetchingHomeLibrary &&
+      isFetchingReturnedBooks &&
+      isFetchingBorrowedBooks
+    );
   };
 
   useEffect(() => {
     // done loading all data
-    if (loading[0]) fetchUserData();
-    if (loading[1]) fetchHomeLibraryInfo();
-    if (loading[2]) fetchReturnedBooks();
-    if (loading[3]) fetchBorrowedBooks();
+    if (!isFetchingUserData) fetchUserData();
+    if (!isFetchingHomeLibrary) fetchHomeLibraryInfo();
+    if (!isFetchingReturnedBooks) fetchReturnedBooks();
+    if (!isFetchingBorrowedBooks) fetchBorrowedBooks();
 
-    if (loading[0] || loading[1] || loading[2] || loading[3]) return;
+    if (!hasEverythingLoaded()) return;
 
     const updatedUser = {
       ...userData,
@@ -150,7 +162,12 @@ const UserDashboard = () => {
     setTimeout(() => {
       setAllDoneLoading(hasEverythingLoaded());
     }, 200);
-  }, [loading]);
+  }, [
+    isFetchingUserData,
+    isFetchingHomeLibrary,
+    isFetchingReturnedBooks,
+    isFetchingBorrowedBooks,
+  ]);
 
   return allDoneLoading ? (
     <div>
