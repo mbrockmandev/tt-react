@@ -144,15 +144,6 @@ const UserDashboard = () => {
     ) {
       setAllDoneLoading(true);
 
-      // const updatedUser = {
-      //   ...userData,
-      //   homeLibraryId: library.id,
-      //   returnedBooks,
-      //   borrowedBooks,
-      // };
-      // console.log(updatedUser);
-      // setUserData(updatedUser);
-      // localStorage.setItem("user", JSON.stringify(updatedUser));
       localStorage.setItem("user", JSON.stringify(userData));
       localStorage.setItem("library", JSON.stringify(library));
     }
@@ -172,6 +163,10 @@ const UserDashboard = () => {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    checkAllLoaded();
+  }, [userData]);
 
   return allDoneLoading ? (
     <div>
