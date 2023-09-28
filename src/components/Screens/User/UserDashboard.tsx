@@ -44,7 +44,6 @@ const UserDashboard = () => {
         email: data.email,
       });
       setIsFetchingUserData(false);
-      checkAllLoaded();
     } catch (error) {
       setAlert({
         message: error.message,
@@ -72,7 +71,6 @@ const UserDashboard = () => {
       const updatedLibrary = { ...data };
       setLibrary(updatedLibrary);
       setIsFetchingHomeLibrary(false);
-      checkAllLoaded();
     } catch (error) {
       setAlert({
         message: error.message,
@@ -97,7 +95,6 @@ const UserDashboard = () => {
         const data = await res.json();
         setReturnedBooks(data);
         setIsFetchingReturnedBooks(false);
-        checkAllLoaded();
       }
     } catch (error) {
       setAlert({
@@ -123,7 +120,6 @@ const UserDashboard = () => {
         const data = await res.json();
         setBorrowedBooks(data);
         setIsFetchingBorrowedBooks(false);
-        checkAllLoaded();
       }
     } catch (error) {
       setAlert({
@@ -158,11 +154,11 @@ const UserDashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       if (userData.id === 0) return;
-      if (allDoneLoading) return;
-      if (!isFetchingUserData) await fetchUserData();
-      if (!isFetchingHomeLibrary) await fetchHomeLibraryInfo();
-      if (!isFetchingReturnedBooks) await fetchReturnedBooks();
-      if (!isFetchingBorrowedBooks) await fetchBorrowedBooks();
+
+      await fetchUserData();
+      await fetchHomeLibraryInfo();
+      await fetchReturnedBooks();
+      await fetchBorrowedBooks();
 
       checkAllLoaded();
     };
