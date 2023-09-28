@@ -18,8 +18,8 @@ const UserDashboard = () => {
   const [userData, setUserData] = useRecoilState(userAtom);
   const [, setAlert] = useRecoilState(alertAtom);
 
-  const [returnedBooks, setReturnedBooks] = useState<Book[]>([]);
-  const [borrowedBooks, setBorrowedBooks] = useState<Book[]>([]);
+  // const [returnedBooks, setReturnedBooks] = useState<Book[]>([]);
+  // const [borrowedBooks, setBorrowedBooks] = useState<Book[]>([]);
   const [library, setLibrary] = useState<Library>(emptyLibrary);
   const [loading, setLoading] = useState([true, true, true, true]);
 
@@ -97,7 +97,7 @@ const UserDashboard = () => {
             ...userData,
             returnedBooks: data,
           });
-          setReturnedBooks(data);
+          // setReturnedBooks(data);
         }
       }
     } catch (error) {
@@ -126,7 +126,7 @@ const UserDashboard = () => {
             ...userData,
             borrowedBooks: data,
           });
-          setBorrowedBooks(data);
+          // setBorrowedBooks(data);
         }
       }
     } catch (error) {
@@ -144,7 +144,6 @@ const UserDashboard = () => {
 
   useEffect(() => {
     // done loading all data
-    if (!loading.every((s) => !s)) return;
     if (loading[0]) debouncedFetchUserData();
     if (loading[1]) debouncedHomeLibraryInfo();
     if (loading[2]) debouncedFetchReturnedBooks();

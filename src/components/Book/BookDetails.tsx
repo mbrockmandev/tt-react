@@ -25,7 +25,7 @@ const BookDetails: React.FC = () => {
   const libraryData = useRecoilValue(libraryAtom);
   const [, setAlert] = useRecoilState(alertAtom);
   const [borrowButtonText, setBorrowButtonText] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const { bookId } = useParams();
 
@@ -65,7 +65,7 @@ const BookDetails: React.FC = () => {
             };
         setUserData(updatedUser);
         setAlert({
-          message: "Book borrowed.",
+          message: `Book ${action}ed.`,
           type: "success",
         });
       }
@@ -161,10 +161,7 @@ const BookDetails: React.FC = () => {
     };
 
     updateBorrowButtonText();
-    let isDoneLoading = bookData.id === 0;
-    isDoneLoading = isDoneLoading && userData.id !== 0;
-    isDoneLoading = isDoneLoading && borrowButtonText !== "";
-    setLoading(isDoneLoading);
+    setLoading(false);
   }, [bookId, userData, bookData]);
 
   if (!bookData) {
