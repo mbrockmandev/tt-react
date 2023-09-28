@@ -124,6 +124,7 @@ const BookDetails: React.FC = () => {
             },
           };
           setBookData(updatedBook);
+          return updatedBook;
         }
       } catch (err) {
         setAlert({
@@ -133,25 +134,22 @@ const BookDetails: React.FC = () => {
       }
     };
 
-    const updateBorrowButtonText = async () => {
+    const updateBorrowButtonText = async (book: Book) => {
       // only users may borrow/return
       if (userData.role !== "user") {
         setBorrowButtonText("n/a");
         return;
       }
 
-      console.log("userData BorrowedBooks: ", userData.borrowedBooks);
-      const borrowedBookIds: number[] = [];
-      for (let book of userData.borrowedBooks) {
-        borrowedBookIds.push(book.id);
-      }
+      const borrowedBookIds: number[] = userData.borrowedBooks.map(
+        (book) => book.id,
+      );
 
-      console.log("borrowedBookIds:", borrowedBookIds);
-      if (borrowedBookIds.includes(bookData.id)) {
+      if (borrowedBookIds.includes(book.id)) {
         setBorrowButtonText("return");
       } else if (
-        !borrowedBookIds.includes(bookData.id) &&
-        bookData.metadata?.availableCopies <= 0
+        !borrowedBookIds.includes(book.id) &&
+        book.metadata?.availableCopies <= 0
       ) {
         setBorrowButtonText("n/a");
       } else {
@@ -160,14 +158,14 @@ const BookDetails: React.FC = () => {
     };
 
     const loadDataAndUpdateButton = async () => {
-      await fetchBookData();
-      await updateBorrowButtonText();
+      const book = await fetchBookData();
+      await updateBorrowButtonText(book);
     };
 
     loadDataAndUpdateButton();
 
     setLoading(false);
-  }, [bookId, userData, bookData]);
+  }, [bookId, userData]);
 
   if (!bookData) {
     return (
