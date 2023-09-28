@@ -83,26 +83,22 @@ const CreateLibraryModal = () => {
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let tempPhone = e.target.value;
-    const numericPhone = tempPhone.replace(/\D/g, "");
+    const numericPhone = e.target.value.replace(/\D/g, "");
 
-    if (numericPhone.length > 10) {
-      setAlert({
-        message: "invalid phone number",
-        type: "error",
-      });
-      return;
-    }
-    const formattedPhone = "+" + numericPhone;
-
-    setNewLibrary({
-      ...newLibrary,
-      phone: formattedPhone,
-    });
+    const formattedPhone = numericPhone.startsWith("+")
+      ? numericPhone
+      : "+" + numericPhone;
     setLibraryToModify({
       ...newLibrary,
       phone: formattedPhone,
     });
+
+    if (formattedPhone.length !== 11) {
+      setAlert({
+        message: "Invalid phone number. Phone numbers must be 10 digits long.",
+        type: "error",
+      });
+    }
   };
 
   const handleSubmit = async (e: any) => {
@@ -162,21 +158,18 @@ const CreateLibraryModal = () => {
   const modal =
     activeModal === "CreateLibraryModal" &&
     ReactDOM.createPortal(
-      <div
-        className="modal-overlay"
-        onClick={handleCancelModal}>
+      <div className="modal-overlay" onClick={handleCancelModal}>
         <form
           className="mx-auto mb-0 mt-6 space-y-4 rounded-lg p-4 bg-gray-50 shadow-lg shadow-gray-300/50 sm:mt-8 sm:p-6 lg:p-8"
-          onSubmit={handleSubmit}>
+          onSubmit={handleSubmit}
+        >
           <p className="text-center text-lg font-medium">
             Create a new Library
           </p>
 
           {/* Name */}
           <div>
-            <label
-              htmlFor="name"
-              className="mr-auto">
+            <label htmlFor="name" className="mr-auto">
               Name
             </label>
 
@@ -195,9 +188,7 @@ const CreateLibraryModal = () => {
 
           {/* City */}
           <div>
-            <label
-              htmlFor="city"
-              className="mr-auto">
+            <label htmlFor="city" className="mr-auto">
               City
             </label>
 
@@ -216,9 +207,7 @@ const CreateLibraryModal = () => {
 
           {/* Street Address */}
           <div>
-            <label
-              htmlFor="streetAddress"
-              className="mr-auto">
+            <label htmlFor="streetAddress" className="mr-auto">
               Street Address
             </label>
 
@@ -237,9 +226,7 @@ const CreateLibraryModal = () => {
 
           {/* Postal Code */}
           <div>
-            <label
-              htmlFor="postalCode"
-              className="mr-auto">
+            <label htmlFor="postalCode" className="mr-auto">
               Postal Code
             </label>
 
@@ -258,9 +245,7 @@ const CreateLibraryModal = () => {
 
           {/* Country */}
           <div>
-            <label
-              htmlFor="country"
-              className="mr-auto">
+            <label htmlFor="country" className="mr-auto">
               Country
             </label>
 
@@ -279,9 +264,7 @@ const CreateLibraryModal = () => {
 
           {/* Phone */}
           <div>
-            <label
-              htmlFor="phone"
-              className="mr-auto">
+            <label htmlFor="phone" className="mr-auto">
               Phone
             </label>
 
@@ -289,7 +272,7 @@ const CreateLibraryModal = () => {
               <input
                 id="phone"
                 type="tel"
-                pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                pattern="\+?[0-9]{10}"
                 onChange={handlePhoneChange}
                 className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
                 placeholder="(123)-456-7890"
@@ -303,13 +286,15 @@ const CreateLibraryModal = () => {
             <button
               type="submit"
               className="block w-[35%] bg-red-300 rounded-lg bg-secondary py-3 text-sm font-medium text-black mx-auto"
-              onClick={handleCancelModal}>
+              onClick={handleCancelModal}
+            >
               Cancel
             </button>
 
             <button
               type="submit"
-              className="block w-[35%] bg-green-300 rounded-lg bg-secondary py-3 text-sm font-medium text-black mx-auto">
+              className="block w-[35%] bg-green-300 rounded-lg bg-secondary py-3 text-sm font-medium text-black mx-auto"
+            >
               Register
             </button>
           </div>
@@ -322,7 +307,8 @@ const CreateLibraryModal = () => {
     <div>
       <div
         className="flex text-sm px-4 py-2 hover:text-blue-500 hover:underline cursor-pointer"
-        onClick={handleModalChange}>
+        onClick={handleModalChange}
+      >
         Create Library
       </div>
       {modal}
