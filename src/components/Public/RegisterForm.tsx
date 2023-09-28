@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   doPasswordsMatch,
@@ -28,7 +28,7 @@ export const emptyLoginUser: LoginUser = {
   firstName: "",
   lastName: "",
   password: "",
-  homeLibraryId: 0,
+  homeLibraryId: 1,
   confirmPassword: "",
   role: "user",
 };
@@ -100,7 +100,7 @@ const RegisterForm = () => {
     });
   };
 
-  const handlePasswordToggleClick = (e: React.MouseEvent<HTMLElement>) => {
+  const handlePasswordToggleClick = () => {
     setShowPassword((cur) => !cur);
   };
 
@@ -155,12 +155,18 @@ const RegisterForm = () => {
 
       const data = await res.json();
 
-      if (res.ok && data) {
+      if (data && data.user_info) {
         setUser({
           ...user,
           id: data.user_info.id,
           email: data.user_info.email,
           role: data.user_info.role,
+          isLoggedIn: true,
+        });
+        navigate(`/${data.user_info.role}/dashboard`);
+        setAlert({
+          message: "Logged in!",
+          type: "success",
         });
       }
     } catch (err) {
