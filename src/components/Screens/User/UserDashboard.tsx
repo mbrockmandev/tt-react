@@ -11,7 +11,8 @@ import { alertAtom } from "../../../recoil/atoms/alertAtom";
 import { UpdateCurrentUrl } from "../../../utils/urlStorage";
 import Book from "../../../utils/models/Book";
 import Library, { emptyLibrary } from "../../../utils/models/Library";
-import { useNavigate } from "react-router-dom";
+
+import debounce from "lodash.debounce";
 
 const UserDashboard = () => {
   const [userData, setUserData] = useRecoilState(userAtom);
@@ -20,7 +21,7 @@ const UserDashboard = () => {
   const [returnedBooks, setReturnedBooks] = useState<Book[]>([]);
   const [borrowedBooks, setBorrowedBooks] = useState<Book[]>([]);
   const [library, setLibrary] = useState<Library>(emptyLibrary);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState([true, true, true, true]);
 
   const fetchUserData = async () => {
     const reqOptions: RequestInit = {
@@ -30,7 +31,7 @@ const UserDashboard = () => {
     const url = `${process.env.REACT_APP_BACKEND}/users/${userData.id}`;
     try {
       const res = await fetch(url, reqOptions);
-      setLoading(false);
+      setLoading((p) => [false, p[1], p[2], p[3]]);
 
       const data = await res.json();
       setUserData({ ...data });
@@ -54,7 +55,7 @@ const UserDashboard = () => {
 
       url = `${process.env.REACT_APP_BACKEND}/libraries/${data}`;
       res = await fetch(url, reqOptions);
-      setLoading(false);
+      setLoading((p) => [p[0], false, p[2], p[3]]);
 
       data = await res.json();
       const updatedLibrary = { ...data };
@@ -76,7 +77,7 @@ const UserDashboard = () => {
 
     try {
       const res = await fetch(url, reqOptions);
-      setLoading(false);
+      setLoading((p) => [p[0], p[1], false, p[3]]);
 
       if (res.status !== 204) {
         const data = await res.json();
@@ -101,7 +102,7 @@ const UserDashboard = () => {
 
     try {
       const res = await fetch(url, reqOptions);
-      setLoading(false);
+      setLoading((p) => [p[0], p[1], p[2], false]);
 
       if (res.status !== 204) {
         const data = await res.json();
@@ -117,19 +118,22 @@ const UserDashboard = () => {
     }
   };
 
+  const debouncedFetchUserData = debounce(fetchUserData, 300);
+  const debouncedHomeLibraryInfo = debounce(fetchHomeLibraryInfo, 300);
+  const debouncedFetchReturnedBooks = debounce(fetchReturnedBooks, 300);
+  const debouncedFetchBorrowedBooks = debounce(fetchBorrowedBooks, 300);
+
   useEffect(() => {
-    // all fetches are done
-    if (loading) {
-      return;
-    }
+    // done loading all data
+    if (!loading.every((s) => !s)) return;
+    if (loading[0]) debouncedFetchUserData();
+    if (loading[1]) debouncedHomeLibraryInfo();
+    if (loading[2]) debouncedFetchReturnedBooks();
+    if (loading[3]) debouncedFetchBorrowedBooks();
+  }, [loading]);
 
+  useEffect(() => {
     UpdateCurrentUrl();
-
-    fetchUserData();
-    fetchReturnedBooks();
-    fetchBorrowedBooks();
-    fetchHomeLibraryInfo();
-
     const updatedUser = {
       ...userData,
       returnedBooks,
@@ -138,8 +142,7 @@ const UserDashboard = () => {
     };
     localStorage.setItem("user", JSON.stringify(updatedUser));
     localStorage.setItem("library", JSON.stringify(library));
-    setLoading(false);
-  }, [loading]);
+  }, [userData, returnedBooks, borrowedBooks]);
 
   return (
     <div>
