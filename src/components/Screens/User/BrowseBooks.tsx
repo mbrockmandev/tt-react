@@ -73,7 +73,7 @@ const BrowseBooks = () => {
       <div className="flex items-center justify-center w-screen gap-3 pt-4">
         <div className="main-section flex-1 p-4 space-y-4">
           <h1 className="font-black text-3xl">
-            A total of {books.length} books!
+            Page {page} of {totalPages}
           </h1>
           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-4">
             {books.map((b) => (
