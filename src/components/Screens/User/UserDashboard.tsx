@@ -42,6 +42,7 @@ const UserDashboard = () => {
         role: data.role,
         email: data.email,
       });
+      localStorage.setItem("user", JSON.stringify(data));
     } catch (error) {
       setAlert({
         message: error.message,
@@ -71,6 +72,7 @@ const UserDashboard = () => {
         ...userData,
         homeLibraryId: data.id,
       });
+      localStorage.setItem("library", JSON.stringify(data));
     } catch (error) {
       setAlert({
         message: error.message,
@@ -149,12 +151,6 @@ const UserDashboard = () => {
     if (loading[2]) debouncedFetchReturnedBooks();
     if (loading[3]) debouncedFetchBorrowedBooks();
   }, [loading]);
-
-  useEffect(() => {
-    UpdateCurrentUrl();
-    localStorage.setItem("user", JSON.stringify(userData));
-    localStorage.setItem("library", JSON.stringify(library));
-  }, [userData]);
 
   return (
     <div>
