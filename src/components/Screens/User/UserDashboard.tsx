@@ -10,6 +10,7 @@ import { alertAtom } from "../../../recoil/atoms/alertAtom";
 
 import Library, { emptyLibrary } from "../../../utils/models/Library";
 import { UpdateCurrentUrl } from "../../../utils/urlStorage";
+import { useNavigate } from "react-router-dom";
 
 const UserDashboard = () => {
   const [userData, setUserData] = useRecoilState(userAtom);
@@ -17,6 +18,8 @@ const UserDashboard = () => {
 
   const [library, setLibrary] = useState<Library>(emptyLibrary);
   const [allDoneLoading, setAllDoneLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const fetchAllUserData = async () => {
     UpdateCurrentUrl();
@@ -93,6 +96,8 @@ const UserDashboard = () => {
   };
 
   useEffect(() => {
+    if (!userData.id) navigate("/login");
+
     fetchAllUserData();
   }, []);
 
