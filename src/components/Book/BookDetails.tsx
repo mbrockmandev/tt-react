@@ -136,10 +136,6 @@ const BookDetails: React.FC = () => {
     }
 
     const borrowedBookIds: number[] = [];
-    console.log("userData:", userData);
-    console.log("bookData:", bookData);
-    console.log("libraryData", libraryData);
-
     for (let book of userData.borrowedBooks) {
       borrowedBookIds.push(book.id);
     }
@@ -162,7 +158,7 @@ const BookDetails: React.FC = () => {
     fetchBookData();
     updateBorrowButtonText();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userData.role]);
+  }, [userData]);
 
   if (!bookData) {
     return (
