@@ -23,6 +23,7 @@ const UserDashboard = () => {
   const [allDoneLoading, setAllDoneLoading] = useState(false);
 
   const fetchUserData = async () => {
+    if (userData.id === 0) return;
     const reqOptions: RequestInit = {
       method: "GET",
       credentials: "include",
@@ -50,6 +51,7 @@ const UserDashboard = () => {
   };
 
   const fetchHomeLibraryInfo = async () => {
+    if (userData.id === 0) return;
     const reqOptions: RequestInit = {
       method: "GET",
       credentials: "include",
@@ -66,10 +68,6 @@ const UserDashboard = () => {
       data = await res.json();
       const updatedLibrary = { ...data };
       setLibrary(updatedLibrary);
-      setUserData({
-        ...userData,
-        homeLibraryId: data.id,
-      });
     } catch (error) {
       setAlert({
         message: error.message,
@@ -79,6 +77,7 @@ const UserDashboard = () => {
   };
 
   const fetchReturnedBooks = async () => {
+    if (userData.id === 0) return;
     const reqOptions: RequestInit = {
       method: "GET",
       credentials: "include",
@@ -91,9 +90,7 @@ const UserDashboard = () => {
 
       if (res.status !== 204) {
         const data = await res.json();
-        if (data) {
-          setReturnedBooks(data);
-        }
+        setReturnedBooks(data);
       }
     } catch (error) {
       setAlert({
@@ -104,6 +101,7 @@ const UserDashboard = () => {
   };
 
   const fetchBorrowedBooks = async () => {
+    if (userData.id === 0) return;
     const reqOptions: RequestInit = {
       method: "GET",
       credentials: "include",
@@ -116,9 +114,7 @@ const UserDashboard = () => {
 
       if (res.status !== 204) {
         const data = await res.json();
-        if (data) {
-          setBorrowedBooks(data);
-        }
+        setBorrowedBooks(data);
       }
     } catch (error) {
       setAlert({
@@ -128,21 +124,18 @@ const UserDashboard = () => {
     }
   };
 
-  const debouncedFetchUserData = debounce(fetchUserData, 300);
-  const debouncedHomeLibraryInfo = debounce(fetchHomeLibraryInfo, 300);
-  const debouncedFetchReturnedBooks = debounce(fetchReturnedBooks, 300);
-  const debouncedFetchBorrowedBooks = debounce(fetchBorrowedBooks, 300);
-
   const hasEverythingLoaded = () => {
     return loading.every((state) => !state);
   };
 
   useEffect(() => {
     // done loading all data
-    if (loading[0]) debouncedFetchUserData();
-    if (loading[1]) debouncedHomeLibraryInfo();
-    if (loading[2]) debouncedFetchReturnedBooks();
-    if (loading[3]) debouncedFetchBorrowedBooks();
+    if (loading[0]) fetchUserData();
+    if (loading[1]) fetchHomeLibraryInfo();
+    if (loading[2]) fetchReturnedBooks();
+    if (loading[3]) fetchBorrowedBooks();
+
+    if (loading[0] || loading[1] || loading[2] || loading[3]) return;
 
     const updatedUser = {
       ...userData,
