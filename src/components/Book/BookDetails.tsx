@@ -53,15 +53,15 @@ const BookDetails: React.FC = () => {
         const updatedUser =
           action === "borrow"
             ? {
-                ...userData,
-                borrowedBooks: [...userData.borrowedBooks, bookData],
-              }
+              ...userData,
+              borrowedBooks: [...userData.borrowedBooks, bookData],
+            }
             : {
-                ...userData,
-                borrowedBooks: userData.borrowedBooks.filter(
-                  (b) => b.id !== bookData.id,
-                ),
-              };
+              ...userData,
+              borrowedBooks: userData.borrowedBooks.filter(
+                (b) => b.id !== bookData.id,
+              ),
+            };
         setUserData(updatedUser);
         setAlert({
           message: "Book borrowed.",
@@ -157,8 +157,14 @@ const BookDetails: React.FC = () => {
     UpdateCurrentUrl();
     fetchBookData();
     updateBorrowButtonText();
+
+    console.log("userdata: ", userData);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userData]);
+
+  useEffect(() => {
+    console.log("borrow button text changed: ", borrowButtonText);
+  }, [borrowButtonText]);
 
   if (!bookData) {
     return (
