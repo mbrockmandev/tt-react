@@ -24,7 +24,7 @@ const BookDetails: React.FC = () => {
   const [bookData, setBookData] = useRecoilState(bookAtom);
   const libraryData = useRecoilValue(libraryAtom);
   const [, setAlert] = useRecoilState(alertAtom);
-  const [borrowButtonText, setBorrowButtonText] = useState("borrow");
+  const [borrowButtonText, setBorrowButtonText] = useState("");
 
   const { bookId } = useParams();
 
