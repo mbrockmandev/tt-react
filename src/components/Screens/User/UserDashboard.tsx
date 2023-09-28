@@ -25,7 +25,6 @@ const UserDashboard = () => {
 
   const fetchUserData = async () => {
     setIsFetchingUserData(true);
-    if (userData.id === 0) return;
     const reqOptions: RequestInit = {
       method: "GET",
       credentials: "include",
@@ -54,7 +53,6 @@ const UserDashboard = () => {
 
   const fetchHomeLibraryInfo = async () => {
     setIsFetchingHomeLibrary(true);
-    if (userData.id === 0) return;
     const reqOptions: RequestInit = {
       method: "GET",
       credentials: "include",
@@ -85,7 +83,6 @@ const UserDashboard = () => {
 
   const fetchReturnedBooks = async () => {
     setIsFetchingReturnedBooks(true);
-    if (userData.id === 0) return;
     const reqOptions: RequestInit = {
       method: "GET",
       credentials: "include",
@@ -95,12 +92,10 @@ const UserDashboard = () => {
     try {
       const res = await fetch(url, reqOptions);
 
-      if (res.status !== 204) {
-        const data = await res.json();
-        setUserData({ ...userData, returnedBooks: data });
-        setReturnedBooks(data);
-        setIsFetchingReturnedBooks(false);
-      }
+      const data = await res.json();
+      setUserData({ ...userData, returnedBooks: data });
+      setReturnedBooks(data);
+      setIsFetchingReturnedBooks(false);
     } catch (error) {
       setAlert({
         message: error.message,
@@ -111,7 +106,6 @@ const UserDashboard = () => {
 
   const fetchBorrowedBooks = async () => {
     setIsFetchingBorrowedBooks(true);
-    if (userData.id === 0) return;
     const reqOptions: RequestInit = {
       method: "GET",
       credentials: "include",
@@ -121,12 +115,10 @@ const UserDashboard = () => {
     try {
       const res = await fetch(url, reqOptions);
 
-      if (res.status !== 204) {
-        const data = await res.json();
-        setUserData({ ...userData, borrowedBooks: data });
-        setBorrowedBooks(data);
-        setIsFetchingBorrowedBooks(false);
-      }
+      const data = await res.json();
+      setUserData({ ...userData, borrowedBooks: data });
+      setBorrowedBooks(data);
+      setIsFetchingBorrowedBooks(false);
     } catch (error) {
       setAlert({
         message: error.message,
@@ -166,6 +158,7 @@ const UserDashboard = () => {
 
   useEffect(() => {
     checkAllLoaded();
+    console.log(borrowedBooks, returnedBooks);
   }, [userData]);
 
   return allDoneLoading ? (
