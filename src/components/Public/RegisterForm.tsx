@@ -164,7 +164,6 @@ const RegisterForm = () => {
           role: data.user_info.role,
           lastUrl: "/login",
         });
-        navigate(user.lastUrl);
       }
     } catch (err) {
       setAlert({ message: err.message, type: "error" });
@@ -176,11 +175,7 @@ const RegisterForm = () => {
   };
 
   useEffect(() => {
-    if (user.id !== 0) {
-      navigate(`/${user.role}/dashboard`);
-    } else {
-      navigate("/register");
-    }
+    navigate("/login");
   }, [user]);
 
   const createUserModal = (
