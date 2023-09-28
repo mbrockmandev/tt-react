@@ -31,9 +31,6 @@ const App = () => {
     const userData = JSON.parse(localStorage.getItem("user"));
     if (userData && userData.id !== 0) {
       setLocalUser(userData);
-      if (userData.isLoggedIn) {
-        navigate(`/${user.role}/dashboard`);
-      }
     }
     const libraryData = localStorage.getItem("library");
     if (libraryData) {
@@ -72,7 +69,6 @@ const App = () => {
           type: "error",
         });
         setLocalUser({ ...localUser, isLoggedIn: false });
-        navigate("/login");
         return;
       }
 
@@ -116,19 +112,6 @@ const App = () => {
     }
   }, []);
 
-  // log in with jwt if available
-  useEffect(() => {
-    setUser({ ...localUser });
-    if (
-      localUser.isLoggedIn &&
-      window.location.pathname !== `/${user.role}/dashboard`
-    ) {
-      navigate(`/${user.role}/dashboard`);
-    } else {
-      navigate("login");
-    }
-  }, [localUser]);
-
   useEffect(() => {
     if (alert.message && alert.message !== "") {
       setTimeout(() => {
@@ -139,11 +122,6 @@ const App = () => {
       }, 5000);
     }
   }, [alert]);
-
-  useEffect(() => {
-    const url = UpdateCurrentUrl();
-    setUser({ ...user, lastUrl: url });
-  }, [navigate]);
 
   return (
     <div className="background-root">
