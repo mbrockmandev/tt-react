@@ -16,12 +16,6 @@ const BrowseBooks = () => {
   const [limit] = useState<number>(20);
   const [totalPages, setTotalPages] = useState<number>(1);
 
-  const calculateTotalBooks = () => {
-    const calculatedFromPages = (totalPages - 1) * limit;
-    const length = books.length;
-    return Math.max(length, calculatedFromPages);
-  };
-
   useEffect(() => {
     const fetchBooks = async () => {
       const reqOptions: RequestInit = {
@@ -79,14 +73,11 @@ const BrowseBooks = () => {
       <div className="flex items-center justify-center w-screen gap-3 pt-4">
         <div className="main-section flex-1 p-4 space-y-4">
           <h1 className="font-black text-3xl">
-            A total of {calculateTotalBooks()} books!
+            A total of {books.length} books!
           </h1>
           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-4">
             {books.map((b) => (
-              <BookCard
-                key={`${b.id}`}
-                book={b}
-              />
+              <BookCard key={`${b.id}`} book={b} />
             ))}
           </div>
         </div>

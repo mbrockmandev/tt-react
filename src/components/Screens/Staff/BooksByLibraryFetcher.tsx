@@ -88,7 +88,8 @@ const BooksByLibraryFetcher = () => {
         />
         <button
           className="my-2 p-2 bg-blue-100 rounded-md hover:bg-blue-400 hover:scale-105"
-          onClick={fetchReport}>
+          onClick={fetchReport}
+        >
           Fetch Report
         </button>
       </div>
@@ -101,7 +102,8 @@ const BooksByLibraryFetcher = () => {
             </h2>
             <Link
               className="my-2 p-3 bg-blue-100 rounded-md hover:bg-blue-400 hover:scale-105"
-              to={`/reports/booksByLibrary`}>
+              to={`/reports/booksByLibrary`}
+            >
               See Details
             </Link>
           </>
