@@ -20,6 +20,7 @@ const UserDashboard = () => {
   const [returnedBooks, setReturnedBooks] = useState([]);
   const [library, setLibrary] = useState<Library>(emptyLibrary);
   const [loading, setLoading] = useState([true, true, true, true]);
+  const [allDoneLoading, setAllDoneLoading] = useState(false);
 
   const fetchUserData = async () => {
     const reqOptions: RequestInit = {
@@ -132,6 +133,10 @@ const UserDashboard = () => {
   const debouncedFetchReturnedBooks = debounce(fetchReturnedBooks, 300);
   const debouncedFetchBorrowedBooks = debounce(fetchBorrowedBooks, 300);
 
+  const hasEverythingLoaded = () => {
+    return loading.every((state) => !state);
+  };
+
   useEffect(() => {
     // done loading all data
     if (loading[0]) debouncedFetchUserData();
@@ -148,9 +153,13 @@ const UserDashboard = () => {
     setUserData(updatedUser);
     localStorage.setItem("user", JSON.stringify(updatedUser));
     localStorage.setItem("library", JSON.stringify(library));
+
+    setTimeout(() => {
+      setAllDoneLoading(hasEverythingLoaded());
+    }, 200);
   }, [loading]);
 
-  return (
+  return allDoneLoading ? (
     <div>
       <div className="library-dashboard flex">
         <div className="main-section flex-1 p-4 space-y-4">
@@ -186,6 +195,8 @@ const UserDashboard = () => {
         </div>
       </div>
     </div>
+  ) : (
+    <div className="library-dashboard flex">Loading...</div>
   );
 };
 
