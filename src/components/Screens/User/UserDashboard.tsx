@@ -28,6 +28,9 @@ const UserDashboard = () => {
     let tempUserData = { ...userData };
 
     try {
+      if (userData.id === 0) {
+        return;
+      }
       // fetch user data first
       let url = `${process.env.REACT_APP_BACKEND}/users/${userData.id}`;
       let res = await fetch(url, reqOptions);
