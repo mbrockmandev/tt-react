@@ -25,6 +25,8 @@ const BookDetails: React.FC = () => {
   const libraryData = useRecoilValue(libraryAtom);
   const [, setAlert] = useRecoilState(alertAtom);
   const [borrowButtonText, setBorrowButtonText] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const { bookId } = useParams();
 
@@ -84,87 +86,82 @@ const BookDetails: React.FC = () => {
     navigate("/libraries");
   };
 
-  const fetchBookData = async () => {
-    if (userData.role !== "user") return;
-    const reqOptions: RequestInit = {
-      method: "GET",
-      credentials: "include",
-    };
-    try {
-      if (userData.role === "user" && userData.homeLibraryId === 0) {
-        setAlert({
-          message:
-            "Home library has not been set!\nPlease navigate to the Libraries page!",
-          type: "error",
-        });
-        return;
-      }
-      const url = `${process.env.REACT_APP_BACKEND}/books/${bookId}?library_id=${userData.homeLibraryId}`;
-      const res = await fetch(url, reqOptions);
-      const data = await res.json();
-      if (data && data.book.id !== 0) {
-        const updatedBook: Book = {
-          id: data.book.id,
-          title: data.book.title,
-          author: data.book.author,
-          publishedAt: formatUTCDate(data.book.published_at),
-          thumbnail: data.book.thumbnail,
-          summary: data.book.summary,
-          isbn: data.book.isbn,
-          metadata: {
-            availableCopies: data.metadata.available_copies,
-            totalCopies: data.metadata.total_copies,
-            borrowedCopies: data.metadata.borrowed_copies,
-          },
-        };
-        setBookData(updatedBook);
-      }
-    } catch (err) {
-      setAlert({
-        message: err.message,
-        type: "error",
-      });
-    }
-  };
-
-  const updateBorrowButtonText = async () => {
-    if (userData.role !== "user") {
-      setBorrowButtonText("n/a");
-    }
-    if (userData.id === 0 && bookData.id === 0) {
-      return;
-    }
-
-    const borrowedBookIds: number[] = [];
-    for (let book of userData.borrowedBooks) {
-      borrowedBookIds.push(book.id);
-    }
-
-    if (borrowedBookIds.includes(bookData.id)) {
-      setBorrowButtonText("return");
-    } else if (
-      !borrowedBookIds.includes(bookData.id) &&
-      bookData.metadata?.availableCopies <= 0
-    ) {
-      setBorrowButtonText("n/a");
-    } else {
-      setBorrowButtonText("borrow");
-    }
-  };
-
   // initial load, update current URL and get book, library data
   useEffect(() => {
     UpdateCurrentUrl();
+
+    const fetchBookData = async () => {
+      if (userData.role !== "user") return;
+      const reqOptions: RequestInit = {
+        method: "GET",
+        credentials: "include",
+      };
+      try {
+        if (userData.role === "user" && userData.homeLibraryId === 0) {
+          setAlert({
+            message:
+              "Home library has not been set!\nPlease navigate to the Libraries page!",
+            type: "error",
+          });
+          return;
+        }
+        const url = `${process.env.REACT_APP_BACKEND}/books/${bookId}?library_id=${userData.homeLibraryId}`;
+        const res = await fetch(url, reqOptions);
+        const data = await res.json();
+        if (data && data.book.id !== 0) {
+          const updatedBook: Book = {
+            id: data.book.id,
+            title: data.book.title,
+            author: data.book.author,
+            publishedAt: formatUTCDate(data.book.published_at),
+            thumbnail: data.book.thumbnail,
+            summary: data.book.summary,
+            isbn: data.book.isbn,
+            metadata: {
+              availableCopies: data.metadata.available_copies,
+              totalCopies: data.metadata.total_copies,
+              borrowedCopies: data.metadata.borrowed_copies,
+            },
+          };
+          setBookData(updatedBook);
+        }
+      } catch (err) {
+        setAlert({
+          message: err.message,
+          type: "error",
+        });
+      }
+    };
+
     fetchBookData();
+
+    const updateBorrowButtonText = async () => {
+      if (userData.role !== "user") {
+        setBorrowButtonText("n/a");
+      }
+      if (userData.id === 0 && bookData.id === 0) {
+        return;
+      }
+
+      const borrowedBookIds: number[] = [];
+      for (let book of userData.borrowedBooks) {
+        borrowedBookIds.push(book.id);
+      }
+
+      if (borrowedBookIds.includes(bookData.id)) {
+        setBorrowButtonText("return");
+      } else if (
+        !borrowedBookIds.includes(bookData.id) &&
+        bookData.metadata?.availableCopies <= 0
+      ) {
+        setBorrowButtonText("n/a");
+      } else {
+        setBorrowButtonText("borrow");
+      }
+    };
+
     updateBorrowButtonText();
-
-    console.log("userdata: ", userData);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userData]);
-
-  useEffect(() => {
-    console.log("borrow button text changed: ", borrowButtonText);
-  }, [borrowButtonText]);
+  }, [bookData, bookId, setAlert, setBookData, userData]);
 
   if (!bookData) {
     return (

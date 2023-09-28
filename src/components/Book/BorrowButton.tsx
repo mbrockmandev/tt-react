@@ -1,7 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@material-tailwind/react";
 
 import Book from "../../utils/models/Book";
+
+interface TooltipProps {
+  message: string;
+}
+
+interface BorrowButtonProps {
+  borrowButtonText: string;
+  book: Book;
+  handleBookAction: (action: string) => void;
+}
 
 interface TooltipProps {
   message: string;
@@ -45,9 +55,8 @@ export const BorrowButton: React.FC<BorrowButtonProps> = ({
 
   return (
     <div
-      className={`relative group ${
-        borrowButtonText === "n/a" ? "hover:cursor-not-allowed" : ""
-      }`}
+      className={`relative group ${borrowButtonText === "n/a" ? "hover:cursor-not-allowed" : ""
+        }`}
     >
       <Button
         className={`mb-4 w-36 h-16 transition-colors duration-300 ${buttonClass}`}
