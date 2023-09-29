@@ -39,6 +39,8 @@ const UserDashboard = () => {
       let res = await fetch(url, reqOptions);
       let data = await res.json();
 
+      console.log(`request to ${url} yielded: `, data);
+
       tempUserData = {
         ...tempUserData,
         id: data.id,
@@ -52,10 +54,12 @@ const UserDashboard = () => {
       url = `${process.env.REACT_APP_BACKEND}/users/${userData.id}/homeLibrary`;
       res = await fetch(url, reqOptions);
       data = await res.json();
+      console.log(`request to ${url} yielded: `, data);
 
       url = `${process.env.REACT_APP_BACKEND}/libraries/${data}`;
       res = await fetch(url, reqOptions);
       data = await res.json();
+      console.log(`request to ${url} yielded: `, data);
 
       tempUserData = {
         ...tempUserData,
@@ -67,6 +71,7 @@ const UserDashboard = () => {
       url = `${process.env.REACT_APP_BACKEND}/users/${userData.id}/returned`;
       res = await fetch(url, reqOptions);
       data = await res.json();
+      console.log(`request to ${url} yielded: `, data);
 
       tempUserData = {
         ...tempUserData,
@@ -77,6 +82,7 @@ const UserDashboard = () => {
       url = `${process.env.REACT_APP_BACKEND}/users/${userData.id}/borrowed`;
       res = await fetch(url, reqOptions);
       data = await res.json();
+      console.log(`request to ${url} yielded: `, data);
 
       tempUserData = {
         ...tempUserData,
@@ -88,6 +94,7 @@ const UserDashboard = () => {
       localStorage.setItem("library", JSON.stringify(library));
       setAllDoneLoading(true);
     } catch (error) {
+      console.error("ok, something went wrong: ", error);
       setAlert({
         message: error.message,
         type: "error",
@@ -96,15 +103,15 @@ const UserDashboard = () => {
   };
 
   useEffect(() => {
-    console.log("initial load, userData and library:", userData, library);
+    // console.log("initial load, userData and library:", userData, library);
     if (!userData.id) navigate("/login");
 
     fetchAllUserData();
   }, []);
 
-  useEffect(() => {
-    console.log(userData, library);
-  }, [alert, setAlert]);
+  // useEffect(() => {
+  //   console.log(userData, library);
+  // }, [alert, setAlert]);
 
   return allDoneLoading ? (
     <div>
