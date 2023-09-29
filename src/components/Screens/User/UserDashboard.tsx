@@ -59,6 +59,7 @@ const UserDashboard = () => {
       let url = `${process.env.REACT_APP_BACKEND}/users/${userData.id}/homeLibrary`;
       let res = await fetch(url, reqOptions);
       let data = await res.json();
+      tempUserData = { ...tempUserData, homeLibraryId: data };
       if (data) {
         url = `${process.env.REACT_APP_BACKEND}/libraries/${data}`;
         res = await fetch(url, reqOptions);
@@ -76,8 +77,6 @@ const UserDashboard = () => {
       if (res.status !== 204) {
         const data = await res.json();
         if (data) {
-          console.log(data);
-          console.log(tempUserData);
           tempUserData = {
             ...tempUserData,
             returnedBooks: data,
@@ -92,14 +91,14 @@ const UserDashboard = () => {
     try {
       const url = `${process.env.REACT_APP_BACKEND}/users/${userData.id}/borrowed`;
       const res = await fetch(url, reqOptions);
-      const data = await res.json();
-      if (data) {
-        console.log(data);
-        console.log(tempUserData);
-        tempUserData = {
-          ...tempUserData,
-          borrowedBooks: data,
-        };
+      if (res.status !== 204) {
+        const data = await res.json();
+        if (data) {
+          tempUserData = {
+            ...tempUserData,
+            borrowedBooks: data,
+          };
+        }
       }
     } catch (error) {
       errors.push(error);
