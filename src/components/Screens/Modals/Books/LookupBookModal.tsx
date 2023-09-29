@@ -52,7 +52,6 @@ const LookupBookModal = () => {
   };
 
   const handleLookup = async (e: any) => {
-    console.log("handleLookup -- id ", id, "isbn ", isbn);
     e.preventDefault();
 
     if (id === 0 && isbn === "") {

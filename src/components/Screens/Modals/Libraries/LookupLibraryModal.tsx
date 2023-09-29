@@ -11,7 +11,7 @@ const LookupLibraryModal = () => {
   const [, setAlert] = useRecoilState(alertQueueAtom);
   const [activeModal, setActiveModal] = useRecoilState(modalAtom);
   const [, setSelectedLibrary] = useRecoilState(selectedLibraryAtom);
-  const [id, setId] = useState<number>(null);
+  const [id, setId] = useState<number>(0);
   const [name, setName] = useState<string>("");
 
   const handleModalChange = () => {
@@ -61,15 +61,6 @@ const LookupLibraryModal = () => {
         ...prev,
         {
           message: "Please enter an ID or name",
-          type: "error",
-        },
-      ]);
-      return;
-    } else if (id !== 0 && name !== "") {
-      setAlert((prev) => [
-        ...prev,
-        {
-          message: "Please search by either ID or name",
           type: "error",
         },
       ]);
