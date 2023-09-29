@@ -5,7 +5,6 @@ import LibraryCard from "../../Library/LibraryCard";
 import { UpdateCurrentUrl } from "../../../utils/urlStorage";
 
 const BrowseLibraries = () => {
-  // const setLibraryData = useSetRecoilState(libraryAtom);
   const [libraries, setLibraries] = useState<ResponseLibrary[]>([]);
   const [page, setPage] = useState<number>(1);
   const [limit] = useState<number>(10);
@@ -64,10 +63,7 @@ const BrowseLibraries = () => {
           <h1 className="font-black text-3xl">Libraries</h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {libraries.map((l) => (
-              <LibraryCard
-                key={`${l.id}`}
-                library={l}
-              />
+              <LibraryCard key={`${l.id}`} library={l} />
             ))}
           </div>
         </div>

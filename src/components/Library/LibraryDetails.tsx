@@ -5,13 +5,13 @@ import { Button } from "@material-tailwind/react";
 import { userAtom } from "../../recoil/atoms/userAtom";
 import { libraryAtom } from "../../recoil/atoms/libraryAtom";
 import { UpdateCurrentUrl } from "../../utils/urlStorage";
-import { alertAtom } from "../../recoil/atoms/alertAtom";
+import { alertQueueAtom } from "../../recoil/atoms/alertAtom";
 import { useNavigate } from "react-router-dom";
 
 const LibraryDetails: React.FC = () => {
   const [library, setLibrary] = useRecoilState(libraryAtom);
   const [user, setUser] = useRecoilState(userAtom);
-  const [, setAlert] = useRecoilState(alertAtom);
+  const [, setAlert] = useRecoilState(alertQueueAtom);
   const navigate = useNavigate();
   const [homeLibraryId, setHomeLibraryId] = useState(0);
 
@@ -46,10 +46,13 @@ const LibraryDetails: React.FC = () => {
         phone: data.phone,
       });
     } catch (err) {
-      setAlert({
-        message: err.message,
-        type: "error",
-      });
+      setAlert((prev) => [
+        ...prev,
+        {
+          message: err.message,
+          type: "error",
+        },
+      ]);
       console.error(err);
     }
   };
@@ -59,7 +62,7 @@ const LibraryDetails: React.FC = () => {
     fetchLibraryData();
   }, []);
 
-  const handleSetHomeLibrary = (e) => {
+  const handleSetHomeLibrary = (e: any) => {
     e.preventDefault();
 
     const setHomeLocation = async () => {
@@ -79,10 +82,13 @@ const LibraryDetails: React.FC = () => {
         const url = `${process.env.REACT_APP_BACKEND}/users/libraries/${library.id}/setHomeLocation?userId=${id}`;
         const res = await fetch(url, reqOptions);
         if (!res.ok && res.status === 409) {
-          setAlert({
-            message: "Home Library already set",
-            type: "error",
-          });
+          setAlert((prev) => [
+            ...prev,
+            {
+              message: "Home Library already set",
+              type: "error",
+            },
+          ]);
           return;
         }
         if (!res.ok) {
@@ -92,15 +98,20 @@ const LibraryDetails: React.FC = () => {
         }
         // update user's home library and commit to memory/local storage
         setHomeLibraryId(library.id);
-        setAlert({
-          message: "Home Library Updated!",
-          type: "success",
-        });
+        setAlert((prev) => [
+          {
+            message: "Home Library Updated!",
+            type: "success",
+          },
+        ]);
       } catch (err) {
-        setAlert({
-          message: err.message,
-          type: "error",
-        });
+        setAlert((prev) => [
+          ...prev,
+          {
+            message: err.message,
+            type: "error",
+          },
+        ]);
         console.error(err);
       }
     };
@@ -141,7 +152,8 @@ const LibraryDetails: React.FC = () => {
               <>
                 <Button
                   className="w-36 h-16 bg-gray-400 ml-20 mt-10 hover:bg-gray-500 transition-colors duration-300"
-                  onClick={handleSetHomeLibrary}>
+                  onClick={handleSetHomeLibrary}
+                >
                   Set as My Library
                 </Button>
               </>

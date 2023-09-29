@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 
 import { modalAtom } from "../../../../recoil/atoms/modalAtom";
-import { alertAtom } from "../../../../recoil/atoms/alertAtom";
+import { alertQueueAtom } from "../../../../recoil/atoms/alertAtom";
 import { selectedUserAtom } from "../../../../recoil/atoms/selectedUserAtom";
 import { userAtom } from "../../../../recoil/atoms/userAtom";
 import {
@@ -16,7 +16,7 @@ const UpdateUserModal = () => {
   const user = useRecoilValue(userAtom);
   const [selectedUser, setSelectedUser] = useRecoilState(selectedUserAtom);
 
-  const [, setAlert] = useRecoilState(alertAtom);
+  const [, setAlert] = useRecoilState(alertQueueAtom);
   const [activeModal, setActiveModal] = useRecoilState(modalAtom);
 
   const [userToModify, setUserToModify] =
@@ -164,7 +164,10 @@ const UpdateUserModal = () => {
       const payload = getDiffPayload();
 
       if (Object.keys(payload).length === 0) {
-        setAlert({ message: "No changes made", type: "info" });
+        setAlert((prev) => [
+          ...prev,
+          { message: "No changes made", type: "info" },
+        ]);
         return;
       }
 
@@ -186,11 +189,11 @@ const UpdateUserModal = () => {
 
       const data = await res.json();
 
-      setAlert({ message: data.message, type: "success" });
+      setAlert((prev) => [...prev, { message: data.message, type: "success" }]);
       updateSelectedUserAfterSuccessfulUpdate(payload);
       setActiveModal(null);
     } catch (err) {
-      setAlert({ message: err.message, type: "error" });
+      setAlert((prev) => [...prev, { message: err.message, type: "error" }]);
     }
   };
 

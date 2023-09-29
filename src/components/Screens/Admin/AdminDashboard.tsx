@@ -34,14 +34,14 @@ import UpdateBookModal from "../Modals/Books/UpdateBookModal";
 import DeleteBookModal from "../Modals/Books/DeleteBookModal";
 import BooksByLibraryFetcher from "../Staff/BooksByLibraryFetcher";
 import BooksReport from "../Staff/BooksReport";
-import { alertAtom } from "../../../recoil/atoms/alertAtom";
+import { alertQueueAtom } from "../../../recoil/atoms/alertAtom";
 import { libraryAtom } from "../../../recoil/atoms/libraryAtom";
 import UpdateUserModal from "../Modals/Users/UpdateUserModal";
 
 const AdminDashboard = () => {
   // recoil atoms
   const [, setActiveModal] = useRecoilState(modalAtom);
-  const [, setAlert] = useRecoilState(alertAtom);
+  const [, setAlert] = useRecoilState(alertQueueAtom);
   const [userData, setUserData] = useRecoilState(userAtom);
   const [library, setLibrary] = useRecoilState(libraryAtom);
   const [selectedUser, setSelectedUser] = useRecoilState(selectedUserAtom);
@@ -103,10 +103,13 @@ const AdminDashboard = () => {
       localStorage.setItem("user", JSON.stringify(tempUserData));
       localStorage.setItem("library", JSON.stringify(library));
     } catch (error) {
-      setAlert({
-        message: error.message,
-        type: "error",
-      });
+      setAlert((prev) => [
+        ...prev,
+        {
+          message: error.message,
+          type: "error",
+        },
+      ]);
     }
   };
 
@@ -186,9 +189,8 @@ const AdminDashboard = () => {
             <div className="flex items-baseline justify-between">
               <h2 className="text-lg font-semibold">User</h2>
               <button
-                className={`hover:underline hover:text-blue-400 ${
-                  selectedUser.id === 0 ? "hidden" : ""
-                }`}
+                className={`hover:underline hover:text-blue-400 ${selectedUser.id === 0 ? "hidden" : ""
+                  }`}
                 onClick={handleResetUserToModify}
               >
                 Reset User
@@ -211,9 +213,8 @@ const AdminDashboard = () => {
             <div className="flex items-baseline justify-between">
               <h2 className="text-lg font-semibold">Library</h2>
               <button
-                className={`hover:underline hover:text-blue-400 ${
-                  selectedLibrary.id === 0 ? "hidden" : ""
-                }`}
+                className={`hover:underline hover:text-blue-400 ${selectedLibrary.id === 0 ? "hidden" : ""
+                  }`}
                 onClick={handleResetLibraryToModify}
               >
                 Reset Library
@@ -238,9 +239,8 @@ const AdminDashboard = () => {
             <div className="flex items-baseline justify-between">
               <h2 className="text-lg font-semibold">Book</h2>
               <button
-                className={`hover:underline hover:text-blue-400 ${
-                  selectedBook.id === 0 ? "hidden" : ""
-                }`}
+                className={`hover:underline hover:text-blue-400 ${selectedBook.id === 0 ? "hidden" : ""
+                  }`}
                 onClick={handleResetBookToModify}
               >
                 Reset Book

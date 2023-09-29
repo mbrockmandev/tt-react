@@ -4,13 +4,10 @@ import ReactDOM from "react-dom";
 
 const SearchModal = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [searchCriteria, setSearchCriteria] = useState("author");
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
   const handleSearch = () => {
-    // search here
     closeModal();
   };
 
@@ -56,7 +53,7 @@ const SearchModal = () => {
           </div>
         </div>
       </div>,
-      document.getElementById("modal-root")
+      document.getElementById("modal-root"),
     );
 
   return (

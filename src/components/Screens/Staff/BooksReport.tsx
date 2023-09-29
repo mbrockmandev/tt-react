@@ -4,11 +4,11 @@ import { keysToCamelCase } from "../../../utils/jsonConverter";
 import { BooksWithMetadata } from "../../../recoil/atoms/booksByLibraryAtom";
 import Book from "../../../utils/models/Book";
 import { formatUTCDate } from "../../../utils/formatDate";
-import { alertAtom } from "../../../recoil/atoms/alertAtom";
+import { alertQueueAtom } from "../../../recoil/atoms/alertAtom";
 import { useRecoilState } from "recoil";
 
 const PopularBooksReport: React.FC = () => {
-  const [, setAlert] = useRecoilState(alertAtom);
+  const [, setAlert] = useRecoilState(alertQueueAtom);
   const [books, setBooks] = useState<Book[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -29,10 +29,13 @@ const PopularBooksReport: React.FC = () => {
           setTotalPages(camelCaseData.metadata.totalPages);
         }
       } catch (error) {
-        setAlert({
-          message: error.message,
-          type: "error",
-        });
+        setAlert((prev) => [
+          ...prev,
+          {
+            message: error.message,
+            type: "error",
+          },
+        ]);
       }
     };
     fetchBooks();
@@ -68,7 +71,8 @@ const PopularBooksReport: React.FC = () => {
       <div className="mt-4">
         <button
           disabled={currentPage === 1}
-          onClick={() => setCurrentPage((prev) => prev - 1)}>
+          onClick={() => setCurrentPage((prev) => prev - 1)}
+        >
           Previous
         </button>
         <span className="mx-2">
@@ -76,7 +80,8 @@ const PopularBooksReport: React.FC = () => {
         </span>
         <button
           disabled={currentPage === totalPages}
-          onClick={() => setCurrentPage((prev) => prev + 1)}>
+          onClick={() => setCurrentPage((prev) => prev + 1)}
+        >
           Next
         </button>
       </div>

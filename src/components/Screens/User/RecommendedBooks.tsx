@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 
-import { alertAtom } from "../../../recoil/atoms/alertAtom";
+import { alertQueueAtom } from "../../../recoil/atoms/alertAtom";
 import { bookAtom } from "../../../recoil/atoms/bookAtom";
 
 import Book from "../../../utils/models/Book";
@@ -12,7 +12,7 @@ const BookRecommendations = () => {
   const [recommendedBooks, setRecommendedBooks] = useState([]);
   const user = useRecoilValue(userAtom);
   const [, setBookData] = useRecoilState(bookAtom);
-  const [, setAlert] = useRecoilState(alertAtom);
+  const [, setAlert] = useRecoilState(alertQueueAtom);
 
   const navigate = useNavigate();
 
@@ -68,10 +68,13 @@ const BookRecommendations = () => {
         });
         navigate(`/books/${b.id}`);
       } catch (err) {
-        setAlert({
-          message: err.message,
-          type: "error",
-        });
+        setAlert((prev) => [
+          ...prev,
+          {
+            message: err.message,
+            type: "error",
+          },
+        ]);
       }
     };
     fetchBookData();
@@ -82,13 +85,12 @@ const BookRecommendations = () => {
       <h4>Recommended Books:</h4>
       {recommendedBooks &&
         recommendedBooks.map((b) => (
-          <div
-            key={b.id}
-            id={b.id}>
+          <div key={b.id} id={b.id}>
             <div className="my-4">
               <button
                 className="align-center justify-center text-start break-normal text-blue-600 hover:text-blue-400"
-                onClick={(e) => handleClick(e, b)}>
+                onClick={(e) => handleClick(e, b)}
+              >
                 <p>{b.title}</p>
               </button>
               <hr />

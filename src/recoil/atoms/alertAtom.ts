@@ -1,16 +1,20 @@
-import { atom } from "recoil";
+import { atom, selector } from "recoil";
 
-type AlertAtomState = {
+type AlertType = {
   message: string;
   type: string;
   duration?: number;
 };
 
-export const alertAtom = atom<AlertAtomState>({
-  key: "alertState",
-  default: {
-    message: "",
-    type: "",
-    duration: 3000,
+export const alertQueueAtom = atom<AlertType[]>({
+  key: "alertQueueState",
+  default: [],
+});
+
+export const currentAlertSelector = selector<AlertType | null>({
+  key: "currentAlertSelector",
+  get: ({ get }) => {
+    const queue = get(alertQueueAtom);
+    return queue.length > 0 ? queue[0] : null;
   },
 });

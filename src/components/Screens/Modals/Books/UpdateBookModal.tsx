@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 
 import { modalAtom } from "../../../../recoil/atoms/modalAtom";
-import { alertAtom } from "../../../../recoil/atoms/alertAtom";
+import { alertQueueAtom } from "../../../../recoil/atoms/alertAtom";
 import { selectedBookAtom } from "../../../../recoil/atoms/selectedBookAtom";
 import { userAtom } from "../../../../recoil/atoms/userAtom";
 
@@ -13,7 +13,7 @@ const UpdateBookModal = () => {
   const user = useRecoilValue(userAtom);
   const [selectedBook, setSelectedBook] = useRecoilState(selectedBookAtom);
 
-  const [, setAlert] = useRecoilState(alertAtom);
+  const [, setAlert] = useRecoilState(alertQueueAtom);
   const [activeModal, setActiveModal] = useRecoilState(modalAtom);
 
   const [bookToModify, setBookToModify] = useState<Book>(emptyBook);
@@ -79,15 +79,21 @@ const UpdateBookModal = () => {
     });
 
     if (title === "") {
-      setAlert({
-        message: "Title cannot be blank",
-        type: "error",
-      });
+      setAlert((prev) => [
+        ...prev,
+        {
+          message: "Title cannot be blank",
+          type: "error",
+        },
+      ]);
     } else if (title.length < 3 || title.length > 255) {
-      setAlert({
-        message: "Title must be between 3 and 255 characters long.",
-        type: "error",
-      });
+      setAlert((prev) => [
+        ...prev,
+        {
+          message: "Title must be between 3 and 255 characters long.",
+          type: "error",
+        },
+      ]);
     }
   };
 
@@ -99,10 +105,13 @@ const UpdateBookModal = () => {
     });
 
     if (isbn.length !== 13) {
-      setAlert({
-        message: "ISBN must be 13 digits.",
-        type: "error",
-      });
+      setAlert((prev) => [
+        ...prev,
+        {
+          message: "ISBN must be 13 digits.",
+          type: "error",
+        },
+      ]);
     }
   };
 
@@ -114,16 +123,22 @@ const UpdateBookModal = () => {
     });
 
     if (author === "") {
-      setAlert({
-        message: "Author cannot be blank",
-        type: "error",
-      });
+      setAlert((prev) => [
+        ...prev,
+        {
+          message: "Author cannot be blank",
+          type: "error",
+        },
+      ]);
 
       if (author.length < 3 || author.length > 255) {
-        setAlert({
-          message: "Author must be between 3 and 255 characters long.",
-          type: "error",
-        });
+        setAlert((prev) => [
+          ...prev,
+          {
+            message: "Author must be between 3 and 255 characters long.",
+            type: "error",
+          },
+        ]);
       }
     }
   };
@@ -136,16 +151,22 @@ const UpdateBookModal = () => {
     });
 
     if (thumbnail === "") {
-      setAlert({
-        message: "Thumbnail cannot be blank",
-        type: "error",
-      });
+      setAlert((prev) => [
+        ...prev,
+        {
+          message: "Thumbnail cannot be blank",
+          type: "error",
+        },
+      ]);
 
       if (thumbnail.length < 3 || thumbnail.length > 255) {
-        setAlert({
-          message: "Thumbnail must be between 3 and 255 characters long.",
-          type: "error",
-        });
+        setAlert((prev) => [
+          ...prev,
+          {
+            message: "Thumbnail must be between 3 and 255 characters long.",
+            type: "error",
+          },
+        ]);
       }
     }
   };
@@ -158,16 +179,22 @@ const UpdateBookModal = () => {
     });
 
     if (summary === "") {
-      setAlert({
-        message: "Summary cannot be blank",
-        type: "error",
-      });
+      setAlert((prev) => [
+        ...prev,
+        {
+          message: "Summary cannot be blank",
+          type: "error",
+        },
+      ]);
 
       if (summary.length < 3 || summary.length > 2048) {
-        setAlert({
-          message: "Summary must be between 3 and 2048 characters long.",
-          type: "error",
-        });
+        setAlert((prev) => [
+          ...prev,
+          {
+            message: "Summary must be between 3 and 2048 characters long.",
+            type: "error",
+          },
+        ]);
       }
     }
   };
@@ -194,7 +221,10 @@ const UpdateBookModal = () => {
       const payload = getDiffPayload();
 
       if (Object.keys(payload).length === 0) {
-        setAlert({ message: "No changes made", type: "info" });
+        setAlert((prev) => [
+          ...prev,
+          { message: "No changes made", type: "info" },
+        ]);
         return;
       }
 
@@ -216,11 +246,11 @@ const UpdateBookModal = () => {
 
       const data = await res.json();
 
-      setAlert({ message: data.message, type: "success" });
+      setAlert((prev) => [...prev, { message: data.message, type: "success" }]);
       updateSelectedBookAfterSuccessfulUpdate(payload);
       setActiveModal(null);
     } catch (err) {
-      setAlert({ message: err.message, type: "error" });
+      setAlert((prev) => [...prev, { message: err.message, type: "error" }]);
     }
   };
 

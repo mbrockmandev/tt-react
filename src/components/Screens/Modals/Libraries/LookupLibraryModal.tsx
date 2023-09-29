@@ -3,12 +3,12 @@ import ReactDOM from "react-dom";
 import { useRecoilState } from "recoil";
 
 import { modalAtom } from "../../../../recoil/atoms/modalAtom";
-import { alertAtom } from "../../../../recoil/atoms/alertAtom";
+import { alertQueueAtom } from "../../../../recoil/atoms/alertAtom";
 import { selectedLibraryAtom } from "../../../../recoil/atoms/selectedLibraryAtom";
 import { emptyLibrary } from "../../../../utils/models/Library";
 
 const LookupLibraryModal = () => {
-  const [, setAlert] = useRecoilState(alertAtom);
+  const [, setAlert] = useRecoilState(alertQueueAtom);
   const [activeModal, setActiveModal] = useRecoilState(modalAtom);
   const [, setSelectedLibrary] = useRecoilState(selectedLibraryAtom);
   const [id, setId] = useState<number>(null);
@@ -57,16 +57,22 @@ const LookupLibraryModal = () => {
     }
 
     if (id === 0 && name === "") {
-      setAlert({
-        message: "Please enter an ID or name",
-        type: "error",
-      });
+      setAlert((prev) => [
+        ...prev,
+        {
+          message: "Please enter an ID or name",
+          type: "error",
+        },
+      ]);
       return;
     } else if (id !== 0 && name !== "") {
-      setAlert({
-        message: "Please search by either ID or name",
-        type: "error",
-      });
+      setAlert((prev) => [
+        ...prev,
+        {
+          message: "Please search by either ID or name",
+          type: "error",
+        },
+      ]);
       return;
     }
 
@@ -90,10 +96,13 @@ const LookupLibraryModal = () => {
       setName("");
 
       if (res.ok) {
-        setAlert({
-          message: "Found library!",
-          type: "success",
-        });
+        setAlert((prev) => [
+          ...prev,
+          {
+            message: "Found library!",
+            type: "success",
+          },
+        ]);
       } else if (!res.ok) {
         throw new Error(`HTTP status code: ` + res.status);
       }
@@ -107,7 +116,7 @@ const LookupLibraryModal = () => {
       });
       setActiveModal(null);
     } catch (err) {
-      setAlert({ message: err.message, type: "error" });
+      setAlert((prev) => [...prev, { message: err.message, type: "error" }]);
     }
   };
 

@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
+import { alertQueueAtom } from "../../recoil/atoms/alertAtom";
 import { libraryAtom, ResponseLibrary } from "../../recoil/atoms/libraryAtom";
 
 type LibraryCardProps = {
@@ -10,33 +11,42 @@ type LibraryCardProps = {
 const LibraryCard: React.FC<LibraryCardProps> = ({ library }) => {
   const { id, name, city, streetAddress } = library;
   const [libraryData, setLibraryData] = useRecoilState(libraryAtom);
+  const [, setAlert] = useRecoilState(alertQueueAtom);
 
   const handleClick = () => {
     const fetchLibraryDetails = async () => {
       if (libraryData && libraryData.id === id) {
         return;
       }
-      const reqOptions: RequestInit = {
-        method: "GET",
-        credentials: "include",
-      };
-      const url = `${process.env.REACT_APP_BACKEND}/libraries/${id}`;
-      const res = await fetch(url, reqOptions);
-      if (!res.ok) {
-        throw new Error("something went wrong with the request");
-      }
-      const data = await res.json();
+      try {
+        const reqOptions: RequestInit = {
+          method: "GET",
+          credentials: "include",
+        };
 
-      setLibraryData({
-        id: data.id,
-        name: data.name,
-        city: data.city,
-        streetAddress: data.street_address,
-        postalCode: data.postal_code,
-        phone: data.phone,
-      });
+        const url = `${process.env.REACT_APP_BACKEND}/libraries/${id}`;
+        const res = await fetch(url, reqOptions);
+        if (!res.ok) {
+          throw new Error("something went wrong with the request");
+        }
+        const data = await res.json();
+
+        setLibraryData({
+          id: data.id,
+          name: data.name,
+          city: data.city,
+          streetAddress: data.street_address,
+          postalCode: data.postal_code,
+          phone: data.phone,
+        });
+      } catch (error) {
+        setAlert((prev) => [
+          ...prev,
+          { message: error.message, type: "error" },
+        ]);
+      }
     };
-    fetchLibraryDetails().catch((err) => console.error(err.message));
+    fetchLibraryDetails();
   };
 
   const grabLibraryImage = () => {
@@ -55,11 +65,13 @@ const LibraryCard: React.FC<LibraryCardProps> = ({ library }) => {
   return (
     <div
       style={{ aspectRatio: "9/6" }}
-      className="mx-auto w-fit z-10 relative py-8">
+      className="mx-auto w-fit z-10 relative py-8"
+    >
       <Link
         to={`/libraries/${id}`}
         onClick={handleClick}
-        className="group relative block h-80 w-60 transition hover:drop-shadow">
+        className="group relative block h-80 w-60 transition hover:drop-shadow"
+      >
         <span className="absolute inset-0 drop-shadow"></span>
 
         <div className="relative flex h-full transform items-end drop-shadow-md bg-white transition-transform">
@@ -78,7 +90,8 @@ const LibraryCard: React.FC<LibraryCardProps> = ({ library }) => {
           bg-opacity-80
           group-hover:opacity-100
           bg-blue-50
-          sm:p-6 lg:p-8">
+          sm:p-6 lg:p-8"
+          >
             <h3 className="text-xl font-medium sm:text-2xl">{city}</h3>
             <h5 className="text-sm font-small sm:text-xl">{streetAddress}</h5>
           </div>

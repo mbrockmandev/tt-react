@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { useRecoilState } from "recoil";
 
 import { modalAtom } from "../../../../recoil/atoms/modalAtom";
-import { alertAtom } from "../../../../recoil/atoms/alertAtom";
+import { alertQueueAtom } from "../../../../recoil/atoms/alertAtom";
 
 import { selectedBookAtom } from "../../../../recoil/atoms/selectedBookAtom";
 import { emptyBook } from "../../../../utils/models/Book";
@@ -11,7 +11,7 @@ import { emptyBook } from "../../../../utils/models/Book";
 const DeleteBookModal = () => {
   const [id, setId] = useState(0);
   const [activeModal, setActiveModal] = useRecoilState(modalAtom);
-  const [, setAlert] = useRecoilState(alertAtom);
+  const [, setAlert] = useRecoilState(alertQueueAtom);
   const [, setBookToModify] = useRecoilState(selectedBookAtom);
 
   const handleIdChange = (e: any) => {
@@ -39,10 +39,13 @@ const DeleteBookModal = () => {
 
     try {
       if (typeof id !== "number") {
-        setAlert({
-          message: "invalid id",
-          type: "error",
-        });
+        setAlert((prev) => [
+          ...prev,
+          {
+            message: "invalid id",
+            type: "error",
+          },
+        ]);
         return;
       }
 
@@ -63,11 +66,11 @@ const DeleteBookModal = () => {
 
       const data = await res.json();
 
-      setAlert({ message: data.message, type: "success" });
+      setAlert((prev) => [...prev, { message: data.message, type: "success" }]);
       setBookToModify(emptyBook);
       setActiveModal(null);
     } catch (err) {
-      setAlert({ message: err.message, type: "error" });
+      setAlert((prev) => [...prev, { message: err.message, type: "error" }]);
       setActiveModal(null);
     }
   };

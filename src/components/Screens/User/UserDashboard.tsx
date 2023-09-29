@@ -6,7 +6,7 @@ import ReturnedBooks from "./ReturnedBooks";
 import RecommendedBooks from "../User/RecommendedBooks";
 
 import { userAtom } from "../../../recoil/atoms/userAtom";
-import { alertAtom } from "../../../recoil/atoms/alertAtom";
+import { alertQueueAtom } from "../../../recoil/atoms/alertAtom";
 
 import Library, { emptyLibrary } from "../../../utils/models/Library";
 import { UpdateCurrentUrl } from "../../../utils/urlStorage";
@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 
 const UserDashboard = () => {
   const [userData, setUserData] = useRecoilState(userAtom);
-  const [, setAlert] = useRecoilState(alertAtom);
+  const [, setAlert] = useRecoilState(alertQueueAtom);
 
   const [library, setLibrary] = useState<Library>(emptyLibrary);
   const [allDoneLoading, setAllDoneLoading] = useState(false);
@@ -106,10 +106,13 @@ const UserDashboard = () => {
 
     if (errors.length > 0) {
       console.error("some requests failed:", errors);
-      setAlert({
-        message: `${errors.length} requests failed. Please try again.`,
-        type: "error",
-      });
+      setAlert((prev) => [
+        ...prev,
+        {
+          message: `${errors.length} requests failed. Please try again.`,
+          type: "error",
+        },
+      ]);
     }
 
     setUserData(tempUserData);

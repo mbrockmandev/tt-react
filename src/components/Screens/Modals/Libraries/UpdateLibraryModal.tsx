@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 
-import { alertAtom } from "../../../../recoil/atoms/alertAtom";
+import { alertQueueAtom } from "../../../../recoil/atoms/alertAtom";
 import { selectedLibraryAtom } from "../../../../recoil/atoms/selectedLibraryAtom";
 import { modalAtom } from "../../../../recoil/atoms/modalAtom";
 import { userAtom } from "../../../../recoil/atoms/userAtom";
@@ -17,7 +17,7 @@ const UpdateLibraryModal = () => {
     useRecoilState(selectedLibraryAtom);
 
   const [activeModal, setActiveModal] = useRecoilState(modalAtom);
-  const [, setAlert] = useRecoilState(alertAtom);
+  const [, setAlert] = useRecoilState(alertQueueAtom);
 
   const [libraryToModify, setLibraryToModify] = useState<Library>(emptyLibrary);
 
@@ -100,11 +100,14 @@ const UpdateLibraryModal = () => {
       name: e.target.value,
     });
     if (!isValidName(libraryToModify.name) && libraryToModify.name.length > 0)
-      setAlert({
-        message:
-          "Invalid Name. Name must be between 3 and 255 characters long.",
-        type: "error",
-      });
+      setAlert((prev) => [
+        ...prev,
+        {
+          message:
+            "Invalid Name. Name must be between 3 and 255 characters long.",
+          type: "error",
+        },
+      ]);
   };
 
   const handleCityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -113,11 +116,14 @@ const UpdateLibraryModal = () => {
       city: e.target.value,
     });
     if (!isValidName(libraryToModify.city)) {
-      setAlert({
-        message:
-          "Invalid City. City must be between 3 and 255 characters long.",
-        type: "error",
-      });
+      setAlert((prev) => [
+        ...prev,
+        {
+          message:
+            "Invalid City. City must be between 3 and 255 characters long.",
+          type: "error",
+        },
+      ]);
     }
   };
 
@@ -127,11 +133,14 @@ const UpdateLibraryModal = () => {
       streetAddress: e.target.value,
     });
     if (!isValidName(libraryToModify.streetAddress)) {
-      setAlert({
-        message:
-          "Invalid Street Address. Street Address must be between 3 and 255 characters long.",
-        type: "error",
-      });
+      setAlert((prev) => [
+        ...prev,
+        {
+          message:
+            "Invalid Street Address. Street Address must be between 3 and 255 characters long.",
+          type: "error",
+        },
+      ]);
     }
   };
 
@@ -141,11 +150,14 @@ const UpdateLibraryModal = () => {
       postalCode: e.target.value,
     });
     if (!isValidName(libraryToModify.postalCode)) {
-      setAlert({
-        message:
-          "Invalid Postal Code. Postal Code must be between 3 and 255 characters long.",
-        type: "error",
-      });
+      setAlert((prev) => [
+        ...prev,
+        {
+          message:
+            "Invalid Postal Code. Postal Code must be between 3 and 255 characters long.",
+          type: "error",
+        },
+      ]);
     }
   };
 
@@ -155,11 +167,14 @@ const UpdateLibraryModal = () => {
       country: e.target.value,
     });
     if (!isValidName(libraryToModify.country)) {
-      setAlert({
-        message:
-          "Invalid Country. Country must be between 3 and 255 characters long.",
-        type: "error",
-      });
+      setAlert((prev) => [
+        ...prev,
+        {
+          message:
+            "Invalid Country. Country must be between 3 and 255 characters long.",
+          type: "error",
+        },
+      ]);
     }
   };
 
@@ -175,10 +190,14 @@ const UpdateLibraryModal = () => {
     });
 
     if (formattedPhone.length !== 11) {
-      setAlert({
-        message: "Invalid phone number. Phone numbers must be 10 digits long.",
-        type: "error",
-      });
+      setAlert((prev) => [
+        ...prev,
+        {
+          message:
+            "Invalid phone number. Phone numbers must be 10 digits long.",
+          type: "error",
+        },
+      ]);
     }
   };
 
@@ -189,7 +208,10 @@ const UpdateLibraryModal = () => {
       const payload = getDiffPayload();
 
       if (Object.keys(payload).length === 0) {
-        setAlert({ message: "No changes made", type: "info" });
+        setAlert((prev) => [
+          ...prev,
+          { message: "No changes made", type: "info" },
+        ]);
         return;
       }
 
@@ -211,11 +233,11 @@ const UpdateLibraryModal = () => {
 
       const data = await res.json();
 
-      setAlert({ message: data.message, type: "success" });
+      setAlert((prev) => [...prev, { message: data.message, type: "success" }]);
       updateSelectedBookAfterSuccessfulUpdate(payload);
       setActiveModal(null);
     } catch (err) {
-      setAlert({ message: err.message, type: "error" });
+      setAlert((prev) => [...prev, { message: err.message, type: "error" }]);
     }
   };
 

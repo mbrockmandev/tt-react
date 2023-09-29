@@ -4,12 +4,12 @@ import ReactDOM from "react-dom";
 import { useRecoilState } from "recoil";
 
 import { modalAtom } from "../../../../recoil/atoms/modalAtom";
-import { alertAtom } from "../../../../recoil/atoms/alertAtom";
+import { alertQueueAtom } from "../../../../recoil/atoms/alertAtom";
 import { selectedUserAtom } from "../../../../recoil/atoms/selectedUserAtom";
 import { emptyUserResponse } from "../../../../utils/models/UserResponse";
 
 const LookupUserModal = () => {
-  const [, setAlert] = useRecoilState(alertAtom);
+  const [, setAlert] = useRecoilState(alertQueueAtom);
   const [activeModal, setActiveModal] = useRecoilState(modalAtom);
   const [, setSelectedUser] = useRecoilState(selectedUserAtom);
   const [id, setId] = useState<number>(0);
@@ -60,10 +60,13 @@ const LookupUserModal = () => {
     const searchByEmail = email !== "";
 
     if (searchById && searchByEmail) {
-      setAlert({
-        message: "Choose either ID or Email and leave the other blank",
-        type: "error",
-      });
+      setAlert((prev) => [
+        ...prev,
+        {
+          message: "Choose either ID or Email and leave the other blank",
+          type: "error",
+        },
+      ]);
     }
 
     try {
@@ -87,10 +90,13 @@ const LookupUserModal = () => {
       setEmail("");
 
       if (res.ok) {
-        setAlert({
-          message: "Found user!",
-          type: "success",
-        });
+        setAlert((prev) => [
+          ...prev,
+          {
+            message: "Found user!",
+            type: "success",
+          },
+        ]);
       } else if (!res.ok && res.status === 400) {
         throw new Error(`Unable to find user with ID: ${id}`);
       }
@@ -104,7 +110,7 @@ const LookupUserModal = () => {
       });
       setActiveModal(null);
     } catch (err) {
-      setAlert({ message: err.message, type: "error" });
+      setAlert((prev) => [...prev, { message: err.message, type: "error" }]);
     }
   };
 

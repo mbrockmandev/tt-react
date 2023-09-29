@@ -3,13 +3,13 @@ import ReactDOM from "react-dom";
 import { useRecoilState } from "recoil";
 
 import { modalAtom } from "../../../../recoil/atoms/modalAtom";
-import { alertAtom } from "../../../../recoil/atoms/alertAtom";
+import { alertQueueAtom } from "../../../../recoil/atoms/alertAtom";
 
 import Book, { emptyBook } from "../../../../utils/models/Book";
 
 const CreateBookModal = () => {
   const [activeModal, setActiveModal] = useRecoilState(modalAtom);
-  const [, setAlert] = useRecoilState(alertAtom);
+  const [, setAlert] = useRecoilState(alertQueueAtom);
   const [newBook, setNewBook] = useState<Book>(emptyBook);
 
   const handleCancelModal = (e: any) => {
@@ -36,16 +36,22 @@ const CreateBookModal = () => {
     });
 
     if (title === "") {
-      setAlert({
-        message: "Title cannot be blank",
-        type: "error",
-      });
+      setAlert((prev) => [
+        ...prev,
+        {
+          message: "Title cannot be blank",
+          type: "error",
+        },
+      ]);
 
       if (title.length < 3 || title.length > 255) {
-        setAlert({
-          message: "Title must be between 3 and 255 characters long.",
-          type: "error",
-        });
+        setAlert((prev) => [
+          ...prev,
+          {
+            message: "Title must be between 3 and 255 characters long.",
+            type: "error",
+          },
+        ]);
       }
     }
   };
@@ -58,10 +64,13 @@ const CreateBookModal = () => {
     });
 
     if (isbn.length !== 13) {
-      setAlert({
-        message: "ISBN must be 13 digits.",
-        type: "error",
-      });
+      setAlert((prev) => [
+        ...prev,
+        {
+          message: "ISBN must be 13 digits.",
+          type: "error",
+        },
+      ]);
     }
   };
 
@@ -73,16 +82,22 @@ const CreateBookModal = () => {
     });
 
     if (author === "") {
-      setAlert({
-        message: "Author cannot be blank",
-        type: "error",
-      });
+      setAlert((prev) => [
+        ...prev,
+        {
+          message: "Author cannot be blank",
+          type: "error",
+        },
+      ]);
 
       if (author.length < 3 || author.length > 255) {
-        setAlert({
-          message: "Author must be between 3 and 255 characters long.",
-          type: "error",
-        });
+        setAlert((prev) => [
+          ...prev,
+          {
+            message: "Author must be between 3 and 255 characters long.",
+            type: "error",
+          },
+        ]);
       }
     }
   };
@@ -95,16 +110,22 @@ const CreateBookModal = () => {
     });
 
     if (thumbnail === "") {
-      setAlert({
-        message: "Title cannot be blank",
-        type: "error",
-      });
+      setAlert((prev) => [
+        ...prev,
+        {
+          message: "Title cannot be blank",
+          type: "error",
+        },
+      ]);
 
       if (thumbnail.length < 3 || thumbnail.length > 255) {
-        setAlert({
-          message: "Title must be between 3 and 255 characters long.",
-          type: "error",
-        });
+        setAlert((prev) => [
+          ...prev,
+          {
+            message: "Title must be between 3 and 255 characters long.",
+            type: "error",
+          },
+        ]);
       }
     }
   };
@@ -118,16 +139,22 @@ const CreateBookModal = () => {
     });
 
     if (summary === "") {
-      setAlert({
-        message: "Summary cannot be blank",
-        type: "error",
-      });
+      setAlert((prev) => [
+        ...prev,
+        {
+          message: "Summary cannot be blank",
+          type: "error",
+        },
+      ]);
 
       if (summary.length < 3 || summary.length > 2048) {
-        setAlert({
-          message: "Title must be between 3 and 2048 characters long.",
-          type: "error",
-        });
+        setAlert((prev) => [
+          ...prev,
+          {
+            message: "Title must be between 3 and 2048 characters long.",
+            type: "error",
+          },
+        ]);
       }
     }
   };
@@ -159,20 +186,23 @@ const CreateBookModal = () => {
       const res = await fetch(url, reqOptions);
 
       if (!res.ok && res.status === 409) {
-        setAlert({
-          message: "This book already exists in the database.",
-          type: "error",
-        });
+        setAlert((prev) => [
+          ...prev,
+          {
+            message: "This book already exists in the database.",
+            type: "error",
+          },
+        ]);
       } else if (!res.ok) {
         throw new Error("HTTP status code: " + res.status);
       }
 
       const data = await res.json();
 
-      setAlert({ message: data.message, type: "success" });
+      setAlert((prev) => [...prev, { message: data.message, type: "success" }]);
       setActiveModal(null);
     } catch (err) {
-      setAlert({ message: err.message, type: "error" });
+      setAlert((prev) => [...prev, { message: err.message, type: "error" }]);
     }
   };
 

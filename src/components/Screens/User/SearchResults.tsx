@@ -1,22 +1,22 @@
-import React, {useEffect, useState} from "react";
-import {useNavigate, useSearchParams} from "react-router-dom";
-import {useRecoilState} from "recoil";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useRecoilState } from "recoil";
 
 // components
 import Book from "../../../utils/models/Book";
 import BookCard from "../../Book/BookCard";
 
 // atoms
-import {alertAtom} from "../../../recoil/atoms/alertAtom";
-import {searchResultsAtom} from "../../../recoil/atoms/searchResultsAtom";
+import { alertQueueAtom } from "../../../recoil/atoms/alertAtom";
+import { searchResultsAtom } from "../../../recoil/atoms/searchResultsAtom";
 
 // misc utils
-import {UpdateCurrentUrl} from "../../../utils/urlStorage";
+import { UpdateCurrentUrl } from "../../../utils/urlStorage";
 import PaginationNumbers from "../../Common/PaginationNumbers";
 
 const SearchResults = () => {
   const [searchResults, setSearchResults] = useRecoilState(searchResultsAtom);
-  const [, setAlert] = useRecoilState(alertAtom);
+  const [, setAlert] = useRecoilState(alertQueueAtom);
   const [searchParams] = useSearchParams();
 
   const query = searchParams.get("q") || "";
@@ -50,10 +50,13 @@ const SearchResults = () => {
       if (error.message.includes("JSON.parse")) {
         return;
       }
-      setAlert({
-        message: error.message,
-        type: "error",
-      });
+      setAlert((prev) => [
+        ...prev,
+        {
+          message: error.message,
+          type: "error",
+        },
+      ]);
     }
   };
 
@@ -78,13 +81,9 @@ const SearchResults = () => {
     <>
       <h2 className="text-xl font-semibold pt-4 pl-4">Search Results:</h2>
       <div className="">
-        <div
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
           {searchResults.books.map((b: Book) => (
-            <BookCard
-              book={b}
-              key={b.id}
-            />
+            <BookCard book={b} key={b.id} />
           ))}
         </div>
       </div>

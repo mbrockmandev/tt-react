@@ -27,13 +27,13 @@ import { BookOpenIcon } from "./Footer";
 import { ResetCurrentUrl, UpdateCurrentUrl } from "../../utils/urlStorage";
 
 import { userAtom } from "../../recoil/atoms/userAtom";
-import { alertAtom } from "../../recoil/atoms/alertAtom";
+import { alertQueueAtom } from "../../recoil/atoms/alertAtom";
 
 import { emptyUser } from "../../utils/models/User";
 
 function NavMenu() {
   const [user, setUser] = useRecoilState(userAtom);
-  const [, setAlert] = useRecoilState(alertAtom);
+  const [, setAlert] = useRecoilState(alertQueueAtom);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
@@ -66,18 +66,24 @@ function NavMenu() {
       const res = await fetch(url, requestOptions);
       if (res.status === 202) {
         setUser(emptyUser);
-        setAlert({
-          message: "Logged Out!",
-          type: "success",
-        });
+        setAlert((prev) => [
+          ...prev,
+          {
+            message: "Logged Out!",
+            type: "success",
+          },
+        ]);
         ResetCurrentUrl();
         localStorage.clear();
       }
     } catch (err) {
-      setAlert({
-        message: `error logging out: ${err.message}`,
-        type: "error",
-      });
+      setAlert((prev) => [
+        ...prev,
+        {
+          message: `error logging out: ${err.message}`,
+          type: "error",
+        },
+      ]);
     }
   };
 
@@ -92,9 +98,8 @@ function NavMenu() {
           Menu
           <ChevronDownIcon
             strokeWidth={2.5}
-            className={`h-3 w-3 transition-transform ${
-              isMenuOpen ? "rotate-180" : ""
-            }`}
+            className={`h-3 w-3 transition-transform ${isMenuOpen ? "rotate-180" : ""
+              }`}
           />
         </Button>
       </MenuHandler>

@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import ReactDOM from "react-dom";
 import { useRecoilState } from "recoil";
 
 import { modalAtom } from "../../../../recoil/atoms/modalAtom";
-import { alertAtom } from "../../../../recoil/atoms/alertAtom";
+import { alertQueueAtom } from "../../../../recoil/atoms/alertAtom";
 import { selectedLibraryAtom } from "../../../../recoil/atoms/selectedLibraryAtom";
 
 import Library, { emptyLibrary } from "../../../../utils/models/Library";
@@ -12,9 +12,11 @@ import { isValidName } from "../../../../utils/validators";
 
 const CreateLibraryModal = () => {
   const [activeModal, setActiveModal] = useRecoilState(modalAtom);
-  const [, setAlert] = useRecoilState(alertAtom);
+  const [, setAlert] = useRecoilState(alertQueueAtom);
   const [newLibrary, setNewLibrary] = useState<Library>(emptyLibrary);
   const [, setLibraryToModify] = useRecoilState(selectedLibraryAtom);
+
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleCancelModal = (e: any) => {
     if (e && e.target.classList.contains("modal-overlay")) {
@@ -73,11 +75,31 @@ const CreateLibraryModal = () => {
       phone: formattedPhone,
     });
 
-    if (formattedPhone.length !== 11) {
-      setAlert({
-        message: "Invalid phone number. Phone numbers must be 10 digits long.",
-        type: "error",
-      });
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+
+    timerRef.current = setTimeout(() => {
+      checkPhoneValidity(formattedPhone);
+    }, 3000);
+  };
+
+  const handlePhoneBlur = () => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+    checkPhoneValidity(newLibrary.phone);
+  };
+
+  const checkPhoneValidity = (phone: string) => {
+    if (phone.length !== 11) {
+      setAlert((prev) => [
+        ...prev,
+        {
+          message: "Invalid phone number. They must be 10 digits long.",
+          type: "error",
+        },
+      ]);
     }
   };
 
@@ -115,10 +137,13 @@ const CreateLibraryModal = () => {
       const res = await fetch(url, reqOptions);
 
       if (!res.ok && res.status === 409) {
-        setAlert({
-          message: "This user already exists in the database.",
-          type: "error",
-        });
+        setAlert((prev) => [
+          ...prev,
+          {
+            message: "This user already exists in the database.",
+            type: "error",
+          },
+        ]);
       } else if (!res.ok) {
         throw new Error("HTTP status code: " + res.status);
       }
@@ -126,10 +151,10 @@ const CreateLibraryModal = () => {
       const data = await res.json();
 
       setLibraryToModify({ ...newLibrary });
-      setAlert({ message: data.message, type: "success" });
+      setAlert((prev) => [...prev, { message: data.message, type: "success" }]);
       setActiveModal(null);
     } catch (err) {
-      setAlert({ message: err.message, type: "error" });
+      setAlert((prev) => [...prev, { message: err.message, type: "error" }]);
     }
   };
 
@@ -252,6 +277,7 @@ const CreateLibraryModal = () => {
                 type="tel"
                 pattern="\+?[0-9]{10}"
                 onChange={handlePhoneChange}
+                onBlur={handlePhoneBlur}
                 className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm focus:ring-gray-200 focus:border-gray-400 active:border-gray-200"
                 placeholder="(123)-456-7890"
                 autoComplete="phone"

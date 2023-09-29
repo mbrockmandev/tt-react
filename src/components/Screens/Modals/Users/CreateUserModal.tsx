@@ -11,12 +11,12 @@ import {
 } from "../../../../utils/validators";
 
 import { modalAtom } from "../../../../recoil/atoms/modalAtom";
-import { alertAtom } from "../../../../recoil/atoms/alertAtom";
+import { alertQueueAtom } from "../../../../recoil/atoms/alertAtom";
 import { LoginUser, emptyLoginUser } from "../../../Public/RegisterForm";
 
 const CreateUserModal = () => {
   const [activeModal, setActiveModal] = useRecoilState(modalAtom);
-  const [, setAlert] = useRecoilState(alertAtom);
+  const [, setAlert] = useRecoilState(alertQueueAtom);
   const [newUser, setNewUser] = useState<LoginUser>(emptyLoginUser);
 
   const handleCancelModal = (e: any) => {
@@ -129,19 +129,25 @@ const CreateUserModal = () => {
       const res = await fetch(url, reqOptions);
 
       if (!res.ok && res.status === 409) {
-        setAlert({
-          message: "This user already exists in the database.",
-          type: "error",
-        });
+        setAlert((prev) => [
+          ...prev,
+          {
+            message: "This user already exists in the database.",
+            type: "error",
+          },
+        ]);
         setActiveModal(null);
       } else if (!res.ok) {
         throw new Error("HTTP status code: " + res.status);
       }
 
-      setAlert({ message: "User Created", type: "success" });
+      setAlert((prev) => [
+        ...prev,
+        { message: "User Created", type: "success" },
+      ]);
       setActiveModal(null);
     } catch (err) {
-      setAlert({ message: err.message, type: "error" });
+      setAlert((prev) => [...prev, { message: err.message, type: "error" }]);
       handleCancelModal(null);
     }
   };

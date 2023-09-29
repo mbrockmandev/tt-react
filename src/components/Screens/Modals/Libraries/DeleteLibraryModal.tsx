@@ -3,12 +3,12 @@ import ReactDOM from "react-dom";
 import { useRecoilState } from "recoil";
 
 import { modalAtom } from "../../../../recoil/atoms/modalAtom";
-import { alertAtom } from "../../../../recoil/atoms/alertAtom";
+import { alertQueueAtom } from "../../../../recoil/atoms/alertAtom";
 
 const DeleteLibraryModal = () => {
   const [id, setId] = useState(0);
   const [activeModal, setActiveModal] = useRecoilState(modalAtom);
-  const [, setAlert] = useRecoilState(alertAtom);
+  const [, setAlert] = useRecoilState(alertQueueAtom);
 
   const handleIdChange = (e: any) => {
     if (e.target.value) {
@@ -37,10 +37,13 @@ const DeleteLibraryModal = () => {
 
     try {
       if (typeof id !== "number") {
-        setAlert({
-          message: "invalid id",
-          type: "error",
-        });
+        setAlert((prev) => [
+          ...prev,
+          {
+            message: "invalid id",
+            type: "error",
+          },
+        ]);
         return;
       }
 
@@ -58,10 +61,13 @@ const DeleteLibraryModal = () => {
       if (res.ok) {
         setActiveModal(null);
 
-        setAlert({
-          message: "Deleted library from database.",
-          type: "success",
-        });
+        setAlert((prev) => [
+          ...prev,
+          {
+            message: "Deleted library from database.",
+            type: "success",
+          },
+        ]);
         setActiveModal(null);
       } else if (!res.ok) {
         throw new Error("HTTP status code: " + res.status);
@@ -69,10 +75,10 @@ const DeleteLibraryModal = () => {
 
       const data = await res.json();
 
-      setAlert({ message: data.message, type: "success" });
+      setAlert((prev) => [...prev, { message: data.message, type: "success" }]);
       setActiveModal(null);
     } catch (err) {
-      setAlert({ message: err.message, type: "error" });
+      setAlert((prev) => [...prev, { message: err.message, type: "error" }]);
       setActiveModal(null);
     }
   };

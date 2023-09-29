@@ -9,7 +9,7 @@ import {
 import Alert from "../Common/Alert";
 import { useRecoilState } from "recoil";
 import { userAtom } from "../../recoil/atoms/userAtom";
-import { alertAtom } from "../../recoil/atoms/alertAtom";
+import { alertQueueAtom } from "../../recoil/atoms/alertAtom";
 
 export interface LoginUser {
   id: number;
@@ -35,7 +35,7 @@ export const emptyLoginUser: LoginUser = {
 
 const RegisterForm = () => {
   const [user, setUser] = useRecoilState(userAtom);
-  const [, setAlert] = useRecoilState(alertAtom);
+  const [, setAlert] = useRecoilState(alertQueueAtom);
   const [showPassword, setShowPassword] = useState(false);
   const [error] = useState("");
   const [tempUser, setTempUser] = useState<LoginUser>({
@@ -148,7 +148,10 @@ const RegisterForm = () => {
       const res = await fetch(url, reqOptions);
 
       if (!res.ok && res.status === 409) {
-        setAlert({ message: "You already have an account.", type: "error" });
+        setAlert((prev) => [
+          ...prev,
+          { message: "You already have an account.", type: "error" },
+        ]);
       } else if (!res.ok) {
         throw new Error("HTTP status code: " + res.status);
       }
@@ -163,13 +166,16 @@ const RegisterForm = () => {
           role: data.user_info.role,
           isLoggedIn: true,
         });
-        setAlert({
-          message: "Logged in!",
-          type: "success",
-        });
+        setAlert((prev) => [
+          ...prev,
+          {
+            message: "Logged in!",
+            type: "success",
+          },
+        ]);
       }
     } catch (err) {
-      setAlert({ message: err.message, type: "error" });
+      setAlert((prev) => [...prev, { message: err.message, type: "error" }]);
       console.error(err);
       if (error !== "") {
         return;

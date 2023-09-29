@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 // components
 import Alert from "./components/Common/Alert";
@@ -9,7 +9,7 @@ import Footer from "./components/Common/Footer";
 import Header from "./components/Common/Header";
 
 // atoms
-import { alertAtom } from "./recoil/atoms/alertAtom";
+import { alertQueueAtom, currentAlertSelector } from "./recoil/atoms/alertAtom";
 import { userAtom } from "./recoil/atoms/userAtom";
 import { GetLastUrl, UpdateCurrentUrl } from "./utils/urlStorage";
 import { libraryAtom } from "./recoil/atoms/libraryAtom";
@@ -19,7 +19,8 @@ const App = () => {
   const [user, setUser] = useRecoilState(userAtom);
   const [, setLibrary] = useRecoilState(libraryAtom);
   const [, setBook] = useRecoilState(bookAtom);
-  const [alert, setAlert] = useRecoilState(alertAtom);
+  const [, setAlert] = useRecoilState(alertQueueAtom);
+  const currentAlert = useRecoilValue(currentAlertSelector);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -49,13 +50,16 @@ const App = () => {
     }
   }, [user]);
 
+  // process alert queue and display them according to what is passed from components
   useEffect(() => {
-    if (alert.message) {
-      setTimeout(() => {
-        setAlert({ message: "", type: "" });
-      }, 5000);
+    if (currentAlert && currentAlert.message) {
+      const timer = setTimeout(() => {
+        setAlert((prev) => prev.slice(1));
+      }, currentAlert.duration || 5000);
+
+      return () => clearTimeout(timer);
     }
-  }, [alert]);
+  }, [currentAlert]);
 
   useEffect(() => {
     const url = UpdateCurrentUrl();
@@ -79,15 +83,21 @@ const App = () => {
       if (!res.ok && res.status === 429) {
         return;
       } else if (!res.ok && res.status === 401) {
-        setAlert({
-          message: "Please log in!",
-          type: "info",
-        });
+        setAlert((prev) => [
+          ...prev,
+          {
+            message: "Please log in!",
+            type: "info",
+          },
+        ]);
       } else if (!res.ok) {
-        setAlert({
-          message: "Error fetching user info",
-          type: "error",
-        });
+        setAlert((prev) => [
+          ...prev,
+          {
+            message: "Error fetching user info",
+            type: "error",
+          },
+        ]);
         setUser({ ...user, isLoggedIn: false });
         navigate("/login");
         return;
@@ -99,8 +109,8 @@ const App = () => {
         fetchUserInfo(data.user_info.id);
         navigate(GetLastUrl());
       }
-    } catch (err) {
-      setAlert({ message: err.message, type: "error" });
+    } catch (error) {
+      setAlert((prev) => [...prev, { message: error.message, type: "error" }]);
     }
   };
 
@@ -115,14 +125,14 @@ const App = () => {
       const data = await res.json();
       setUser(data);
     } catch (error) {
-      setAlert({ message: error.message, type: "error" });
+      setAlert((prev) => [...prev, { message: error.message, type: "error" }]);
     }
   };
 
   return (
     <div className="background-root">
       <Header />
-      {alert.message && <Alert />}
+      {currentAlert && <Alert />}
       <Outlet />
       <Footer />
     </div>

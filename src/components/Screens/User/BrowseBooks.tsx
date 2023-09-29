@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
-import { alertAtom } from "../../../recoil/atoms/alertAtom";
+import { alertQueueAtom } from "../../../recoil/atoms/alertAtom";
 
 import Book from "../../../utils/models/Book";
 import BookCard from "../../Book/BookCard";
@@ -10,7 +10,7 @@ import PaginationNumbers from "../../Common/PaginationNumbers";
 import { UpdateCurrentUrl } from "../../../utils/urlStorage";
 
 const BrowseBooks = () => {
-  const [, setAlert] = useRecoilState(alertAtom);
+  const [, setAlert] = useRecoilState(alertQueueAtom);
   const [books, setBooks] = useState<Book[]>([]);
   const [page, setPage] = useState<number>(1);
   const [limit] = useState<number>(20);
@@ -58,10 +58,13 @@ const BrowseBooks = () => {
           UpdateCurrentUrl();
         }
       } catch (err) {
-        setAlert({
-          message: err.message,
-          type: "error",
-        });
+        setAlert((prev) => [
+          ...prev,
+          {
+            message: err.message,
+            type: "error",
+          },
+        ]);
       }
     };
 

@@ -5,7 +5,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 // atoms
 import { bookAtom } from "../../recoil/atoms/bookAtom";
 import { userAtom } from "../../recoil/atoms/userAtom";
-import { alertAtom } from "../../recoil/atoms/alertAtom";
+import { alertQueueAtom } from "../../recoil/atoms/alertAtom";
 
 // components
 import { ImageContainer } from "./BookCard";
@@ -23,7 +23,7 @@ const BookDetails: React.FC = () => {
   const [userData, setUserData] = useRecoilState(userAtom);
   const [bookData, setBookData] = useRecoilState(bookAtom);
   const libraryData = useRecoilValue(libraryAtom);
-  const [, setAlert] = useRecoilState(alertAtom);
+  const [, setAlert] = useRecoilState(alertQueueAtom);
   const [borrowButtonText, setBorrowButtonText] = useState("");
   const [loading, setLoading] = useState(true);
 
@@ -64,19 +64,25 @@ const BookDetails: React.FC = () => {
               ),
             };
         setUserData(updatedUser);
-        setAlert({
-          message: `Book ${action}ed.`,
-          type: "success",
-        });
+        setAlert((prev) => [
+          ...prev,
+          {
+            message: `Book ${action}ed.`,
+            type: "success",
+          },
+        ]);
       }
       if (!res.ok) {
         throw new Error(data.message || "unknown error occurred");
       }
     } catch (error) {
-      setAlert({
-        message: error.message,
-        type: "error",
-      });
+      setAlert((prev) => [
+        ...prev,
+        {
+          message: error.message,
+          type: "error",
+        },
+      ]);
       console.error(error);
     }
   };
@@ -118,11 +124,14 @@ const BookDetails: React.FC = () => {
           setBookData(updatedBook);
           return updatedBook;
         }
-      } catch (err) {
-        setAlert({
-          message: err.message,
-          type: "error",
-        });
+      } catch (error) {
+        setAlert((prev) => [
+          ...prev,
+          {
+            message: error.message,
+            type: "error",
+          },
+        ]);
       }
     };
 

@@ -3,12 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { isValidEmail, isValidPassword } from "../../utils/validators";
 import { useRecoilState } from "recoil";
 import { userAtom } from "../../recoil/atoms/userAtom";
-import { alertAtom } from "../../recoil/atoms/alertAtom";
+import { alertQueueAtom } from "../../recoil/atoms/alertAtom";
 
 const LoginForm = () => {
   const [user, setUser] = useRecoilState(userAtom);
   const navigate = useNavigate();
-  const [, setAlert] = useRecoilState(alertAtom);
+  const [, setAlert] = useRecoilState(alertQueueAtom);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -83,10 +83,13 @@ const LoginForm = () => {
           isLoggedIn: true,
         });
         navigate(`/${data.user_info.role}/dashboard`);
-        setAlert({
-          message: "Logged in!",
-          type: "success",
-        });
+        setAlert((prev) => [
+          ...prev,
+          {
+            message: "Logged in!",
+            type: "success",
+          },
+        ]);
       }
     } catch (err) {
       setAlert(err.message);
@@ -110,15 +113,14 @@ const LoginForm = () => {
 
           <form
             action=""
-            className="mb-0 mt-6 space-y-4 rounded-lg p-4 shadow-lg shadow-gray-300/50 sm:mt-8 sm:p-6 lg:p-8">
+            className="mb-0 mt-6 space-y-4 rounded-lg p-4 shadow-lg shadow-gray-300/50 sm:mt-8 sm:p-6 lg:p-8"
+          >
             <p className="text-center text-lg font-medium">
               Sign in to your account
             </p>
 
             <div>
-              <label
-                htmlFor="email"
-                className="sr-only">
+              <label htmlFor="email" className="sr-only">
                 Email
               </label>
 
@@ -139,7 +141,8 @@ const LoginForm = () => {
                     className="h-4 w-4 text-gray-400"
                     fill="none"
                     viewBox="0 0 24 24"
-                    stroke="currentColor">
+                    stroke="currentColor"
+                  >
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -152,9 +155,7 @@ const LoginForm = () => {
             </div>
 
             <div>
-              <label
-                htmlFor="password"
-                className="sr-only">
+              <label htmlFor="password" className="sr-only">
                 Password
               </label>
 
@@ -170,7 +171,8 @@ const LoginForm = () => {
 
                 <span
                   onClick={handlePasswordVisibleClick}
-                  className="absolute right-4 top-11 transform -translate-y-1/2 cursor-pointer">
+                  className="absolute right-4 top-11 transform -translate-y-1/2 cursor-pointer"
+                >
                   {showPassword ? "🙈" : "👀"}
                 </span>
               </div>
@@ -179,7 +181,8 @@ const LoginForm = () => {
             <button
               type="submit"
               className="block w-[35%] bg-gray-200 rounded-lg bg-secondary px-5 py-3 text-sm font-medium text-black w-[25%] mx-auto"
-              onClick={handleSubmit}>
+              onClick={handleSubmit}
+            >
               Sign in
             </button>
 
@@ -187,7 +190,8 @@ const LoginForm = () => {
               No account?{" "}
               <Link
                 className="hover:underline text-gray-700 hover:text-gray-500"
-                to="/register">
+                to="/register"
+              >
                 Sign up
               </Link>
             </p>

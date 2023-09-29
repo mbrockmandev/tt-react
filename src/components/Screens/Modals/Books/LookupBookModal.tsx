@@ -3,13 +3,13 @@ import ReactDOM from "react-dom";
 import { useRecoilState } from "recoil";
 
 import { modalAtom } from "../../../../recoil/atoms/modalAtom";
-import { alertAtom } from "../../../../recoil/atoms/alertAtom";
+import { alertQueueAtom } from "../../../../recoil/atoms/alertAtom";
 import { selectedBookAtom } from "../../../../recoil/atoms/selectedBookAtom";
 import { formatUTCDate } from "../../../../utils/formatDate";
 import { emptyBook } from "../../../../utils/models/Book";
 
 const LookupBookModal = () => {
-  const [, setAlert] = useRecoilState(alertAtom);
+  const [, setAlert] = useRecoilState(alertQueueAtom);
   const [activeModal, setActiveModal] = useRecoilState(modalAtom);
   const [, setSelectedBook] = useRecoilState(selectedBookAtom);
 
@@ -56,16 +56,22 @@ const LookupBookModal = () => {
     e.preventDefault();
 
     if (id === 0 && isbn === "") {
-      setAlert({
-        message: "Enter an ID or ISBN",
-        type: "error",
-      });
+      setAlert((prev) => [
+        ...prev,
+        {
+          message: "Enter an ID or ISBN",
+          type: "error",
+        },
+      ]);
       return;
     } else if (id !== 0 && isbn !== "") {
-      setAlert({
-        message: "Please search by either ID or ISBN, not both.",
-        type: "error",
-      });
+      setAlert((prev) => [
+        ...prev,
+        {
+          message: "Please search by either ID or ISBN, not both.",
+          type: "error",
+        },
+      ]);
       return;
     }
 
@@ -86,10 +92,13 @@ const LookupBookModal = () => {
       const res = await fetch(url, reqOptions);
 
       if (res.ok) {
-        setAlert({
-          message: "Found book!",
-          type: "success",
-        });
+        setAlert((prev) => [
+          ...prev,
+          {
+            message: "Found book!",
+            type: "success",
+          },
+        ]);
         setId(0);
         setIsbn("");
         setActiveModal(null);
@@ -112,7 +121,7 @@ const LookupBookModal = () => {
         metadata: data.metadata,
       });
     } catch (err) {
-      setAlert({ message: err.message, type: "error" });
+      setAlert((prev) => [...prev, { message: err.message, type: "error" }]);
     }
   };
 

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useRecoilState } from "recoil";
 import { Link } from "react-router-dom";
 
-import { alertAtom } from "../../../recoil/atoms/alertAtom";
+import { alertQueueAtom } from "../../../recoil/atoms/alertAtom";
 import { booksByLibraryAtom } from "../../../recoil/atoms/booksByLibraryAtom";
 
 import { keysToCamelCase } from "../../../utils/jsonConverter";
@@ -11,7 +11,7 @@ import Book from "../../../utils/models/Book";
 const BooksByLibraryFetcher = () => {
   const [booksByLibrary, setBooksByLibrary] =
     useRecoilState(booksByLibraryAtom);
-  const [, setAlert] = useRecoilState(alertAtom);
+  const [, setAlert] = useRecoilState(alertQueueAtom);
 
   const [libraryId, setLibraryId] = useState("");
 
@@ -37,10 +37,13 @@ const BooksByLibraryFetcher = () => {
       const camelCasedData = keysToCamelCase(data);
 
       if (res.ok && camelCasedData) {
-        setAlert({
-          message: "Report fetched successfully",
-          type: "success",
-        });
+        setAlert((prev) => [
+          ...prev,
+          {
+            message: "Report fetched successfully",
+            type: "success",
+          },
+        ]);
       } else {
         setBooksByLibrary({
           books: [],
@@ -49,10 +52,13 @@ const BooksByLibraryFetcher = () => {
           totalPages: 0,
           totalBookCount: 0,
         });
-        setAlert({
-          message: camelCasedData.message,
-          type: "error",
-        });
+        setAlert((prev) => [
+          ...prev,
+          {
+            message: camelCasedData.message,
+            type: "error",
+          },
+        ]);
       }
       if (
         camelCasedData.books &&
@@ -68,10 +74,13 @@ const BooksByLibraryFetcher = () => {
         });
       }
     } catch (error) {
-      setAlert({
-        message: error.message,
-        type: "error",
-      });
+      setAlert((prev) => [
+        ...prev,
+        {
+          message: error.message,
+          type: "error",
+        },
+      ]);
     }
   };
 

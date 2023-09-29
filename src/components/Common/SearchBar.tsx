@@ -2,14 +2,14 @@ import * as React from "react";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { alertAtom } from "../../recoil/atoms/alertAtom";
+import { alertQueueAtom } from "../../recoil/atoms/alertAtom";
 import { searchResultsAtom } from "../../recoil/atoms/searchResultsAtom";
 import { userAtom } from "../../recoil/atoms/userAtom";
 import SearchModal from "../Screens/Modals/SearchModal";
 
 const SearchBar = () => {
   const user = useRecoilValue(userAtom);
-  const [, setAlert] = useRecoilState(alertAtom);
+  const [, setAlert] = useRecoilState(alertQueueAtom);
   const [, setSearchResults] = useRecoilState(searchResultsAtom);
   const searchEl = useRef<HTMLInputElement>(null);
   const [queryType, setQueryType] = useState("author");
@@ -43,10 +43,13 @@ const SearchBar = () => {
           }
         }
       } catch (error) {
-        setAlert({
-          message: "no results found",
-          type: "error",
-        });
+        setAlert((prev) => [
+          ...prev,
+          {
+            message: "no results found",
+            type: "error",
+          },
+        ]);
       }
 
       navigate(
@@ -68,9 +71,7 @@ const SearchBar = () => {
   return (
     <div>
       <div className="hidden relative sm:flex">
-        <label
-          htmlFor="search-type"
-          className="sr-only">
+        <label htmlFor="search-type" className="sr-only">
           Search
         </label>
 
@@ -79,7 +80,8 @@ const SearchBar = () => {
           name="search-type"
           id="search-type"
           value={queryType}
-          onChange={handleSelectChange}>
+          onChange={handleSelectChange}
+        >
           <option value="author">Author</option>
           <option value="title">Title</option>
           <option value="isbn">ISBN</option>
@@ -95,9 +97,7 @@ const SearchBar = () => {
         />
 
         <span className="absolute inset-y-0 end-0 grid w-10 place-content-center">
-          <button
-            type="button"
-            className="text-gray-600 hover:text-gray-700">
+          <button type="button" className="text-gray-600 hover:text-gray-700">
             <span className="sr-only">Search</span>
 
             <svg
@@ -107,7 +107,8 @@ const SearchBar = () => {
               viewBox="0 0 24 24"
               strokeWidth="3"
               stroke="currentColor"
-              className="h-4 w-4">
+              className="h-4 w-4"
+            >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
