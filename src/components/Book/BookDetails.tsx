@@ -87,7 +87,7 @@ const BookDetails: React.FC = () => {
 
   // initial load, update current URL and get book, library data
   useEffect(() => {
-    if (!loading || !userData) return;
+    if (!loading || !userData || userData.homeLibraryId === 0) return;
 
     UpdateCurrentUrl();
 
@@ -97,14 +97,6 @@ const BookDetails: React.FC = () => {
         credentials: "include",
       };
       try {
-        if (userData.role === "user" && userData.homeLibraryId === 0) {
-          setAlert({
-            message:
-              "Home library has not been set!\nPlease navigate to the Libraries page!",
-            type: "error",
-          });
-          return;
-        }
         const url = `${process.env.REACT_APP_BACKEND}/books/${bookId}?library_id=${userData.homeLibraryId}`;
         const res = await fetch(url, reqOptions);
         const data = await res.json();
