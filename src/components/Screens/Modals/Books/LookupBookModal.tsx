@@ -58,16 +58,7 @@ const LookupBookModal = () => {
       setAlert((prev) => [
         ...prev,
         {
-          message: "Enter an ID or ISBN",
-          type: "error",
-        },
-      ]);
-      return;
-    } else if (id !== 0 && isbn !== "") {
-      setAlert((prev) => [
-        ...prev,
-        {
-          message: "Please search by either ID or ISBN, not both.",
+          message: "Please enter an ID or ISBN",
           type: "error",
         },
       ]);
@@ -81,10 +72,13 @@ const LookupBookModal = () => {
       };
 
       var url = "";
+      // search by id, then isbn, fallback to id
       if (isbn === "") {
         url = `${process.env.REACT_APP_BACKEND}/books/${id}`;
       } else if (id === 0) {
         url = `${process.env.REACT_APP_BACKEND}/books/isbn/${isbn}`;
+      } else {
+        url = `${process.env.REACT_APP_BACKEND}/books/${id}`;
       }
 
       setSelectedBook(emptyBook);

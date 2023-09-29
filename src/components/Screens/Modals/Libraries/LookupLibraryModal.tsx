@@ -78,6 +78,8 @@ const LookupLibraryModal = () => {
         url = `${process.env.REACT_APP_BACKEND}/staff/libraries/${id}`;
       } else if (name !== "") {
         url = `${process.env.REACT_APP_BACKEND}/staff/libraries?name=${name}`;
+      } else {
+        url = `${process.env.REACT_APP_BACKEND}/staff/libraries/${id}`;
       }
 
       setSelectedLibrary(emptyLibrary);
