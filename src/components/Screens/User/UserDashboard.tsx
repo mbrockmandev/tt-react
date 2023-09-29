@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 
 const UserDashboard = () => {
   const [userData, setUserData] = useRecoilState(userAtom);
-  const [alert, setAlert] = useRecoilState(alertAtom);
+  const [, setAlert] = useRecoilState(alertAtom);
 
   const [library, setLibrary] = useState<Library>(emptyLibrary);
   const [allDoneLoading, setAllDoneLoading] = useState(false);
@@ -39,39 +39,34 @@ const UserDashboard = () => {
       let res = await fetch(url, reqOptions);
       let data = await res.json();
 
-      console.log(`request to ${url} yielded: `, data);
-
-      tempUserData = {
-        ...tempUserData,
-        id: data.id,
-        isLoggedIn: true,
-        lastUrl: "user/dashboard",
-        role: data.role,
-        email: data.email,
-      };
+      if (data) {
+        tempUserData = {
+          ...tempUserData,
+          id: data.id,
+          isLoggedIn: true,
+          lastUrl: "user/dashboard",
+          role: data.role,
+          email: data.email,
+        };
+      }
 
       // Fetch home library info
       url = `${process.env.REACT_APP_BACKEND}/users/${userData.id}/homeLibrary`;
       res = await fetch(url, reqOptions);
       data = await res.json();
-      console.log(`request to ${url} yielded: `, data);
-
-      url = `${process.env.REACT_APP_BACKEND}/libraries/${data}`;
-      res = await fetch(url, reqOptions);
-      data = await res.json();
-      console.log(`request to ${url} yielded: `, data);
-
-      tempUserData = {
-        ...tempUserData,
-        homeLibraryId: data.id,
-      };
-      setLibrary({ ...data });
+      if (data) {
+        url = `${process.env.REACT_APP_BACKEND}/libraries/${data}`;
+        res = await fetch(url, reqOptions);
+        data = await res.json();
+        setLibrary({ ...data });
+      }
 
       // Fetch returned books
       url = `${process.env.REACT_APP_BACKEND}/users/${userData.id}/returned`;
       res = await fetch(url, reqOptions);
-      data = await res.json();
-      console.log(`request to ${url} yielded: `, data);
+      if (data) {
+        data = await res.json();
+      }
 
       tempUserData = {
         ...tempUserData,
@@ -82,12 +77,12 @@ const UserDashboard = () => {
       url = `${process.env.REACT_APP_BACKEND}/users/${userData.id}/borrowed`;
       res = await fetch(url, reqOptions);
       data = await res.json();
-      console.log(`request to ${url} yielded: `, data);
-
-      tempUserData = {
-        ...tempUserData,
-        borrowedBooks: data,
-      };
+      if (data) {
+        tempUserData = {
+          ...tempUserData,
+          borrowedBooks: data,
+        };
+      }
 
       setUserData(tempUserData);
       localStorage.setItem("user", JSON.stringify(tempUserData));
@@ -103,7 +98,6 @@ const UserDashboard = () => {
   };
 
   useEffect(() => {
-    // console.log("initial load, userData and library:", userData, library);
     if (!userData.id) navigate("/login");
 
     fetchAllUserData();
