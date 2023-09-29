@@ -65,6 +65,8 @@ const UserDashboard = () => {
       res = await fetch(url, reqOptions);
       data = await res.json();
       if (data) {
+        console.log(data);
+        console.log(tempUserData);
         tempUserData = {
           ...tempUserData,
           returnedBooks: data,
@@ -76,6 +78,8 @@ const UserDashboard = () => {
       res = await fetch(url, reqOptions);
       data = await res.json();
       if (data) {
+        console.log(data);
+        console.log(tempUserData);
         tempUserData = {
           ...tempUserData,
           borrowedBooks: data,
