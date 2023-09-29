@@ -4,11 +4,14 @@ import { useRecoilState } from "recoil";
 
 import { modalAtom } from "../../../../recoil/atoms/modalAtom";
 import { alertQueueAtom } from "../../../../recoil/atoms/alertAtom";
+import { emptyLibrary } from "../../../../utils/models/Library";
+import { selectedLibraryAtom } from "../../../../recoil/atoms/selectedLibraryAtom";
 
 const DeleteLibraryModal = () => {
   const [id, setId] = useState(0);
   const [activeModal, setActiveModal] = useRecoilState(modalAtom);
   const [, setAlert] = useRecoilState(alertQueueAtom);
+  const [, setSelectedLibrary] = useRecoilState(selectedLibraryAtom);
 
   const handleIdChange = (e: any) => {
     if (e.target.value) {
@@ -77,6 +80,7 @@ const DeleteLibraryModal = () => {
 
       setAlert((prev) => [...prev, { message: data.message, type: "success" }]);
       setActiveModal(null);
+      setSelectedLibrary(emptyLibrary);
     } catch (err) {
       setAlert((prev) => [...prev, { message: err.message, type: "error" }]);
       setActiveModal(null);

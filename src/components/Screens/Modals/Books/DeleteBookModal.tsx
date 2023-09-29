@@ -12,7 +12,7 @@ const DeleteBookModal = () => {
   const [id, setId] = useState(0);
   const [activeModal, setActiveModal] = useRecoilState(modalAtom);
   const [, setAlert] = useRecoilState(alertQueueAtom);
-  const [, setBookToModify] = useRecoilState(selectedBookAtom);
+  const [, setSelectedBook] = useRecoilState(selectedBookAtom);
 
   const handleIdChange = (e: any) => {
     if (e.target.value) {
@@ -67,7 +67,7 @@ const DeleteBookModal = () => {
       const data = await res.json();
 
       setAlert((prev) => [...prev, { message: data.message, type: "success" }]);
-      setBookToModify(emptyBook);
+      setSelectedBook(emptyBook);
       setActiveModal(null);
     } catch (err) {
       setAlert((prev) => [...prev, { message: err.message, type: "error" }]);
