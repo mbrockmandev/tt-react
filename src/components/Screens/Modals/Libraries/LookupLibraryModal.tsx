@@ -66,6 +66,7 @@ const LookupLibraryModal = () => {
       ]);
       return;
     } else if (id !== 0 && name !== "") {
+      console.error("id:", id, "name:", name);
       setAlert((prev) => [
         ...prev,
         {
@@ -92,8 +93,6 @@ const LookupLibraryModal = () => {
       console.log("url:", url);
       setSelectedLibrary(emptyLibrary);
       const res = await fetch(url, reqOptions);
-      setId(0);
-      setName("");
 
       if (res.ok) {
         setAlert((prev) => [
