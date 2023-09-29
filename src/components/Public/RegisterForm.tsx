@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   doPasswordsMatch,
@@ -163,7 +163,6 @@ const RegisterForm = () => {
           role: data.user_info.role,
           isLoggedIn: true,
         });
-        navigate(`/${data.user_info.role}/dashboard`);
         setAlert({
           message: "Logged in!",
           type: "success",
@@ -177,6 +176,28 @@ const RegisterForm = () => {
       }
     }
   };
+
+  useEffect(() => {
+    const redirect = () => {
+      if (user.role === "admin") {
+        setUser({ ...user, isLoggedIn: true });
+        navigate("/admin/dashboard");
+      }
+      if (user.role === "staff") {
+        setUser({ ...user, isLoggedIn: true });
+        navigate("/staff/dashboard");
+      }
+      if (user.role === "user") {
+        setUser({ ...user, isLoggedIn: true });
+        navigate("/user/dashboard");
+      }
+    };
+
+    setTimeout(() => {
+      redirect();
+    }, 50);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user.role, navigate]);
 
   const createUserModal = (
     <>
