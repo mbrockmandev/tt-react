@@ -63,8 +63,7 @@ const DeleteUserModal = () => {
 
       if (res.ok) {
         setActiveModal(null);
-        setAlert((prev) => [
-          ...prev,
+        setAlert([
           {
             message: "Deleted user from database.",
             type: "success",
@@ -77,8 +76,7 @@ const DeleteUserModal = () => {
       }
 
       const data = await res.json();
-      setAlert((prev) => [
-        ...prev,
+      setAlert([
         {
           message: data.message,
           type: "success",
@@ -88,8 +86,7 @@ const DeleteUserModal = () => {
       setActiveModal(null);
       setSelectedUser(emptyUserResponse);
     } catch (err) {
-      setAlert((prev) => [
-        ...prev,
+      setAlert([
         {
           message: "Error deleting user.",
           type: "error",

@@ -208,10 +208,7 @@ const UpdateLibraryModal = () => {
       const payload = getDiffPayload();
 
       if (Object.keys(payload).length === 0) {
-        setAlert((prev) => [
-          ...prev,
-          { message: "No changes made", type: "info" },
-        ]);
+        setAlert([{ message: "No changes made", type: "info" }]);
         return;
       }
 
@@ -233,11 +230,14 @@ const UpdateLibraryModal = () => {
 
       const data = await res.json();
 
-      setAlert((prev) => [...prev, { message: "Library updated!", type: "success" }]);
+      setAlert([{ message: "Library updated!", type: "success" }]);
       updateSelectedBookAfterSuccessfulUpdate(payload);
       setActiveModal(null);
     } catch (err) {
-      setAlert((prev) => [...prev, { message: "Error updating library.", type: "error" }]);
+      setAlert((prev) => [
+        ...prev,
+        { message: "Error updating library.", type: "error" },
+      ]);
     }
   };
 

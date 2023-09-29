@@ -250,10 +250,7 @@ const UpdateBookModal = () => {
       updateSelectedBookAfterSuccessfulUpdate(payload);
       setActiveModal(null);
     } catch (err) {
-      setAlert((prev) => [
-        ...prev,
-        { message: "Error updating book.", type: "error" },
-      ]);
+      setAlert([{ message: "Error updating book.", type: "error" }]);
     }
   };
 

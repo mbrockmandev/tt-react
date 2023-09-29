@@ -57,8 +57,7 @@ const LookupLibraryModal = () => {
     }
 
     if (id === 0 && name === "") {
-      setAlert((prev) => [
-        ...prev,
+      setAlert([
         {
           message: "Please enter an ID or name",
           type: "error",
@@ -86,8 +85,7 @@ const LookupLibraryModal = () => {
       const res = await fetch(url, reqOptions);
 
       if (res.ok) {
-        setAlert((prev) => [
-          ...prev,
+        setAlert([
           {
             message: "Found library!",
             type: "success",
@@ -108,10 +106,7 @@ const LookupLibraryModal = () => {
       setName("");
       setActiveModal(null);
     } catch (err) {
-      setAlert((prev) => [
-        ...prev,
-        { message: "Library not found", type: "error" },
-      ]);
+      setAlert([{ message: "Library not found", type: "error" }]);
     }
   };
 

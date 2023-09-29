@@ -60,8 +60,7 @@ const LookupUserModal = () => {
     const searchByEmail = email !== "";
 
     if (searchById && searchByEmail) {
-      setAlert((prev) => [
-        ...prev,
+      setAlert([
         {
           message: "Choose either ID or Email and leave the other blank",
           type: "error",
@@ -90,8 +89,7 @@ const LookupUserModal = () => {
       setEmail("");
 
       if (res.ok) {
-        setAlert((prev) => [
-          ...prev,
+        setAlert([
           {
             message: "Found user!",
             type: "success",
@@ -110,10 +108,7 @@ const LookupUserModal = () => {
       });
       setActiveModal(null);
     } catch (err) {
-      setAlert((prev) => [
-        ...prev,
-        { message: "User not found", type: "error" },
-      ]);
+      setAlert([{ message: "User not found", type: "error" }]);
     }
   };
 

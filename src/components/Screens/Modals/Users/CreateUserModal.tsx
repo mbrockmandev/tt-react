@@ -129,8 +129,7 @@ const CreateUserModal = () => {
       const res = await fetch(url, reqOptions);
 
       if (!res.ok && res.status === 409) {
-        setAlert((prev) => [
-          ...prev,
+        setAlert([
           {
             message: "This user already exists in the database.",
             type: "error",
@@ -141,16 +140,10 @@ const CreateUserModal = () => {
         throw new Error("HTTP status code: " + res.status);
       }
 
-      setAlert((prev) => [
-        ...prev,
-        { message: "User Created", type: "success" },
-      ]);
+      setAlert([{ message: "User Created", type: "success" }]);
       setActiveModal(null);
     } catch (err) {
-      setAlert((prev) => [
-        ...prev,
-        { message: "Error creating user.", type: "error" },
-      ]);
+      setAlert([{ message: "Error creating user.", type: "error" }]);
       handleCancelModal(null);
     }
   };

@@ -186,8 +186,7 @@ const CreateBookModal = () => {
       const res = await fetch(url, reqOptions);
 
       if (!res.ok && res.status === 409) {
-        setAlert((prev) => [
-          ...prev,
+        setAlert([
           {
             message: "This book already exists in the database.",
             type: "error",
@@ -199,10 +198,7 @@ const CreateBookModal = () => {
 
       const data = await res.json();
 
-      setAlert((prev) => [
-        ...prev,
-        { message: "Book created!", type: "success" },
-      ]);
+      setAlert([{ message: "Book created!", type: "success" }]);
       setActiveModal(null);
     } catch (err) {
       setAlert((prev) => [

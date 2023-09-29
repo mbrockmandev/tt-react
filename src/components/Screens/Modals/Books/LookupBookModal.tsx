@@ -26,7 +26,7 @@ const LookupBookModal = () => {
     }
   };
 
-  const handleIsbnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleIsbnChange = (e: any) => {
     if (e && e.target.value) {
       setIsbn(e.target.value);
     }
@@ -53,6 +53,7 @@ const LookupBookModal = () => {
 
   const handleLookup = async (e: any) => {
     e.preventDefault();
+    console.log("isbn:", isbn, "id:", id);
 
     if (id === 0 && isbn === "") {
       setAlert((prev) => [
@@ -78,15 +79,14 @@ const LookupBookModal = () => {
       } else if (id === 0) {
         url = `${process.env.REACT_APP_BACKEND}/books/isbn/${isbn}`;
       } else {
-        url = `${process.env.REACT_APP_BACKEND}/books/${id}`;
+        throw new Error();
       }
 
       setSelectedBook(emptyBook);
       const res = await fetch(url, reqOptions);
 
       if (res.ok) {
-        setAlert((prev) => [
-          ...prev,
+        setAlert([
           {
             message: "Found book!",
             type: "success",
@@ -114,10 +114,7 @@ const LookupBookModal = () => {
         metadata: data.metadata,
       });
     } catch (err) {
-      setAlert((prev) => [
-        ...prev,
-        { message: "Book not found", type: "error" },
-      ]);
+      setAlert([{ message: "Book not found", type: "error" }]);
     }
   };
 

@@ -137,8 +137,7 @@ const CreateLibraryModal = () => {
       const res = await fetch(url, reqOptions);
 
       if (!res.ok && res.status === 409) {
-        setAlert((prev) => [
-          ...prev,
+        setAlert([
           {
             message: "This user already exists in the database.",
             type: "error",
@@ -151,16 +150,10 @@ const CreateLibraryModal = () => {
       const data = await res.json();
 
       setLibraryToModify({ ...newLibrary });
-      setAlert((prev) => [
-        ...prev,
-        { message: "Library created!", type: "success" },
-      ]);
+      setAlert([{ message: "Library created!", type: "success" }]);
       setActiveModal(null);
     } catch (err) {
-      setAlert((prev) => [
-        ...prev,
-        { message: "Error creating library.", type: "error" },
-      ]);
+      setAlert([{ message: "Error creating library.", type: "error" }]);
     }
   };
 

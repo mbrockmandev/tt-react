@@ -189,14 +189,11 @@ const UpdateUserModal = () => {
 
       const data = await res.json();
 
-      setAlert((prev) => [...prev, { message: data.message, type: "success" }]);
+      setAlert([{ message: data.message, type: "success" }]);
       updateSelectedUserAfterSuccessfulUpdate(payload);
       setActiveModal(null);
     } catch (err) {
-      setAlert((prev) => [
-        ...prev,
-        { message: "Error updating user.", type: "error" },
-      ]);
+      setAlert([{ message: "Error updating user.", type: "error" }]);
     }
   };
 

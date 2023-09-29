@@ -66,17 +66,11 @@ const DeleteBookModal = () => {
 
       const data = await res.json();
 
-      setAlert((prev) => [
-        ...prev,
-        { message: "Book deleted!", type: "success" },
-      ]);
+      setAlert([{ message: "Book deleted!", type: "success" }]);
       setSelectedBook(emptyBook);
       setActiveModal(null);
     } catch (err) {
-      setAlert((prev) => [
-        ...prev,
-        { message: "Error deleting book.", type: "error" },
-      ]);
+      setAlert([{ message: "Error deleting book.", type: "error" }]);
       setActiveModal(null);
     }
   };
