@@ -93,6 +93,8 @@ const BookDetails: React.FC = () => {
 
   // initial load, update current URL and get book, library data
   useEffect(() => {
+    let isMounted = true;
+
     if (!loading || !userData || userData.homeLibraryId === 0) return;
 
     UpdateCurrentUrl();
@@ -141,7 +143,7 @@ const BookDetails: React.FC = () => {
       if (userData.role !== "user") {
         setBorrowButtonText("n/a");
         return;
-      } else if (b.metadata && b.metadata.availableCopies <= 0) {
+      } else if (!b.metadata || b.metadata.availableCopies <= 0) {
         setBorrowButtonText("n/a");
         return;
       }
@@ -162,9 +164,14 @@ const BookDetails: React.FC = () => {
       await updateBorrowButtonText(book);
     };
 
-    loadDataAndUpdateButton();
+    if (isMounted) {
+      loadDataAndUpdateButton();
+      setLoading(false);
+    }
 
-    setLoading(false);
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   if (!bookData) {
