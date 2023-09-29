@@ -54,15 +54,15 @@ const BookDetails: React.FC = () => {
         const updatedUser =
           action === "borrow"
             ? {
-              ...userData,
-              borrowedBooks: [...userData.borrowedBooks, bookData],
-            }
+                ...userData,
+                borrowedBooks: [...userData.borrowedBooks, bookData],
+              }
             : {
-              ...userData,
-              borrowedBooks: userData.borrowedBooks.filter(
-                (b) => b.id !== bookData.id,
-              ),
-            };
+                ...userData,
+                borrowedBooks: userData.borrowedBooks.filter(
+                  (b) => b.id !== bookData.id,
+                ),
+              };
         setUserData(updatedUser);
         setAlert((prev) => [
           ...prev,
@@ -121,6 +121,7 @@ const BookDetails: React.FC = () => {
               borrowedCopies: data.metadata.borrowed_copies,
             },
           };
+          console.log("complete book data from fetch: ", data);
           setBookData(updatedBook);
           return updatedBook;
         }
@@ -140,7 +141,7 @@ const BookDetails: React.FC = () => {
       if (userData.role !== "user") {
         setBorrowButtonText("n/a");
         return;
-      } else if (b.metadata?.availableCopies <= 0) {
+      } else if (b.metadata && b.metadata.availableCopies <= 0) {
         setBorrowButtonText("n/a");
         return;
       }
