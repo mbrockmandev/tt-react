@@ -63,14 +63,16 @@ const UserDashboard = () => {
       // Fetch returned books
       url = `${process.env.REACT_APP_BACKEND}/users/${userData.id}/returned`;
       res = await fetch(url, reqOptions);
-      data = await res.json();
-      if (data) {
-        console.log(data);
-        console.log(tempUserData);
-        tempUserData = {
-          ...tempUserData,
-          returnedBooks: data,
-        };
+      if (res.status !== 204) {
+        data = await res.json();
+        if (data) {
+          console.log(data);
+          console.log(tempUserData);
+          tempUserData = {
+            ...tempUserData,
+            returnedBooks: data,
+          };
+        }
       }
 
       // Fetch borrowed books
