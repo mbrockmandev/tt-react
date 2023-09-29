@@ -60,16 +60,7 @@ const Alert = () => {
       success: {
         bgColor: "bg-green-200",
         textColor: "text-green-700",
-        icon: (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="h-6 w-6"
-          />
-        ),
+        icon: <XMarkIcon />,
       },
       error: {
         bgColor: "bg-red-200",
@@ -95,7 +86,7 @@ const Alert = () => {
             <p className={`mt-1 text-sm ${alertConfig.textColor}`}>{message}</p>
           </div>
           <button
-            className="text-red-500 transition hover:text-red-600"
+            className="text-black transition hover:text-white"
             onClick={handleDismissButtonClick}
           >
             <span className="sr-only">Dismiss popup</span>
