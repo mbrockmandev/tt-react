@@ -3,12 +3,15 @@ import PaginationNumbers from "../../Common/PaginationNumbers";
 import { ResponseLibrary } from "../../../recoil/atoms/libraryAtom";
 import LibraryCard from "../../Library/LibraryCard";
 import { UpdateCurrentUrl } from "../../../utils/urlStorage";
+import { alertQueueAtom } from "../../../recoil/atoms/alertAtom";
+import { useRecoilState } from "recoil";
 
 const BrowseLibraries = () => {
   const [libraries, setLibraries] = useState<ResponseLibrary[]>([]);
   const [page, setPage] = useState<number>(1);
   const [limit] = useState<number>(10);
   const [totalPages, setTotalPages] = useState<number>(1);
+  const [, setAlert] = useRecoilState(alertQueueAtom);
 
   useEffect(() => {
     const fetchLibraries = async () => {
@@ -51,8 +54,10 @@ const BrowseLibraries = () => {
     };
 
     fetchLibraries().catch((err) => {
-      console.error("error fetching books: ", err);
-      console.error(err.message);
+      setAlert((prev) => [
+        ...prev,
+        { message: "Unable to get library info.", type: "error" },
+      ]);
     });
   }, [page, limit]);
 

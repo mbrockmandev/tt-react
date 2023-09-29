@@ -49,7 +49,7 @@ const LibraryDetails: React.FC = () => {
       setAlert((prev) => [
         ...prev,
         {
-          message: err.message,
+          message: "Unable to get library info.",
           type: "error",
         },
       ]);
@@ -108,7 +108,7 @@ const LibraryDetails: React.FC = () => {
         setAlert((prev) => [
           ...prev,
           {
-            message: err.message,
+            message: "Home library changed!",
             type: "error",
           },
         ]);

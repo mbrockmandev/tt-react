@@ -92,10 +92,10 @@ const LoginForm = () => {
         ]);
       }
     } catch (err) {
-      setAlert(err.message);
-      if (err.message !== "") {
-        return;
-      }
+      setAlert((prev) => [
+        ...prev,
+        { message: "Submit failed.", type: "error" },
+      ]);
     }
   };
 

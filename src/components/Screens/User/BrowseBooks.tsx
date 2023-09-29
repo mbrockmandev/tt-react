@@ -61,7 +61,7 @@ const BrowseBooks = () => {
         setAlert((prev) => [
           ...prev,
           {
-            message: err.message,
+            message: "Unable to get list of books.",
             type: "error",
           },
         ]);

@@ -40,7 +40,6 @@ import UpdateUserModal from "../Modals/Users/UpdateUserModal";
 
 const AdminDashboard = () => {
   // recoil atoms
-  const [, setActiveModal] = useRecoilState(modalAtom);
   const [, setAlert] = useRecoilState(alertQueueAtom);
   const [userData, setUserData] = useRecoilState(userAtom);
   const [library, setLibrary] = useRecoilState(libraryAtom);
@@ -106,7 +105,7 @@ const AdminDashboard = () => {
       setAlert((prev) => [
         ...prev,
         {
-          message: error.message,
+          message: "Unable to get users data.",
           type: "error",
         },
       ]);
@@ -189,8 +188,9 @@ const AdminDashboard = () => {
             <div className="flex items-baseline justify-between">
               <h2 className="text-lg font-semibold">User</h2>
               <button
-                className={`hover:underline hover:text-blue-400 ${selectedUser.id === 0 ? "hidden" : ""
-                  }`}
+                className={`hover:underline hover:text-blue-400 ${
+                  selectedUser.id === 0 ? "hidden" : ""
+                }`}
                 onClick={handleResetUserToModify}
               >
                 Reset User
@@ -213,8 +213,9 @@ const AdminDashboard = () => {
             <div className="flex items-baseline justify-between">
               <h2 className="text-lg font-semibold">Library</h2>
               <button
-                className={`hover:underline hover:text-blue-400 ${selectedLibrary.id === 0 ? "hidden" : ""
-                  }`}
+                className={`hover:underline hover:text-blue-400 ${
+                  selectedLibrary.id === 0 ? "hidden" : ""
+                }`}
                 onClick={handleResetLibraryToModify}
               >
                 Reset Library
@@ -239,8 +240,9 @@ const AdminDashboard = () => {
             <div className="flex items-baseline justify-between">
               <h2 className="text-lg font-semibold">Book</h2>
               <button
-                className={`hover:underline hover:text-blue-400 ${selectedBook.id === 0 ? "hidden" : ""
-                  }`}
+                className={`hover:underline hover:text-blue-400 ${
+                  selectedBook.id === 0 ? "hidden" : ""
+                }`}
                 onClick={handleResetBookToModify}
               >
                 Reset Book

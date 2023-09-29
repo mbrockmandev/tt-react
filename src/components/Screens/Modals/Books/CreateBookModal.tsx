@@ -199,10 +199,16 @@ const CreateBookModal = () => {
 
       const data = await res.json();
 
-      setAlert((prev) => [...prev, { message: data.message, type: "success" }]);
+      setAlert((prev) => [
+        ...prev,
+        { message: "Book created!", type: "success" },
+      ]);
       setActiveModal(null);
     } catch (err) {
-      setAlert((prev) => [...prev, { message: err.message, type: "error" }]);
+      setAlert((prev) => [
+        ...prev,
+        { message: "Error creating book.", type: "error" },
+      ]);
     }
   };
 

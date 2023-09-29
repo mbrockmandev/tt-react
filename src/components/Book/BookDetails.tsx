@@ -79,7 +79,7 @@ const BookDetails: React.FC = () => {
       setAlert((prev) => [
         ...prev,
         {
-          message: error.message,
+          message: `Unable to ${action}. Please try again.`,
           type: "error",
         },
       ]);
@@ -123,7 +123,6 @@ const BookDetails: React.FC = () => {
               borrowedCopies: data.metadata.borrowed_copies,
             },
           };
-          console.log("complete book data from fetch: ", data);
           setBookData(updatedBook);
           return updatedBook;
         }
@@ -131,7 +130,8 @@ const BookDetails: React.FC = () => {
         setAlert((prev) => [
           ...prev,
           {
-            message: error.message,
+            message:
+              "Unable to load data for book at this library. Please try again.",
             type: "error",
           },
         ]);

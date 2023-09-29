@@ -91,7 +91,7 @@ const DeleteUserModal = () => {
       setAlert((prev) => [
         ...prev,
         {
-          message: err.message,
+          message: "Error deleting user.",
           type: "error",
         },
       ]);

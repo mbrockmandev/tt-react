@@ -175,7 +175,10 @@ const RegisterForm = () => {
         ]);
       }
     } catch (err) {
-      setAlert((prev) => [...prev, { message: err.message, type: "error" }]);
+      setAlert((prev) => [
+        ...prev,
+        { message: "Error creating user.", type: "error" },
+      ]);
       console.error(err);
       if (error !== "") {
         return;

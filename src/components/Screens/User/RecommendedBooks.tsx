@@ -71,7 +71,7 @@ const BookRecommendations = () => {
         setAlert((prev) => [
           ...prev,
           {
-            message: err.message,
+            message: "Unable to fetch book data.",
             type: "error",
           },
         ]);

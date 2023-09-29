@@ -78,11 +78,17 @@ const DeleteLibraryModal = () => {
 
       const data = await res.json();
 
-      setAlert((prev) => [...prev, { message: data.message, type: "success" }]);
+      setAlert((prev) => [
+        ...prev,
+        { message: "Library deleted!", type: "success" },
+      ]);
       setActiveModal(null);
       setSelectedLibrary(emptyLibrary);
     } catch (err) {
-      setAlert((prev) => [...prev, { message: err.message, type: "error" }]);
+      setAlert((prev) => [
+        ...prev,
+        { message: "Error deleting library.", type: "error" },
+      ]);
       setActiveModal(null);
     }
   };

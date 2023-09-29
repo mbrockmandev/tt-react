@@ -151,10 +151,16 @@ const CreateLibraryModal = () => {
       const data = await res.json();
 
       setLibraryToModify({ ...newLibrary });
-      setAlert((prev) => [...prev, { message: data.message, type: "success" }]);
+      setAlert((prev) => [
+        ...prev,
+        { message: "Library created!", type: "success" },
+      ]);
       setActiveModal(null);
     } catch (err) {
-      setAlert((prev) => [...prev, { message: err.message, type: "error" }]);
+      setAlert((prev) => [
+        ...prev,
+        { message: "Error creating library.", type: "error" },
+      ]);
     }
   };
 

@@ -110,7 +110,8 @@ const App = () => {
         navigate(GetLastUrl());
       }
     } catch (error) {
-      setAlert((prev) => [...prev, { message: error.message, type: "error" }]);
+      // setAlert((prev) => [...prev, { message: "Unable to get refresh token.", type: "error" }]);
+      console.error("Unable to refresh token. Logging out...");
     }
   };
 
@@ -125,7 +126,10 @@ const App = () => {
       const data = await res.json();
       setUser(data);
     } catch (error) {
-      setAlert((prev) => [...prev, { message: error.message, type: "error" }]);
+      setAlert((prev) => [
+        ...prev,
+        { message: "Unable to get user info.", type: "error" },
+      ]);
     }
   };
 

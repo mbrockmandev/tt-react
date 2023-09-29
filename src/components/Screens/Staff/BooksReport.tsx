@@ -32,7 +32,7 @@ const PopularBooksReport: React.FC = () => {
         setAlert((prev) => [
           ...prev,
           {
-            message: error.message,
+            message: "Unable to get book data.",
             type: "error",
           },
         ]);

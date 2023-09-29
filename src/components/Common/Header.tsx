@@ -80,7 +80,7 @@ function NavMenu() {
       setAlert((prev) => [
         ...prev,
         {
-          message: `error logging out: ${err.message}`,
+          message: `Error logging out`,
           type: "error",
         },
       ]);
@@ -98,8 +98,9 @@ function NavMenu() {
           Menu
           <ChevronDownIcon
             strokeWidth={2.5}
-            className={`h-3 w-3 transition-transform ${isMenuOpen ? "rotate-180" : ""
-              }`}
+            className={`h-3 w-3 transition-transform ${
+              isMenuOpen ? "rotate-180" : ""
+            }`}
           />
         </Button>
       </MenuHandler>

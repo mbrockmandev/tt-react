@@ -42,7 +42,7 @@ const LibraryCard: React.FC<LibraryCardProps> = ({ library }) => {
       } catch (error) {
         setAlert((prev) => [
           ...prev,
-          { message: error.message, type: "error" },
+          { message: "Unable to get library info.", type: "error" },
         ]);
       }
     };

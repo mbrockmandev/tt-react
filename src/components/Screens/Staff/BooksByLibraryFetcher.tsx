@@ -77,7 +77,7 @@ const BooksByLibraryFetcher = () => {
       setAlert((prev) => [
         ...prev,
         {
-          message: error.message,
+          message: "Unable to generate report. Please try again.",
           type: "error",
         },
       ]);

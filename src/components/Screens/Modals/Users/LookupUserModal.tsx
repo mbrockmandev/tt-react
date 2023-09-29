@@ -110,7 +110,10 @@ const LookupUserModal = () => {
       });
       setActiveModal(null);
     } catch (err) {
-      setAlert((prev) => [...prev, { message: err.message, type: "error" }]);
+      setAlert((prev) => [
+        ...prev,
+        { message: "User not found", type: "error" },
+      ]);
     }
   };
 

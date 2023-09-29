@@ -121,7 +121,10 @@ const LookupBookModal = () => {
         metadata: data.metadata,
       });
     } catch (err) {
-      setAlert((prev) => [...prev, { message: err.message, type: "error" }]);
+      setAlert((prev) => [
+        ...prev,
+        { message: "Book not found", type: "error" },
+      ]);
     }
   };
 

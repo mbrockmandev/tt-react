@@ -53,7 +53,7 @@ const SearchResults = () => {
       setAlert((prev) => [
         ...prev,
         {
-          message: error.message,
+          message: "Unable to get search results.",
           type: "error",
         },
       ]);
