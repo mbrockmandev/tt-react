@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 
 const UserDashboard = () => {
   const [userData, setUserData] = useRecoilState(userAtom);
-  const [, setAlert] = useRecoilState(alertAtom);
+  const [alert, setAlert] = useRecoilState(alertAtom);
 
   const [library, setLibrary] = useState<Library>(emptyLibrary);
   const [allDoneLoading, setAllDoneLoading] = useState(false);
@@ -96,10 +96,15 @@ const UserDashboard = () => {
   };
 
   useEffect(() => {
+    console.log("initial load, userData and library:", userData, library);
     if (!userData.id) navigate("/login");
 
     fetchAllUserData();
   }, []);
+
+  useEffect(() => {
+    console.log(userData, library);
+  }, [alert, setAlert]);
 
   return allDoneLoading ? (
     <div>
