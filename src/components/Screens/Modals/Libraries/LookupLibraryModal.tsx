@@ -51,6 +51,7 @@ const LookupLibraryModal = () => {
 
   const handleLookup = async (e: any) => {
     e.preventDefault();
+    console.error("id:", id, "name:", name);
 
     if (!id && !name) {
       return;
@@ -90,7 +91,6 @@ const LookupLibraryModal = () => {
         url = `${process.env.REACT_APP_BACKEND}/staff/libraries?name=${name}`;
       }
 
-      console.log("url:", url);
       setSelectedLibrary(emptyLibrary);
       const res = await fetch(url, reqOptions);
 
