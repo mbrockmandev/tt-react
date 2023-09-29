@@ -143,7 +143,7 @@ const BookDetails: React.FC = () => {
       if (userData.role !== "user") {
         setBorrowButtonText("n/a");
         return;
-      } else if (!b.metadata || b.metadata.availableCopies <= 0) {
+      } else if (!b?.metadata || b.metadata.availableCopies <= 0) {
         setBorrowButtonText("n/a");
         return;
       }
