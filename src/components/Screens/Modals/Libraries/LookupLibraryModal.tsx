@@ -51,7 +51,6 @@ const LookupLibraryModal = () => {
 
   const handleLookup = async (e: any) => {
     e.preventDefault();
-    console.error("id:", id, "name:", name);
 
     if (!id && !name) {
       return;
@@ -67,7 +66,6 @@ const LookupLibraryModal = () => {
       ]);
       return;
     } else if (id !== 0 && name !== "") {
-      console.error("id:", id, "name:", name);
       setAlert((prev) => [
         ...prev,
         {
