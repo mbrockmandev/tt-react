@@ -102,6 +102,8 @@ const LookupLibraryModal = () => {
         streetAddress: data.street_address,
         postalCode: data.postal_code,
       });
+      setId(0);
+      setName("");
       setActiveModal(null);
     } catch (err) {
       setAlert((prev) => [
