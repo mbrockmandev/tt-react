@@ -30,14 +30,16 @@ const UserDashboard = () => {
 
     let tempUserData = { ...userData };
 
+    const errors = [];
+
+    // fetch user data first
     try {
       if (userData.id === 0) {
         return;
       }
-      // fetch user data first
-      let url = `${process.env.REACT_APP_BACKEND}/users/${userData.id}`;
-      let res = await fetch(url, reqOptions);
-      let data = await res.json();
+      const url = `${process.env.REACT_APP_BACKEND}/users/${userData.id}`;
+      const res = await fetch(url, reqOptions);
+      const data = await res.json();
       if (data) {
         tempUserData = {
           ...tempUserData,
@@ -48,23 +50,31 @@ const UserDashboard = () => {
           email: data.email,
         };
       }
+    } catch (error) {
+      errors.push(error);
+    }
 
-      // Fetch home library info
-      url = `${process.env.REACT_APP_BACKEND}/users/${userData.id}/homeLibrary`;
-      res = await fetch(url, reqOptions);
-      data = await res.json();
+    // fetch home library info
+    try {
+      let url = `${process.env.REACT_APP_BACKEND}/users/${userData.id}/homeLibrary`;
+      let res = await fetch(url, reqOptions);
+      let data = await res.json();
       if (data) {
         url = `${process.env.REACT_APP_BACKEND}/libraries/${data}`;
         res = await fetch(url, reqOptions);
         data = await res.json();
         setLibrary({ ...data });
       }
+    } catch (error) {
+      errors.push(error);
+    }
 
-      // Fetch returned books
-      url = `${process.env.REACT_APP_BACKEND}/users/${userData.id}/returned`;
-      res = await fetch(url, reqOptions);
+    // fetch returned books
+    try {
+      const url = `${process.env.REACT_APP_BACKEND}/users/${userData.id}/returned`;
+      const res = await fetch(url, reqOptions);
       if (res.status !== 204) {
-        data = await res.json();
+        const data = await res.json();
         if (data) {
           console.log(data);
           console.log(tempUserData);
@@ -74,11 +84,15 @@ const UserDashboard = () => {
           };
         }
       }
+    } catch (error) {
+      errors.push(error);
+    }
 
-      // Fetch borrowed books
-      url = `${process.env.REACT_APP_BACKEND}/users/${userData.id}/borrowed`;
-      res = await fetch(url, reqOptions);
-      data = await res.json();
+    // fetch borrowed books
+    try {
+      const url = `${process.env.REACT_APP_BACKEND}/users/${userData.id}/borrowed`;
+      const res = await fetch(url, reqOptions);
+      const data = await res.json();
       if (data) {
         console.log(data);
         console.log(tempUserData);
@@ -87,18 +101,22 @@ const UserDashboard = () => {
           borrowedBooks: data,
         };
       }
-
-      setUserData(tempUserData);
-      localStorage.setItem("user", JSON.stringify(tempUserData));
-      localStorage.setItem("library", JSON.stringify(library));
-      setAllDoneLoading(true);
     } catch (error) {
-      console.error("ok, something went wrong: ", error);
+      errors.push(error);
+    }
+
+    if (errors.length > 0) {
+      console.error("some requests failed:", errors);
       setAlert({
-        message: error.message,
+        message: `${errors.length} requests failed. Please try again.`,
         type: "error",
       });
     }
+
+    setUserData(tempUserData);
+    localStorage.setItem("user", JSON.stringify(tempUserData));
+    localStorage.setItem("library", JSON.stringify(library));
+    setAllDoneLoading(true);
   };
 
   useEffect(() => {
@@ -106,10 +124,6 @@ const UserDashboard = () => {
 
     fetchAllUserData();
   }, []);
-
-  // useEffect(() => {
-  //   console.log(userData, library);
-  // }, [alert, setAlert]);
 
   return allDoneLoading ? (
     <div>
