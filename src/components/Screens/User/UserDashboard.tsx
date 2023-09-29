@@ -38,7 +38,6 @@ const UserDashboard = () => {
       let url = `${process.env.REACT_APP_BACKEND}/users/${userData.id}`;
       let res = await fetch(url, reqOptions);
       let data = await res.json();
-
       if (data) {
         tempUserData = {
           ...tempUserData,
@@ -64,14 +63,13 @@ const UserDashboard = () => {
       // Fetch returned books
       url = `${process.env.REACT_APP_BACKEND}/users/${userData.id}/returned`;
       res = await fetch(url, reqOptions);
+      data = await res.json();
       if (data) {
-        data = await res.json();
+        tempUserData = {
+          ...tempUserData,
+          returnedBooks: data,
+        };
       }
-
-      tempUserData = {
-        ...tempUserData,
-        returnedBooks: data,
-      };
 
       // Fetch borrowed books
       url = `${process.env.REACT_APP_BACKEND}/users/${userData.id}/borrowed`;
