@@ -34,7 +34,7 @@ const Alert = () => {
     if (currentAlert && currentAlert.message) {
       setProgress(0);
 
-      const duration = currentAlert.duration || 5000;
+      const duration = currentAlert.duration || 2000;
       const intervalTime = 50;
       const increment = (intervalTime / duration) * 100;
 
@@ -130,7 +130,10 @@ const Alert = () => {
         <div className="mt-2 bg-gray-200 rounded-full h-1.5">
           <div
             className="bg-blue-600 rounded-full h-full"
-            style={{ width: `${progress}%` }}
+            style={{
+              width: `${progress}%`,
+              transition: "width 0.2s ease-in-out",
+            }}
           ></div>
         </div>
       </div>
