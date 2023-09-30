@@ -25,18 +25,39 @@ function XMarkIcon(props: any) {
 const Alert = () => {
   const [alertQueue, setAlertQueue] = useRecoilState(alertQueueAtom);
   const [visible, setVisible] = useState(true);
+  const [progress, setProgress] = useState(0);
   const timerRef = useRef(null);
 
   const currentAlert = alertQueue[0];
 
   useEffect(() => {
     if (currentAlert && currentAlert.message) {
+      setProgress(0);
+
+      const duration = currentAlert.duration || 5000;
+      const intervalTime = 50;
+      const increment = intervalTime / duration;
+
       timerRef.current = setTimeout(() => {
         setAlertQueue((prev) => prev.slice(1));
-      }, currentAlert.duration || 5000);
+      }, duration);
+
+      const progressInterval = setInterval(() => {
+        setProgress((prev) => {
+          if (prev < 100) {
+            return prev + increment;
+          } else {
+            clearInterval(progressInterval);
+            return 100;
+          }
+        });
+      }, intervalTime);
 
       return () => {
-        if (timerRef.current) clearTimeout(timerRef.current);
+        if (timerRef.current) {
+          clearTimeout(timerRef.current);
+        }
+        clearInterval(progressInterval);
       };
     }
   }, [currentAlert]);
@@ -105,6 +126,12 @@ const Alert = () => {
               />
             </svg>
           </button>
+        </div>
+        <div className="mt-2 bg-gray-200 rounded-full h-1.5">
+          <div
+            className="bg-blue-600 rounded-full h-full"
+            style={{ width: `${progress}%` }}
+          ></div>
         </div>
       </div>
     );
