@@ -36,7 +36,7 @@ const Alert = () => {
 
       const duration = currentAlert.duration || 5000;
       const intervalTime = 50;
-      const increment = intervalTime / duration;
+      const increment = (intervalTime / duration) * 100;
 
       timerRef.current = setTimeout(() => {
         setAlertQueue((prev) => prev.slice(1));
